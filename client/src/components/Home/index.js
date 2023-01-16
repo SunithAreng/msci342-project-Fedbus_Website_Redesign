@@ -138,6 +138,8 @@ class Home extends Component {
                 Welcome to MSci 342 Term Project!
                 <p/>
                 Project Members: Rama, Khoi, Harry, Sunith.
+                <p/>
+                Signed: Sunith
               </React.Fragment>
             ) : (
               <React.Fragment>
