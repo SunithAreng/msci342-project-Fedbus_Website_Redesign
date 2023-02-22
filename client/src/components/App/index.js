@@ -4,10 +4,8 @@ import {
   Route,
   Link,
 } from 'react-router-dom';
-
-import Home from '../Home';
 import PrivateRoute from '../Navigation/PrivateRoute.js';
-
+import { withFirebase } from '../Firebase';
 
 
 class App extends Component {
@@ -15,12 +13,23 @@ class App extends Component {
     super(props);
 
     this.state = {
-      //
+      authUser: null,
+      authenticated: false,
     };
   }
 
   componentDidMount() {
-    //
+    this.listener = this.props.firebase.auth.onAuthStateChanged(
+      authUser => {
+        authUser
+          ? (
+            this.setState({ authenticated: true, authUser: authUser })
+
+          ) : (
+            this.setState({ authenticated: false, authUser: null })
+          )
+      },
+    );
   }
 
 
@@ -30,14 +39,18 @@ class App extends Component {
 
 
   render() {
+    const authUser = this.props.authUser;
     return (
-	  <Router>
-	    <div>
-        <PrivateRoute exact path="/" component={Home}/>
-	    </div>
-	  </Router>
+      <Router>
+        <div>
+          <PrivateRoute 
+            authenticated={this.state.authenticated} 
+            authUser={this.state.authUser} 
+          />
+        </div>
+      </Router>
     );
   }
 }
 
-export default App;
+export default withFirebase(App);

@@ -2,8 +2,15 @@ import app from 'firebase/app';
 import 'firebase/auth';
 
 const firebaseConfig = {
-  //Enter your firebase API details
-  };
+    apiKey: "AIzaSyAuByNJ4fFRwTcN78q-mZQY_5hFag4WmDI",
+    authDomain: "msci342-95a21.firebaseapp.com",
+    databaseURL: "https://msci342-95a21-default-rtdb.firebaseio.com",
+    projectId: "msci342-95a21",
+    storageBucket: "msci342-95a21.appspot.com",
+    messagingSenderId: "610970174799",
+    appId: "1:610970174799:web:1fea90061fcf89a9d1713a"
+  };//Enter your firebase API details
+
 class Firebase {
   constructor() {
     app.initializeApp(firebaseConfig);
