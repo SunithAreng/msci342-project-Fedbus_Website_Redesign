@@ -1,23 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
 import { createTheme, ThemeProvider, styled } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Box from "@material-ui/core/Box";
 import { Dialog, MenuItem } from '@material-ui/core';
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import Select from '@material-ui/core/Select';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import history from '../../Navigation/history';
@@ -25,6 +15,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 
+// const serverURL = ""; //enable for dev mode
+
+const serverURL = "http://localhost:8081";
 
 const opacityValue = 0.9;
 
@@ -95,191 +88,57 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const stops = [
-    {
-      title: 'Kitchener',
-      id: 1,
-    },
-    {
-      title: 'Waterloo',
-      id: 2,
-    },
-    {
-      title: 'Toronto',
-      id: 3,
-    },
-    {
-      title: 'Mississauga',
-      id: 4,
-    },
-    {
-      title: 'Union Station',
-      id: 5,
-    }
-  ]
-
-const SearchSchdeule =() => {
+const SearchSchdeule = () => {
 
     const classes = useStyles();
-    const [spacing, setSpacing] = React.useState("");
-    const [movieName, setMovieName] = React.useState("");
-    const [reviewTitle, setReviewTitle] = React.useState("");
-    const [userReview, setUserReview] = React.useState("");
-    const [movies, setMovies] = React.useState([]);
-    const [initialReviews, setInitialReviews] = React.useState([]);
-    const [userID, setUserID] = React.useState(1);
-    const [movieID, setMovieID] = React.useState(0);
+    const [destinationName, setDestinationName] = React.useState("");
+    const [originName, setOrigin] = React.useState("");
+    const [stations, setStations] = React.useState([]);
+    const [originStopID, setOriginStopID] = React.useState(0);
+    const [destinationStopID, setDestinationStopID] = React.useState(0);
 
-    // React.useEffect(() => {
-    //     getMovies();
-    // }, []);
+    React.useEffect(() => {
+        getOrigin();
+    }, []);
 
-    // const getMovies = () => {
-    //     callApiGetMovies()
-    //         .then(res => {
-    //             var parsed = JSON.parse(res.express);
-    //             setMovies(parsed);
-    //         })
-    // }
+    const getOrigin = () => {
+        callApiGetOrigin()
+            .then(res => {
+                var parsed = JSON.parse(res.express);
+                setStations(parsed);
+                // console.log(parsed);
+            })
+    }
 
-    // const callApiGetMovies = async () => {
-    //     const url = serverURL + "/api/getMovies";
-    //     console.log(url);
+    const callApiGetOrigin = async () => {
+        const url = serverURL + "/api/getOrigin";
+        console.log(url);
 
-    //     const response = await fetch(url, {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         }
-    //     });
-    //     const body = await response.json();
-    //     if (response.status !== 200) throw Error(body.message);
-    //     return body;
-    // }
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.message);
+        return body;
+    }
 
-    const handleRatingChange = (event) => {
-        setSpacing(event.target.value);
-        setErrState3(false);
-    };
-
-    const handleMovieChange = (selectedMovie) => {
-        setMovieName(selectedMovie.name);
-        setMovieID(selectedMovie.id);
+    const handleDestinationChange = (selectedStop) => {
+        setDestinationName(selectedStop.station_name);
+        setDestinationStopID(selectedStop.id);
         setErrState4(false);
     };
 
-    const handleTitleEntry = (event) => {
-        setReviewTitle(event.target.value);
-        setErrState1(false);
-    }
 
-    const handleReviewEntry = (event) => {
-        setUserReview(event.target.value);
-        setErrState2(false);
-    }
+    const handleOriginChange = (selectedStop) => {
+        setOrigin(selectedStop.station_name);
+        setOriginStopID(selectedStop.id);
+        setErrState4(false);
+    };
 
-    const [open, setOpen] = React.useState(false);
-    const [dummy, setDummy] = React.useState();
-
-    const [errState2, setErrState2] = React.useState(false);
-    const [errState1, setErrState1] = React.useState(false);
-    const [errState3, setErrState3] = React.useState(false);
     const [errState4, setErrState4] = React.useState(false);
-
-    // const rightSubmission = () => {
-    //     setOpen(true);
-    //     setDummy(33);
-    //     const reviewInfo = {
-    //         name: movieName,
-    //         movies_id: movieID,
-    //         user_userID: userID,
-    //         reviewScore: spacing,
-    //         reviewTitle: reviewTitle,
-    //         reviewContent: userReview,
-    //     }
-    //     addReview();
-    //     var d = [reviewInfo];
-    //     setInitialReviews(d);
-    //     console.log(reviewInfo);
-    // }
-
-    // const addReview = () => {
-    //     callApiAddReview()
-    // }
-
-    // const callApiAddReview = async () => {
-
-    //     const url = serverURL + "/api/addReview";
-    //     console.log(url);
-
-    //     const response = await fetch(url, {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             //authorization: `Bearer ${this.state.token}`
-    //         },
-    //         body: JSON.stringify({
-    //             movies_id: movieID,
-    //             user_userID: userID,
-    //             reviewScore: spacing,
-    //             reviewTitle: reviewTitle,
-    //             reviewContent: userReview,
-    //         })
-    //     });
-    //     const body = await response.json();
-    //     if (response.status !== 200) throw Error(body.message);
-    //     return body;
-    // }
-
-    const emptyBoxes = () => {
-        if (movieName === "") {
-            setOpen(true);
-            setDummy(4);
-            setErrState4(true);
-        }
-
-        if (!reviewTitle) {
-            setOpen(true);
-            setDummy(2);
-            setErrState1(true);
-        }
-
-        if (spacing === "") {
-            setOpen(true);
-            setDummy(3);
-            setErrState3(true);
-        }
-
-        if (!userReview) {
-            setOpen(true);
-            setDummy(1);
-            setErrState2(true);
-        }
-    }
-
-    // const handleClickSubmit = () => {
-    //     userReview && spacing && movieName && reviewTitle ? rightSubmission() : emptyBoxes()
-    // }
-
-    const clear = () => {
-        setMovieName("");
-        setReviewTitle("");
-        setUserReview("");
-        setSpacing("");
-        setMovieID(0);
-    }
-
-    const clearAll = () => {
-        clear();
-        setInitialReviews([]);
-    }
-
-    const handleToClose = () => {
-        setOpen(false);
-        if (dummy === 33) {
-            clear();
-        }
-    }
 
     return (
         <ThemeProvider theme={lightTheme}>
@@ -288,7 +147,7 @@ const SearchSchdeule =() => {
                     height: '100vh',
                     opacity: opacityValue,
                     overflow: 'scroll',
-                    backgroundImage: `url(https://images.unsplash.com/photo-1638722712332-731b0e338e18?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80)`,
+                    // backgroundImage: `url(https://images.unsplash.com/photo-1638722712332-731b0e338e18?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80)`,
                     backgroundSize: "cover"
                 }}
             >
@@ -339,23 +198,23 @@ const SearchSchdeule =() => {
                         Get Schedule
                     </Typography>
                     <Grid container>
-                        <MovieSelection
-                            handleChange={handleMovieChange}
+                        <StopSelection
+                            handleChange={handleOriginChange}
                             classes={classes}
-                            movieName={movieName}
+                            stopName={originName}
                             label={"Origin"}
-                            idlabel={"movies-list"}
+                            idlabel={"origin-list"}
                             errState={errState4}
-                            movies={stops}
+                            stations={stations}
                         />
-                        <MovieSelection
-                            handleChange={handleMovieChange}
+                        <StopSelection
+                            handleChange={handleDestinationChange}
                             classes={classes}
-                            movieName={movieName}
+                            stopName={destinationName}
                             label={"Destination"}
-                            idlabel={"movies-list"}
+                            idlabel={"destination-list"}
                             errState={errState4}
-                            movies={stops}
+                            stations={stations}
                         />
                     </Grid>
                     <br />
@@ -366,7 +225,7 @@ const SearchSchdeule =() => {
 }
 
 
-const MovieSelection = ({ movies, handleChange, classes, movieName, label, idlabel, errState }) => {
+const StopSelection = ({ stations, handleChange, classes, stopName, label, idlabel, errState }) => {
     return (
         <>
             <FormControl variant='outlined' className={classes.formControl} error={errState}>
@@ -375,18 +234,18 @@ const MovieSelection = ({ movies, handleChange, classes, movieName, label, idlab
                     required
                     labelId={idlabel}
                     id={idlabel}
-                    value={movieName}
+                    value={stopName}
                 >
-                    {movies.map((movie) => {
+                    {stations.map((stop) => {
                         return (
-                            <MenuItem key={movie.id} value={movie.title} onClick={() => handleChange(movie)}>
-                                {movie.title}
+                            <MenuItem key={stop.id} value={stop.station_name} onClick={() => handleChange(stop)}>
+                                {stop.station_name}
                             </MenuItem>
                         )
                     }
                     )}
                 </Select>
-                <FormHelperText>{errState ? "Please select a movie for review" : ""}</FormHelperText>
+                <FormHelperText>{errState ? "Please select a stop" : ""}</FormHelperText>
             </FormControl>
         </>
     )
