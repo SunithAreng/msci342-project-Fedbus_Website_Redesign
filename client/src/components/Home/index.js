@@ -190,7 +190,7 @@ class Home extends Component {
                         <Button
                             variant='contained'
                             key='1'
-                            onClick={() => history.push('/SearchSchdeule')}
+                            onClick={() => history.push('/SearchSchedule')}
                             sx={{ my: 2, color: 'white', display: 'block' }}
                             color='secondary'
                         >
