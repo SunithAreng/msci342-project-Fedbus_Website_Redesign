@@ -151,6 +151,12 @@ const SearchSchdeule = () => {
         setValue(event.target.value);
     };
 
+    const [tripPref, setTripPref] = React.useState('1');
+
+    const handlePrefChange = (event) => {
+        setTripPref(event.target.value);
+    };
+
     var today = new Date(),
         t = today.getHours() + 1 + ':00:00';
 
@@ -328,6 +334,11 @@ const SearchSchdeule = () => {
                             onChange={setDate}
                             date={date}
                         />
+                        <TripPreference
+                            classes={classes}
+                            spacing={tripPref}
+                            handleChange={handlePrefChange}
+                        />
                     </Grid>
                     <br />
                     <div>
@@ -346,7 +357,6 @@ const SearchSchdeule = () => {
         </ThemeProvider>
     );
 }
-
 
 const StopSelection = ({ stations, handleChange, classes, stopName, label, idlabel, errState }) => {
     return (
@@ -389,6 +399,29 @@ const TimePrefernce = ({ classes, spacing, handleChange }) => {
                     >
                         <FormControlLabel value='1' control={<Radio />} label="Depart at" />
                         <FormControlLabel value='2' control={<Radio />} label="Arrive by" />
+                    </RadioGroup>
+                </Grid>
+            </FormControl>
+
+        </>
+    )
+}
+
+const TripPreference = ({ classes, spacing, handleChange }) => {
+    return (
+        <>
+            <FormControl className={classes.root} noValidate autoComplete="off">
+                <Grid item>
+                    {/* <FormLabel>Rating</FormLabel> */}
+                    <RadioGroup
+                        // name="Rating"
+                        // aria-label="Rating"
+                        value={spacing}
+                        onChange={handleChange}
+                        row
+                    >
+                        <FormControlLabel value='1' control={<Radio />} label="One Way" />
+                        <FormControlLabel value='2' control={<Radio />} label="Round Trip" />
                     </RadioGroup>
                 </Grid>
             </FormControl>
@@ -443,15 +476,23 @@ const ResultsTable = ({ results }) => {
                         <th>Destination</th>
                         <th>Departure Time</th>
                         <th>Arrival Time</th>
+                        <th>Duration</th>
                         <th>Trip Date</th>
+                        <th>Price</th>
+                        <th>Seats</th>
                     </tr>
                     {results.map((item, i) => (
-                        <tr key={i} >
+                        <tr key={i} style={{
+                            'borderStyle': 'solid'
+                        }}>
                             <td>{item.origin}</td>
                             <td>{item.destination}</td>
                             <td>{item.departure_time}</td>
                             <td>{item.arrival_time}</td>
+                            <td>{item.duration}</td>
                             <td>{item.trip_date}</td>
+                            <td>{item.price}</td>
+                            <td>{item.seats}</td>
                         </tr>
                     ))}
                 </tbody>

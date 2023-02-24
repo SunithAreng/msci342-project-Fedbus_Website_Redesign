@@ -30,6 +30,8 @@ app.use(function (req, res, next) {
 	}
 });
 
+// upto this point
+
 // app.post('/api/loadUserSettings', (req, res) => {
 
 // 	let connection = mysql.createConnection(config);
@@ -123,9 +125,10 @@ app.post('/api/search', (req, res) => {
 
 	// console.log(val)
 
-	let sql = `SELECT origin, destination,departure_time,arrival_time, DATE_FORMAT(d.trip_date, '%Y-%m-%d') as trip_date
+	let sql = `SELECT trip_id, origin, destination,departure_time,arrival_time, TIMEDIFF(arrival_time, departure_time) AS duration,
+	DATE_FORMAT(d.trip_date, '%Y-%m-%d') as trip_date, price, seats
 	From 
-	(SELECT a.station_name as origin, b.station_name as destination, (select time from sareng.timings where id=c.depart) as departure_time,
+	(SELECT a.station_name as origin, price, b.station_name as destination, (select time from sareng.timings where id=c.depart) as departure_time,
 	(select time from sareng.timings where id =c.arrive) as arrival_time, c.id FROM 
 	(select station_name, id from sareng.stations where id = ?) as a,
 	(select station_name, id from sareng.stations where id = ?) as b,
@@ -138,7 +141,7 @@ app.post('/api/search', (req, res) => {
 		sql = sql + `and c.arrive < (?)`;
 	}
 
-	sql = sql + `) aa Inner Join (Select trip_date, bus_id from sareng.trips
+	sql = sql + `) aa Inner Join (Select * from sareng.trips
 		where trip_date = (?)) d on d.bus_id = aa.id;`
 
 	let data = [origin_id, destination_id, time_ID, date];
