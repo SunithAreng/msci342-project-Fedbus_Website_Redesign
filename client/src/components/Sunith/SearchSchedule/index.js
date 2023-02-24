@@ -10,7 +10,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import Box from "@material-ui/core/Box";
-import { Dialog, MenuItem } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import history from '../../Navigation/history';
@@ -18,7 +18,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import DatePicker from 'react-date-picker';
-import { format } from 'date-fns';
 
 // const serverURL = ""; //enable for dev mode
 
@@ -146,7 +145,6 @@ const SearchSchdeule = () => {
         setErrState4(false);
     };
 
-    const [errState3, setErrState3] = React.useState(false);
     const [value, setValue] = React.useState('1');
 
     const handleChange = (event) => {
@@ -190,18 +188,18 @@ const SearchSchdeule = () => {
     };
 
     const [date, setDate] = React.useState(new Date());
-    console.log(date);
 
     const handleClickSearch = () => {
         const userSelectection = {
             origin: originStopID,
             destination: destinationStopID,
             preference: value,
-            time: time,
+            time: timeID,
             date: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
         }
         console.log(userSelectection);
     }
+
 
     return (
         <ThemeProvider theme={lightTheme}>
@@ -283,7 +281,6 @@ const SearchSchdeule = () => {
                             classes={classes}
                             spacing={value}
                             handleChange={handleChange}
-                            errState={errState3}
                         />
                         <TimeSelection
                             handleChange={handleTimeChange}
@@ -342,10 +339,10 @@ const StopSelection = ({ stations, handleChange, classes, stopName, label, idlab
     )
 }
 
-const TimePrefernce = ({ classes, spacing, handleChange, errState }) => {
+const TimePrefernce = ({ classes, spacing, handleChange }) => {
     return (
         <>
-            <FormControl className={classes.root} noValidate autoComplete="off" error={errState}>
+            <FormControl className={classes.root} noValidate autoComplete="off">
                 <Grid item>
                     {/* <FormLabel>Rating</FormLabel> */}
                     <RadioGroup
