@@ -154,7 +154,7 @@ const SearchSchdeule = () => {
     var today = new Date(),
         t = today.getHours() + 1 + ':00:00';
 
-    const [time, setTime] = React.useState(t);
+    const [time, setTime] = React.useState('');
     const [timeID, setTimeID] = React.useState(0);
     const [timesList, setTimesList] = React.useState([]);
 
@@ -188,18 +188,48 @@ const SearchSchdeule = () => {
     };
 
     const [date, setDate] = React.useState(new Date());
+    const [results, setResults] = React.useState([]);
 
     const handleClickSearch = () => {
+        var dd = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
         const userSelectection = {
             origin: originStopID,
             destination: destinationStopID,
             preference: value,
             time: timeID,
-            date: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
+            date: dd,
         }
-        console.log(userSelectection);
+        // console.log(userSelectection);
+        handleSearch(userSelectection);
     }
 
+    const handleSearch = (userSelectection) => {
+        callApiSearch(userSelectection)
+            .then(
+                res => {
+                    var parsed = JSON.parse(res.express);
+                    console.log("callApiFindMovies parsed: ", parsed)
+                    setResults(parsed);
+                }
+            )
+    }
+
+    const callApiSearch = async (userSelectection) => {
+
+        const url = serverURL + "/api/search";
+        console.log(url);
+
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userSelectection)
+        });
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.message);
+        return body;
+    }
 
     return (
         <ThemeProvider theme={lightTheme}>
@@ -286,7 +316,7 @@ const SearchSchdeule = () => {
                             handleChange={handleTimeChange}
                             classes={classes}
                             time={time}
-                            label={"Times"}
+                            label={"What time?"}
                             idlabel={"times-list"}
                             timesList={timesList}
                         />
@@ -305,7 +335,12 @@ const SearchSchdeule = () => {
                             Search
                         </Button>
                     </div>
-
+                    <br />
+                    <Grid container>
+                        <ResultsTable
+                            results={results}
+                        />
+                    </Grid>
                 </MainGridContainer>
             </Box>
         </ThemeProvider>
@@ -391,6 +426,36 @@ const DateSelection = ({ onChange, date }) => {
     return (
         <>
             <DatePicker onChange={onChange} value={date} />
+        </>
+    )
+}
+
+const ResultsTable = ({ results }) => {
+    return (
+        <>
+            <table style={{
+                "borderWidth": "1px", 'borderColor': "#aaaaaa", 'borderStyle': 'solid',
+                'border-collapase': 'collapse'
+            }}>
+                <tbody>
+                    <tr>
+                        <th>Origin</th>
+                        <th>Destination</th>
+                        <th>Departure Time</th>
+                        <th>Arrival Time</th>
+                        <th>Trip Date</th>
+                    </tr>
+                    {results.map((item, i) => (
+                        <tr key={i} >
+                            <td>{item.origin}</td>
+                            <td>{item.destination}</td>
+                            <td>{item.departure_time}</td>
+                            <td>{item.arrival_time}</td>
+                            <td>{item.trip_date}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </>
     )
 }
