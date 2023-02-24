@@ -1,7 +1,9 @@
-import React from 'react'; import { useState } from 'react';
+import React from 'react';
+import { useState } from 'react';
 const STATUS = {
     HOVERED: 'hovered', NORMAL: 'normal',
 };
+
 export default function Link({ page, children }) {
     const [status, setStatus] = useState(STATUS.NORMAL);
     const onMouseEnter = () => {

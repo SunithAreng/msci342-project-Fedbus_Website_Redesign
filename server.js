@@ -146,7 +146,7 @@ app.post('/api/search', (req, res) => {
 
 	let data = [origin_id, destination_id, time_ID, date];
 
-	// console.log(data);
+	console.log(data);
 
 	connection.query(sql, data, (error, results, fields) => {
 		if (error) {

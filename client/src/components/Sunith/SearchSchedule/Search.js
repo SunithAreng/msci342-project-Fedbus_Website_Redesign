@@ -160,8 +160,10 @@ const SearchSchdeule = () => {
     var today = new Date(),
         t = today.getHours() + 1 + ':00:00';
 
-    const [time, setTime] = React.useState('');
-    const [timeID, setTimeID] = React.useState(0);
+    var x = (today.getHours() + 1) * 4;
+
+    const [time, setTime] = React.useState(t);
+    const [timeID, setTimeID] = React.useState(x);
     const [timesList, setTimesList] = React.useState([]);
 
     const getTimes = () => {
@@ -221,10 +223,8 @@ const SearchSchdeule = () => {
     }
 
     const callApiSearch = async (userSelectection) => {
-
         const url = serverURL + "/api/search";
         console.log(url);
-
         const response = await fetch(url, {
             method: "POST",
             headers: {
