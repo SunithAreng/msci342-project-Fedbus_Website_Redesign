@@ -12,7 +12,6 @@ import Button from '@material-ui/core/Button';
 import Box from "@material-ui/core/Box";
 import { MenuItem } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import history from '../../Navigation/history';
 import AppBar from '@material-ui/core/AppBar';
 import Container from '@material-ui/core/Container';
@@ -95,14 +94,29 @@ const useStyles = makeStyles((theme) => ({
 const SearchSchdeule = () => {
 
     const classes = useStyles();
-    const [stations, setStations] = React.useState([]);
 
     React.useEffect(() => {
         getOrigin();
         getTimes();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getOrigin = () => {
+        const callApiGetOrigin = async () => {
+            const url = serverURL + "/api/getOrigin";
+            console.log(url);
+
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+            const body = await response.json();
+            if (response.status !== 200) throw Error(body.message);
+            return body;
+        };
+
         callApiGetOrigin()
             .then(res => {
                 var parsed = JSON.parse(res.express);
@@ -111,29 +125,36 @@ const SearchSchdeule = () => {
             })
     }
 
-    const callApiGetOrigin = async () => {
-        const url = serverURL + "/api/getOrigin";
-        console.log(url);
+    const getTimes = () => {
+        const callApiGetTimes = async () => {
+            const url = serverURL + "/api/getTimes";
+            console.log(url);
 
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        });
-        const body = await response.json();
-        if (response.status !== 200) throw Error(body.message);
-        return body;
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+            const body = await response.json();
+            if (response.status !== 200) throw Error(body.message);
+            return body;
+        };
+        callApiGetTimes()
+            .then(res => {
+                var parsed = JSON.parse(res.express);
+                setTimesList(parsed);
+                // console.log(parsed);
+            })
     }
 
-    const [errState4, setErrState4] = React.useState(false);
+    const [stations, setStations] = React.useState([]);
     const [destinationName, setDestinationName] = React.useState("");
     const [destinationStopID, setDestinationStopID] = React.useState(0);
 
     const handleDestinationChange = (selectedStop) => {
         setDestinationName(selectedStop.station_name);
         setDestinationStopID(selectedStop.id);
-        setErrState4(false);
     };
 
     const [originName, setOrigin] = React.useState("");
@@ -142,7 +163,6 @@ const SearchSchdeule = () => {
     const handleOriginChange = (selectedStop) => {
         setOrigin(selectedStop.station_name);
         setOriginStopID(selectedStop.id);
-        setErrState4(false);
     };
 
     const [value, setValue] = React.useState('1');
@@ -166,30 +186,6 @@ const SearchSchdeule = () => {
     const [timeID, setTimeID] = React.useState(x);
     const [timesList, setTimesList] = React.useState([]);
 
-    const getTimes = () => {
-        callApiGetTimes()
-            .then(res => {
-                var parsed = JSON.parse(res.express);
-                setTimesList(parsed);
-                // console.log(parsed);
-            })
-    }
-
-    const callApiGetTimes = async () => {
-        const url = serverURL + "/api/getTimes";
-        console.log(url);
-
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        });
-        const body = await response.json();
-        if (response.status !== 200) throw Error(body.message);
-        return body;
-    }
-
     const handleTimeChange = (selectedTime) => {
         setTime(selectedTime.time);
         setTimeID(selectedTime.id);
@@ -212,6 +208,21 @@ const SearchSchdeule = () => {
     }
 
     const handleSearch = (userSelectection) => {
+        const callApiSearch = async (userSelectection) => {
+            const url = serverURL + "/api/search";
+            console.log(url);
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(userSelectection)
+            });
+            const body = await response.json();
+            if (response.status !== 200) throw Error(body.message);
+            return body;
+        }
+
         callApiSearch(userSelectection)
             .then(
                 res => {
@@ -222,20 +233,7 @@ const SearchSchdeule = () => {
             )
     }
 
-    const callApiSearch = async (userSelectection) => {
-        const url = serverURL + "/api/search";
-        console.log(url);
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(userSelectection)
-        });
-        const body = await response.json();
-        if (response.status !== 200) throw Error(body.message);
-        return body;
-    }
+
 
     return (
         <ThemeProvider theme={lightTheme}>
@@ -301,7 +299,6 @@ const SearchSchdeule = () => {
                             stopName={originName}
                             label={"Origin"}
                             idlabel={"origin-list"}
-                            errState={errState4}
                             stations={stations}
                         />
                         <StopSelection
@@ -310,7 +307,6 @@ const SearchSchdeule = () => {
                             stopName={destinationName}
                             label={"Destination"}
                             idlabel={"destination-list"}
-                            errState={errState4}
                             stations={stations}
                         />
                         <TimePrefernce
@@ -358,10 +354,10 @@ const SearchSchdeule = () => {
     );
 }
 
-const StopSelection = ({ stations, handleChange, classes, stopName, label, idlabel, errState }) => {
+const StopSelection = ({ stations, handleChange, classes, stopName, label, idlabel }) => {
     return (
         <>
-            <FormControl variant='outlined' className={classes.formControl} error={errState}>
+            <FormControl variant='outlined' className={classes.formControl}>
                 <InputLabel id={idlabel}>{label}</InputLabel>
                 <Select
                     required
@@ -378,7 +374,6 @@ const StopSelection = ({ stations, handleChange, classes, stopName, label, idlab
                     }
                     )}
                 </Select>
-                <FormHelperText>{errState ? "Please select a stop" : ""}</FormHelperText>
             </FormControl>
         </>
     )

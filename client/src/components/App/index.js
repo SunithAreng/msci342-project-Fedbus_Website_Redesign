@@ -31,11 +31,11 @@ class App extends Component {
 
   render() {
     return (
-	  <Router>
-	    <div>
-        <PrivateRoute exact path="/" component={Home}/>
-	    </div>
-	  </Router>
+      <Router>
+        <div>
+          <PrivateRoute exact path="/" component={Home} />
+        </div>
+      </Router>
     );
   }
 }
