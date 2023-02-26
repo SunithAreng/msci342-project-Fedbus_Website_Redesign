@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
+import { MuiThemeProvider, createTheme, styled } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
+import history from '../Navigation/history';
+import AppBar from '@material-ui/core/AppBar';
+import Container from '@material-ui/core/Container';
+import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
 
 //hello
 //Dev mode
@@ -22,51 +25,29 @@ const fetch = require("node-fetch");
 
 const opacityValue = 0.9;
 
-const theme = createTheme({
+const lightTheme = createTheme({
   palette: {
-    type: 'dark',
+    type: 'light',
     background: {
-      default: "#000000"
+      default: "#ffffff"
     },
     primary: {
-      main: "#52f1ff",
+      main: '#ef9a9a',
+      light: '#ffcccb',
+      dark: '#ba6b6c',
+      background: '#eeeeee'
     },
     secondary: {
-      main: "#b552f7",
+      main: "#b71c1c",
+      light: '#f05545',
+      dark: '#7f0000'
     },
   },
 });
 
-const styles = theme => ({
-  root: {
-    body: {
-      backgroundColor: "#000000",
-      opacity: opacityValue,
-      overflow: "hidden",
-    },
-  },
-  mainMessage: {
-    opacity: opacityValue,
-  },
-
-  mainMessageContainer: {
-    marginTop: "20vh",
-    marginLeft: theme.spacing(20),
-    [theme.breakpoints.down('xs')]: {
-      marginLeft: theme.spacing(4),
-    },
-  },
-  paper: {
-    overflow: "hidden",
-  },
-  message: {
-    opacity: opacityValue,
-    maxWidth: 250,
-    paddingBottom: theme.spacing(2),
-  },
-
-});
-
+const MainGridContainer = styled(Grid)(({ theme }) => ({
+  margin: theme.spacing(4),
+}))
 
 class Home extends Component {
   constructor(props) {
@@ -112,58 +93,111 @@ class Home extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-
-
-
-    const mainMessage = (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        justify="flex-start"
-        alignItems="flex-start"
-        style={{ minHeight: '100vh' }}
-        className={classes.mainMessageContainer}
-      >
-        <Grid item>
-
-          <Typography
-            variant={"h3"}
-            className={classes.mainMessage}
-            align="flex-start"
-          >
-            {this.state.mode === 0 ? (
-              <React.Fragment>
-                Welcome to MSci 342 Term Project!
-                <p/>
-                Project Members: Rama, Khoi, Harry, Sunith.
-                <p/>
-                Signed: Sunith
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                Welcome back!
-              </React.Fragment>
-            )}
-          </Typography>
-
-        </Grid>
-      </Grid>
-    )
-
-
     return (
-      <MuiThemeProvider theme={theme}>
-        <div className={classes.root}>
-          <CssBaseline />
-          <Paper
-            className={classes.paper}
+      <MuiThemeProvider theme={lightTheme}>
+        <Box
+          sx={{
+            height: '100vh',
+            opacity: opacityValue,
+            overflow: 'scroll',
+            backgroundImage: `url(https://images.unsplash.com/photo-1581277868137-9dc9f38abc2c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1771&q=80)`,
+            backgroundSize: "cover"
+          }}
+        >
+          <AppBar position="static">
+            <Container maxWidth="xl">
+              <Toolbar disableGutters>
+                <Button
+                  key='1'
+                  onClick={() => history.push('/')}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Home
+                </Button>
+                <Button
+                  key='2'
+                  onClick={() => history.push('/SearchSchedule')}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Schedule
+                </Button>
+                <Button
+                  key='3'
+                  onClick={() => history.push('/Login')}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Login
+                </Button>
+                <Button
+                  key='4'
+                  onClick={() => history.push('/MyProfile')}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  MyProfile
+                </Button>
+                <Button
+                  key='5'
+                  onClick={() => history.push('/Booking')}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Booking
+                </Button>
+                <Button
+                  key='6'
+                  onClick={() => history.push('/Payment')}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Payment
+                </Button>
+                <Button
+                  key='7'
+                  onClick={() => history.push('/FAQ')}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  FAQ
+                </Button>
+                <Button
+                  key='8'
+                  onClick={() => history.push('/Location')}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Location
+                </Button>
+              </Toolbar>
+            </Container>
+          </AppBar>
+          <MainGridContainer
+            container
+            spacing={5}
+            style={{ maxWidth: '50%' }}
+            direction="column"
+            justify="flex-start"
+            alignItems="stretch"
+            overflow="scroll"
           >
-            {mainMessage}
-          </Paper>
 
-        </div>
+            <br />
+            <Typography variant="h3" color="inherit">
+              Make Commuting Easy
+            </Typography>
+            <Typography variant="h5" color="inherit">
+              Find your most convenient bus ride!
+            </Typography>
+            <br />
+            <Grid container>
+              <Button
+                variant='contained'
+                key='1'
+                onClick={() => history.push('/SearchSchedule')}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+                color='secondary'
+              >
+                Let's go
+              </Button>
+            </Grid>
+
+          </MainGridContainer>
+        </Box>
       </MuiThemeProvider>
     );
   }
@@ -173,4 +207,4 @@ Home.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Home);
+export default (Home);
