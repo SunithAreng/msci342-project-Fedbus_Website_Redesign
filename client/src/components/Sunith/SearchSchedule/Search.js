@@ -16,9 +16,8 @@ import history from '../../Navigation/history';
 import AppBar from '@material-ui/core/AppBar';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
-import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import { DataGrid } from '@material-ui/data-grid';
+import { ResultsTable } from './ResultsTable';
+import { DateSelection } from './DateSelection';
 
 // const serverURL = ""; //enable for dev mode
 
@@ -235,8 +234,6 @@ const SearchSchdeule = () => {
             )
     }
 
-
-
     return (
         <ThemeProvider theme={lightTheme}>
             <Box
@@ -331,7 +328,6 @@ const SearchSchdeule = () => {
                         <DateSelection
                             onChange={setDate}
                             date={date}
-                            DateFnsUtils={DateFnsUtils}
                         />
                         <TripPreference
                             classes={classes}
@@ -447,93 +443,6 @@ const TimeSelection = ({ timesList, handleChange, classes, time, label, idlabel 
                     )}
                 </Select>
             </FormControl>
-        </>
-    )
-}
-
-const DateSelection = ({ onChange, date, DateFnsUtils }) => {
-    return (
-        <>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                    disableToolbar
-                    variant="inline"
-                    format="MM/dd/yyyy"
-                    margin="normal"
-                    id="date-picker-inline"
-                    label="What date?"
-                    value={date}
-                    onChange={onChange}
-                    KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                    }}
-                />
-            </MuiPickersUtilsProvider>
-        </>
-    )
-}
-
-
-
-const ResultsTable = ({ results }) => {
-    const columns = [
-        {
-            field: 'origin',
-            headerName: 'Origin',
-            width: 250,
-        },
-        {
-            field: 'destination',
-            headerName: 'Destination',
-            width: 250,
-        },
-        {
-            field: 'departure_time',
-            headerName: 'Departure Time',
-            type: 'time',
-            width: 180,
-        },
-        {
-            field: 'arrival_time',
-            headerName: 'Arrival Time',
-            type: 'time',
-            width: 150,
-        },
-        {
-            field: 'duration',
-            headerName: 'Duration',
-            type: 'time',
-            width: 110,
-        },
-        {
-            field: 'trip_date',
-            headerName: 'Date',
-            type: 'date',
-            width: 110,
-        },
-        {
-            field: 'price',
-            headerName: 'Price',
-            type: 'number',
-            width: 110,
-        },
-        {
-            field: 'seats',
-            headerName: 'Seats',
-            type: 'number',
-            width: 150,
-        },
-    ];
-    return (
-        <>
-            <DataGrid
-                rows={results}
-                columns={columns}
-                getRowId={(results) => results.trip_id}
-                pageSize={5}
-                checkboxSelection
-                disableSelectionOnClick
-            />
         </>
     )
 }
