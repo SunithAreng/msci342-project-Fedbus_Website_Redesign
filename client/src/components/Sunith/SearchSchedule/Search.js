@@ -473,8 +473,6 @@ const DateSelection = ({ onChange, date, DateFnsUtils }) => {
     )
 }
 
-
-
 const ResultsTable = ({ results }) => {
     const columns = [
         {

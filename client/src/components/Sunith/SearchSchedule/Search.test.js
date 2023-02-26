@@ -1,19 +1,27 @@
 import React from 'react';
 import { render, fireEvent, screen } from "@testing-library/react";
-import TimePreference from './Search';
+import ResultsTable from './Search';
+import fetch from 'node-fetch';
 
-it("Radio group change value and new value updated and last value no more checked", () => {
-    const { container, getByTestId } = render(<TimePreference {...props} />);
+jest.mock('node-fetch', () => jest.fn());
 
-    // Before change selection
-    const allValueRadioButton = getByTestId('radio-button-all');
-    expect(allValueRadioButton.checked).toEqual(true);
+it("displays the results", () => {
+    const results = [
+        {
+            trip_id: 1,
+            origin: 'Waterloo',
+            destination: 'Toronto',
+            departure_time: '11:00:00',
+            arrival_time: '13:00:00',
+            duration: '02:00:00',
+            trip_date: '2023-03-05',
+            price: '21',
+            seats: '44'
+        }
+    ];
 
-    // Change selection
-    const withValueRadioButton = getByTestId('radio-button-with');
-    fireEvent.click(withValueRadioButton, { target: { checked: true } });
-    expect(withValueRadioButton.checked).toEqual(true);
+    render(<ResultsTable results={results} />);
 
-    // Old value is no more checked
-    expect(allValueRadioButton.checked).toEqual(false);
+    expect(screen.getByText('Toronto')).toBeInTheDocument();
+    expect(screen.getByText('Waterloo')).toBeInTheDocument();
 });
