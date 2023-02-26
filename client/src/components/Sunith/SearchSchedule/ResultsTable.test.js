@@ -1,9 +1,7 @@
 import React from 'react';
-import { render, fireEvent, screen } from "@testing-library/react";
-import ResultsTable from './Search';
-import fetch from 'node-fetch';
-
-jest.mock('node-fetch', () => jest.fn());
+import '@testing-library/jest-dom'
+import { render, screen } from "@testing-library/react";
+import { ResultsTable } from './ResultsTable';
 
 it("displays the results", () => {
     const results = [
