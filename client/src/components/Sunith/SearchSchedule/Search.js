@@ -16,7 +16,9 @@ import history from '../../Navigation/history';
 import AppBar from '@material-ui/core/AppBar';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
-import DatePicker from 'react-date-picker';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import { DataGrid } from '@material-ui/data-grid';
 
 // const serverURL = ""; //enable for dev mode
 
@@ -329,6 +331,7 @@ const SearchSchdeule = () => {
                         <DateSelection
                             onChange={setDate}
                             date={date}
+                            DateFnsUtils={DateFnsUtils}
                         />
                         <TripPreference
                             classes={classes}
@@ -343,12 +346,10 @@ const SearchSchdeule = () => {
                         </Button>
                     </div>
                     <br />
-                    <Grid container>
-                        <ResultsTable
-                            results={results}
-                        />
-                    </Grid>
                 </MainGridContainer>
+                <ResultsTable
+                    results={results}
+                />
             </Box>
         </ThemeProvider>
     );
@@ -386,8 +387,8 @@ const TimePrefernce = ({ classes, spacing, handleChange }) => {
                 <Grid item>
                     {/* <FormLabel>Rating</FormLabel> */}
                     <RadioGroup
-                        // name="Rating"
-                        // aria-label="Rating"
+                        name="Time of Journey"
+                        aria-label="Time"
                         value={spacing}
                         onChange={handleChange}
                         row
@@ -450,48 +451,89 @@ const TimeSelection = ({ timesList, handleChange, classes, time, label, idlabel 
     )
 }
 
-const DateSelection = ({ onChange, date }) => {
+const DateSelection = ({ onChange, date, DateFnsUtils }) => {
     return (
         <>
-            <DatePicker onChange={onChange} value={date} />
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="date-picker-inline"
+                    label="What date?"
+                    value={date}
+                    onChange={onChange}
+                    KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                    }}
+                />
+            </MuiPickersUtilsProvider>
         </>
     )
 }
 
+
+
 const ResultsTable = ({ results }) => {
+    const columns = [
+        {
+            field: 'origin',
+            headerName: 'Origin',
+            width: 250,
+        },
+        {
+            field: 'destination',
+            headerName: 'Destination',
+            width: 250,
+        },
+        {
+            field: 'departure_time',
+            headerName: 'Departure Time',
+            type: 'time',
+            width: 180,
+        },
+        {
+            field: 'arrival_time',
+            headerName: 'Arrival Time',
+            type: 'time',
+            width: 150,
+        },
+        {
+            field: 'duration',
+            headerName: 'Duration',
+            type: 'time',
+            width: 110,
+        },
+        {
+            field: 'trip_date',
+            headerName: 'Date',
+            type: 'date',
+            width: 110,
+        },
+        {
+            field: 'price',
+            headerName: 'Price',
+            type: 'number',
+            width: 110,
+        },
+        {
+            field: 'seats',
+            headerName: 'Seats',
+            type: 'number',
+            width: 150,
+        },
+    ];
     return (
         <>
-            <table style={{
-                "borderWidth": "1px", 'borderColor': "#aaaaaa", 'borderStyle': 'solid',
-                'border-collapase': 'collapse'
-            }}>
-                <tbody>
-                    <tr>
-                        <th>Origin</th>
-                        <th>Destination</th>
-                        <th>Departure Time</th>
-                        <th>Arrival Time</th>
-                        <th>Duration</th>
-                        <th>Trip Date</th>
-                        <th>Price</th>
-                        <th>Seats</th>
-                    </tr>
-                    {results.map((item, i) => (
-                        <tr key={i} style={{
-                            'borderStyle': 'solid'
-                        }}>
-                            <td>{item.origin}</td>
-                            <td>{item.destination}</td>
-                            <td>{item.departure_time}</td>
-                            <td>{item.arrival_time}</td>
-                            <td>{item.duration}</td>
-                            <td>{item.trip_date}</td>
-                            <td>{item.price}</td>
-                            <td>{item.seats}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <DataGrid
+                rows={results}
+                columns={columns}
+                getRowId={(results) => results.trip_id}
+                pageSize={5}
+                checkboxSelection
+                disableSelectionOnClick
+            />
         </>
     )
 }
