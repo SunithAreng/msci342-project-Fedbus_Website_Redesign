@@ -5,6 +5,16 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 
+// Authentication services
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
+const admin = require("firebase-admin");
+const serviceAccount = require("./ServiceAccountKey.json");
+admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount),
+	databaseURL: "https://msci342-95a21-default-rtdb.firebaseio.com" //Paste databaseURL from firebaseConfig here
+});
+
 const { response } = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
@@ -32,49 +42,65 @@ app.use(function (req, res, next) {
 
 // upto this point
 
-// app.post('/api/loadUserSettings', (req, res) => {
+const auth = async (req, res, next) => {
+	const token = req.headers.authorization.split(" ")[1];
+	if (!token)
+		return res.status(403).send({ auth: false, message: "No token provided." });
+	await jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+		if (err)
+			return res
+				.status(500)
+				.send({ auth: false, message: "Failed to authenticate token." });
+		// if everything good, save to request for use in other routes
+		req.userID = decoded.userID;
+		next();
+	});
+};
 
-// 	let connection = mysql.createConnection(config);
-// 	let userID = req.body.userID;
+app.post("/login", (req, res) => {
+	const token = req.body.token;
+	// idToken comes from the client app
+	admin
+		.auth()
+		.verifyIdToken(token)
+		.then(function (decodedToken) {
+			let uid = decodedToken.uid;
+			const token = jwt.sign({ userID: uid, sub: uid }, process.env.JWT_KEY, {
+				expiresIn: 86400 // expires in 24 hours
+			});
+			//console.log(token);
+			res.status(200).send({ auth: true, token: token });
 
-// 	let sql = `SELECT mode FROM user WHERE userID = ?`;
-// 	console.log(sql);
-// 	let data = [userID];
-// 	console.log(data);
+		})
+		.catch(function (error) {
+			// error on verification
+			console.log(error);
+			res.status(404).send("No user found");
+		});
+});
 
-// 	connection.query(sql, data, (error, results, fields) => {
-// 		if (error) {
-// 			return console.error(error.message);
-// 		}
+app.post('/api/loadUserSettings', auth, (req, res) => {
 
-// 		let string = JSON.stringify(results);
-// 		//let obj = JSON.parse(string);
-// 		res.send({ express: string });
-// 	});
-// 	connection.end();
-// });
+	let connection = mysql.createConnection(config);
+	let userID = req.body.userID;
+	console.log(userID);
 
-// app.post('/api/loadUserSettings', (req, res) => {
+	let sql = `SELECT mode FROM user WHERE userID = 1`;
+	console.log(sql);
+	let data = [];
+	//console.log(data);
 
-// 	let connection = mysql.createConnection(config);
-// 	let userID = req.body.userID;
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
 
-// 	let sql = `SELECT mode FROM user WHERE userID = ?`;
-// 	console.log(sql);
-// 	let data = [userID];
-// 	console.log(data);
-
-// 	connection.query(sql, data, (error, results, fields) => {
-// 		if (error) {
-// 			return console.error(error.message);
-// 		}
-
-// 		let string = JSON.stringify(results);
-// 		//let obj = JSON.parse(string);
-// 		res.send({ express: string });
-// 	});
-// 	connection.end();
-// });
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
 
 app.post('/api/getOrigin', (req, res) => {
 	let connection = mysql.createConnection(config);

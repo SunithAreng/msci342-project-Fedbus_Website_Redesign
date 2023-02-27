@@ -10,7 +10,6 @@ import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 
-//hello
 //Dev mode
 const serverURL = ""; //enable for dev mode
 
@@ -123,10 +122,10 @@ class Home extends Component {
                 </Button>
                 <Button
                   key='3'
-                  onClick={() => history.push('/Login')}
+                  onClick={() => history.push('/SignIn')}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
-                  Login
+                  Sign In
                 </Button>
                 <Button
                   key='4'
