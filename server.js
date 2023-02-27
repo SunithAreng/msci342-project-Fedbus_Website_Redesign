@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 app.use(express.static(path.join(__dirname, "client/build")));
 
-// comment from here 
+// comment from here
 // var cors = require('cors');
 // app.use(cors());
 
@@ -187,7 +187,7 @@ app.post('/api/search', (req, res) => {
 	});
 });
 
-//app.listen(8081, () => console.log(`Listening on port ${port}`)); //for the dev version
+// app.listen(8081, () => console.log(`Listening on port ${port}`)); //for the dev version
 
- app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
+app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server

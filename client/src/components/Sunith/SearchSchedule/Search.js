@@ -19,9 +19,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { ResultsTable } from './ResultsTable';
 import { DateSelection } from './DateSelection';
 
- const serverURL = ""; //enable for dev mode
+const serverURL = ""; //enable for dev mode
 
-//const serverURL = "http://localhost:8081";
+// const serverURL = "http://localhost:8081";
 
 const opacityValue = 0.9;
 
@@ -257,24 +257,59 @@ const SearchSchdeule = () => {
                             </Button>
                             <Button
                                 key='2'
-                                onClick={() => history.push('/FAQ')}
+                                onClick={() => history.push('/SearchSchedule')}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
-                                FAQ
+                                Schedule
                             </Button>
                             <Button
                                 key='3'
+                                onClick={() => history.push('/SignIn')}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Sign In
+                            </Button>
+                            <Button
+                                key='9'
+                                onClick={() => history.push('/SignUp')}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Sign Up
+                            </Button>
+                            <Button
+                                key='4'
                                 onClick={() => history.push('/MyProfile')}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
                                 MyProfile
                             </Button>
                             <Button
-                                key='4'
+                                key='5'
+                                onClick={() => history.push('/Booking')}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Booking
+                            </Button>
+                            <Button
+                                key='6'
                                 onClick={() => history.push('/Payment')}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
                                 Payment
+                            </Button>
+                            <Button
+                                key='7'
+                                onClick={() => history.push('/FAQ')}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                FAQ
+                            </Button>
+                            <Button
+                                key='8'
+                                onClick={() => history.push('/Location')}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Location
                             </Button>
                         </Toolbar>
                     </Container>

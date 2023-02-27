@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withFirebase } from '../../Firebase';
@@ -9,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 
 const serverURL = "";
 
-//const serverURL = "http://localhost:8081";
+// const serverURL = "http://localhost:8081";
 
 class MyProfileBase extends React.Component {
     constructor(props) {

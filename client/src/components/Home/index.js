@@ -128,6 +128,13 @@ class Home extends Component {
                   Sign In
                 </Button>
                 <Button
+                  key='9'
+                  onClick={() => history.push('/SignUp')}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Sign Up
+                </Button>
+                <Button
                   key='4'
                   onClick={() => history.push('/MyProfile')}
                   sx={{ my: 2, color: 'white', display: 'block' }}
