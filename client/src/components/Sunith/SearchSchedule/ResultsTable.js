@@ -56,7 +56,6 @@ export const ResultsTable = ({ results }) => {
                 rows={results}
                 columns={columns}
                 getRowId={(results) => results.trip_id}
-                rowsPerPageOptions={[]}
                 checkboxSelection
                 disableSelectionOnClick
             />
