@@ -19,9 +19,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { ResultsTable } from './ResultsTable';
 import { DateSelection } from './DateSelection';
 
-const serverURL = ""; //enable for dev mode
+// const serverURL = ""; //enable for dev mode
 
-// const serverURL = "http://localhost:8081";
+const serverURL = "http://localhost:8081";
 
 const opacityValue = 0.9;
 
