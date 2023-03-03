@@ -142,20 +142,6 @@ class Home extends Component {
                   MyProfile
                 </Button>
                 <Button
-                  key='5'
-                  onClick={() => history.push('/Booking')}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  Booking
-                </Button>
-                <Button
-                  key='6'
-                  onClick={() => history.push('/Payment')}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  Payment
-                </Button>
-                <Button
                   key='7'
                   onClick={() => history.push('/FAQ')}
                   sx={{ my: 2, color: 'white', display: 'block' }}
