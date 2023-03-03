@@ -19,6 +19,7 @@ import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import { ResultsTable } from './ResultsTable';
 import { DateSelection } from './DateSelection';
+import { StopSelection } from './StopSelection';
 
 const serverURL = ""; //enable for dev mode
 
@@ -413,31 +414,6 @@ const SearchSchdeule = () => {
             </Box>
         </ThemeProvider>
     );
-}
-
-const StopSelection = ({ stations, handleChange, classes, stopName, label, idlabel }) => {
-    return (
-        <>
-            <FormControl variant='outlined' className={classes.formControl}>
-                <InputLabel id={idlabel}>{label}</InputLabel>
-                <Select
-                    required
-                    labelId={idlabel}
-                    id={idlabel}
-                    value={stopName}
-                >
-                    {stations.map((stop) => {
-                        return (
-                            <MenuItem key={stop.id} value={stop.station_name} onClick={() => handleChange(stop)}>
-                                {stop.station_name}
-                            </MenuItem>
-                        )
-                    }
-                    )}
-                </Select>
-            </FormControl>
-        </>
-    )
 }
 
 const TimePrefernce = ({ classes, spacing, handleChange }) => {
