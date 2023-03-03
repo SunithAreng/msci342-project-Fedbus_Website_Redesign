@@ -1,6 +1,4 @@
 import React from 'react';
-import './style.css';
-import logo from './logo.png';
 import history from '../../Navigation/history';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -79,13 +77,9 @@ const Location = () => {
                         </Toolbar>
                     </Container>
                 </AppBar>
-    <br/>
-    <img src={logo} alt=""/>
-    <br/><br/>
-<hr style= {{backgroundColor: 'black',height:'4px', border: '0px'}}/>
-
+    
     <title>FedBus Bus Stops</title>
-    <h1>Bus Stops</h1>
+    <h1>Fedbus Bus Stops</h1>
 
   <h3>McCowan (Scarborough)</h3>
   <h5>The McCowan Subway stop at the corner of Bushby and McCowan.</h5>
