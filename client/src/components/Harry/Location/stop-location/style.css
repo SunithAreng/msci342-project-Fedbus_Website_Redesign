@@ -1,0 +1,70 @@
+ #mccowan {
+   height: 40%;
+   width: 80%;
+   margin: auto;
+   padding: 10px;
+   border-radius: 14px;
+ }
+
+ #yorkmills {
+   height: 40%;
+   width: 80%;
+   margin: auto;
+   padding: 10px;
+   border-radius: 14px;
+ }
+
+ #richmondhill {
+   height: 40%;
+   width: 80%;
+   margin: auto;
+   padding: 10px;
+   border-radius: 14px;
+ }
+
+ #london {
+   height: 40%;
+   width: 80%;
+   margin: auto;
+   padding: 10px;
+   border-radius: 14px;
+ }
+
+ #hamilton {
+   height: 40%;
+   width: 80%;
+   margin: auto;
+   padding: 10px;
+   border-radius: 14px;
+ }
+
+ #burlington {
+   height: 40%;
+   width: 80%;
+   margin: auto;
+   padding: 10px;
+   border-radius: 14px;
+ }
+
+ #markham {
+   height: 40%;
+   width: 80%;
+   margin: auto;
+   padding: 10px;
+   border-radius: 14px;
+ }
+
+ html,
+ body {
+   width: 100vw;
+   height: 100vh;
+   text-align: center;
+   font-family:fantasy;
+   background: linear-gradient(to bottom, #ffbb00, #ffffff);
+   background-attachment:fixed;
+   
+
+  
+ }
+
+ 
