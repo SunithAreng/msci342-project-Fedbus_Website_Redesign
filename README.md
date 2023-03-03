@@ -14,3 +14,6 @@ University of Waterloo students
 5. Bus Reviews
 6. Tickets booking and purchasing
 7. Rebooking previous trips
+
+## Installation Requirements
+1. Must do npm install --legacy-peer-deps, everytime the code is pulled from github, incase any new package is added. 
