@@ -9,9 +9,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import history from '../../Navigation/history';
 import logo from './logo.png';
 
-// const serverURL = "";
+const serverURL = "";
 
-const serverURL = "http://localhost:8081";
+// const serverURL = "http://localhost:8081";
 
 class MyProfileBase extends React.Component {
     constructor(props) {
