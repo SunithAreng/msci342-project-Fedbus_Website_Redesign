@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect , useHistory, Link} from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { createTheme, ThemeProvider, styled } from '@material-ui/core/styles';
@@ -18,6 +19,7 @@ import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import { ResultsTable } from './ResultsTable';
 import { DateSelection } from './DateSelection';
+import  Payment  from '../../Khoi/Payment/Payment'
 
 const serverURL = ""; //enable for dev mode
 
@@ -233,7 +235,29 @@ const SearchSchdeule = () => {
                 }
             )
     }
-
+    const [selectionModel, setSelectionModel] = React.useState([]);
+    const [sendFinal, setSendFinal] = React.useState([])
+    const [showConfirmLink, setShowConfirmLink] = React.useState(false)
+    const [showErrorMessage, setShowErrorMessage] = React.useState()
+    const payment = () => {
+        var buy = [...results]
+        var send = []
+        buy.filter(x => {
+            if (x.trip_id == selectionModel) {
+                send.push(x)
+            }
+        })
+        console.log(send);
+        setSendFinal(send);
+        if (send.length > 0){
+            setShowConfirmLink(true)
+        }else{
+            setShowConfirmLink(false)
+            setShowErrorMessage('Please select at least 1 trip')
+        }
+        // return(<Redirect to = {{pathname : '/Payment', state : {send}}} />)
+        
+    }
     return (
         <ThemeProvider theme={lightTheme}>
             <Box
@@ -378,9 +402,27 @@ const SearchSchdeule = () => {
                     </div>
                     <br />
                 </MainGridContainer>
+                <div style={{ marginLeft: '33px' }}>
+                <Button variant="contained" color="secondary" onClick={payment} >
+                    Proceed to payment
+                </Button>
+                {
+                showConfirmLink ? 
+                (<Link to = {{pathname : '/Payment', state : {
+                    stuff : sendFinal
+                }}} style={{ textDecoration: 'none', marginLeft : '10px'}}>
+                    <Button variant="contained" color="secondary">
+                        Click to confirm your selection
+                    </Button>
+                </Link>) : <Typography variant="h6" color="secondary">{showErrorMessage}</Typography>
+                }
+                </div>
                 <ResultsTable
                     results={results}
+                    setSelectionModel={setSelectionModel}
+                    selectionModel={selectionModel}
                 />
+
             </Box>
         </ThemeProvider>
     );
