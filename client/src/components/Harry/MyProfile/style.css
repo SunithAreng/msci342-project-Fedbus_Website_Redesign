@@ -1,0 +1,46 @@
+html,
+
+  body {
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    background: linear-gradient(to bottom, #ffbb00, #ffffff);
+    background-attachment:fixed;
+  }
+
+  .container {
+    background:#ffffff;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    height: 500px;
+    margin: 0 auto;
+    margin-top: 10%;
+    position: relative;
+    
+  }
+
+  .leftbox{  
+float: left;
+top: 0%;
+left: 0%;
+background-color: rgb(255, 213, 0);
+width:20%;
+height:100%;
+position: absolute;
+
+  }
+
+  .btn {
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-transform: uppercase;
+    font-size: 16px;
+    border: 0;
+    color: #000000;
+    background: #ffe100;
+    padding: 6px 19px;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,.2);
+    cursor: pointer;
+    margin-top: 10px;
+  }
