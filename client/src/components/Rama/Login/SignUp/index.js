@@ -46,13 +46,19 @@ class SignUpFormBase extends Component {
         console.log(error.code);
         switch (error.code) {
           case "auth/email-already-in-use":
+            this.setState({ Errorforemail: true });
+            this.setState({ ErrorNote: "Email is already in use" });
+            this.setState({ Errorforpw: false });
+            break;
           case "auth/invalid-email":
             this.setState({ Errorforemail: true });
-            this.setState({ ErrorNote: error.note });
+            this.setState({ ErrorNote: "Invalid Email" });
+            this.setState({ Errorforpw: false });
             break;
           case "auth/weak-password":
             this.setState({ Errorforpw: true });
-            this.setState({ ErrorNote: error.note });
+            this.setState({ ErrorNote: "Weak Password: Must be 6 characters" });
+            this.setState({ Errorforemail: false });
             break;
         }
         console.log(this.state.Errorforemail); //for testing
@@ -67,7 +73,8 @@ class SignUpFormBase extends Component {
   };
 
   render() {
-    const { email, password, error } = this.state;
+    const { email, password } = this.state;
+    console.log(this.state)
     const isInvalid = password === "" || email === "";
 
     return (
@@ -100,6 +107,7 @@ class SignUpFormBase extends Component {
                   autoComplete="email"
                   autoFocus
                   InputLabelProps={{ shrink: true }}
+                  helperText={this.state.Errorforemail ? this.state.ErrorNote : ""}
                 />
                 <TextField
                   variant="outlined"
@@ -114,22 +122,8 @@ class SignUpFormBase extends Component {
                   id="password"
                   autoComplete="current-password"
                   InputLabelProps={{ shrink: true }}
+                  helperText={this.state.Errorforpw ? this.state.ErrorNote : ""}
                 />
-                <React.Fragment>
-                  {this.state.passError ? (
-                    <Typography>{this.state.errorMsg}</Typography>
-                  ) : (
-                    ""
-                  )}
-                </React.Fragment>
-
-                <React.Fragment>
-                  {this.state.emailError ? (
-                    <Typography>{this.state.errorMsg}</Typography>
-                  ) : (
-                    ""
-                  )}
-                </React.Fragment>
                 <Button
                   type="submit"
                   fullWidth

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect , useHistory, Link} from "react-router-dom";
+import { Redirect, useHistory, Link } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { createTheme, ThemeProvider, styled } from '@material-ui/core/styles';
@@ -19,7 +19,6 @@ import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import { ResultsTable } from './ResultsTable';
 import { DateSelection } from './DateSelection';
-import  Payment  from '../../Khoi/Payment/Payment'
 
 const serverURL = ""; //enable for dev mode
 
@@ -249,14 +248,14 @@ const SearchSchdeule = () => {
         })
         console.log(send);
         setSendFinal(send);
-        if (send.length > 0){
+        if (send.length > 0) {
             setShowConfirmLink(true)
-        }else{
+        } else {
             setShowConfirmLink(false)
             setShowErrorMessage('Please select at least 1 trip')
         }
         // return(<Redirect to = {{pathname : '/Payment', state : {send}}} />)
-        
+
     }
     return (
         <ThemeProvider theme={lightTheme}>
@@ -403,19 +402,21 @@ const SearchSchdeule = () => {
                     <br />
                 </MainGridContainer>
                 <div style={{ marginLeft: '33px' }}>
-                <Button variant="contained" color="secondary" onClick={payment} >
-                    Proceed to payment
-                </Button>
-                {
-                showConfirmLink ? 
-                (<Link to = {{pathname : '/Payment', state : {
-                    stuff : sendFinal
-                }}} style={{ textDecoration: 'none', marginLeft : '10px'}}>
-                    <Button variant="contained" color="secondary">
-                        Click to confirm your selection
+                    <Button variant="contained" color="secondary" onClick={payment} >
+                        Proceed to payment
                     </Button>
-                </Link>) : <Typography variant="h6" color="secondary">{showErrorMessage}</Typography>
-                }
+                    {
+                        showConfirmLink ?
+                            (<Link to={{
+                                pathname: '/Payment', state: {
+                                    stuff: sendFinal
+                                }
+                            }} style={{ textDecoration: 'none', marginLeft: '10px' }}>
+                                <Button variant="contained" color="secondary">
+                                    Click to confirm your selection
+                                </Button>
+                            </Link>) : <Typography variant="h6" color="secondary">{showErrorMessage}</Typography>
+                    }
                 </div>
                 <ResultsTable
                     results={results}
