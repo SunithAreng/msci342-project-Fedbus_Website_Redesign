@@ -24,21 +24,21 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(path.join(__dirname, "client/build")));
 
 // comment from here
-// var cors = require('cors');
-// app.use(cors());
+var cors = require('cors');
+app.use(cors());
 
-// app.use(function (req, res, next) {
-// 	res.header('Access-Control-Allow-Origin', '*');
-// 	res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
-// 	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+app.use(function (req, res, next) {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
-// 	if ('OPTIONS' === req.method) {
-// 		res.send(200);
-// 	}
-// 	else {
-// 		next();
-// 	}
-// });
+	if ('OPTIONS' === req.method) {
+		res.send(200);
+	}
+	else {
+		next();
+	}
+});
 
 // upto this point
 
@@ -79,14 +79,37 @@ app.post("/login", (req, res) => {
 		});
 });
 
+app.post('/api/loadUserDetails', auth, (req, res) => {
+
+	let connection = mysql.createConnection(config);
+	let userID = req.body.userID;
+	// console.log(userID);
+
+	let sql = `SELECT * FROM user WHERE uid = (?)`;
+	// console.log(sql);
+	let data = [userID];
+	// console.log(data);
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
 app.post('/api/loadUserSettings', auth, (req, res) => {
 
 	let connection = mysql.createConnection(config);
 	let userID = req.body.userID;
-	console.log(userID);
+	// console.log(userID);
 
 	let sql = `SELECT mode FROM user WHERE userID = 1`;
-	console.log(sql);
+	// console.log(sql);
 	let data = [];
 	//console.log(data);
 
@@ -187,7 +210,7 @@ app.post('/api/search', (req, res) => {
 	});
 });
 
-// app.listen(8081, () => console.log(`Listening on port ${port}`)); //for the dev version
+app.listen(8081, () => console.log(`Listening on port ${port}`)); //for the dev version
 
-app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
+// app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server

@@ -13,9 +13,9 @@ import { createTheme, ThemeProvider, styled } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 
-const serverURL = "";
+// const serverURL = "";
 
-// const serverURL = "http://localhost:8081";
+const serverURL = "http://localhost:8081";
 
 const lightTheme = createTheme({
     palette: {
@@ -49,7 +49,8 @@ class MyProfileBase extends React.Component {
         this.state = {
             token: '',
             userID: '',
-            mode: 0
+            mode: 0,
+            info: []
         };
     }
 
@@ -88,13 +89,16 @@ class MyProfileBase extends React.Component {
             .then(res => {
                 //console.log("loadUserSettings returned: ", res)
                 var parsed = JSON.parse(res.express);
-                console.log("loadUserSettings parsed: ", parsed[0].mode)
-                this.setState({ mode: parsed[0].mode });
+                // console.log("loadUserSettings parsed: ", parsed[0].mode)
+                // this.setState({ mode: parsed[0].mode });
+                // this.setState({ firstName: parsed[0].firstName });
+                // this.setState({ lastName: parsed[0].lastName });
+                this.setState({ info: parsed[0] });
             });
     }
 
     callApiLoadUserSettings = async () => {
-        const url = serverURL + "/api/loadUserSettings";
+        const url = serverURL + "/api/loadUserDetails";
 
         const response = await fetch(url, {
             method: "POST",
@@ -209,17 +213,43 @@ class MyProfileBase extends React.Component {
                             <form>
                                 <h2>Personal Info</h2>
                                 <h3>Full Name</h3>
-                                <TextField variant="outlined" type="text" style={{ width: '250px' }} className="input" defaultValue="Harry Yao" />
+                                <TextField
+                                    variant="outlined"
+                                    type="text"
+                                    style={{ width: '250px' }}
+                                    className="input"
+                                    value={this.state.info.firstName + " " + this.state.info.lastName} />
                                 <h3>Birthday</h3>
-                                <TextField variant="outlined" type="text" style={{ width: '250px' }} className="input" defaultValue="January 1, 2000" />
-                                <h3>Gender</h3>
-                                <TextField variant="outlined" type="text" style={{ width: '250px' }} className="input" defaultValue="Male" />
+                                <TextField variant="outlined"
+                                    type="text"
+                                    style={{ width: '250px' }}
+                                    className="input"
+                                    value={this.state.info.dateOfBirth} />
+                                <h3>Phone</h3>
+                                <TextField
+                                    variant="outlined"
+                                    type="number"
+                                    style={{ width: '250px' }}
+                                    className="input"
+                                    value={this.state.info.phone} />
                                 <h3>Email</h3>
-                                <TextField variant="outlined" type="text" style={{ width: '250px' }} className="input" defaultValue="example@example.com" />
+                                <TextField
+                                    variant="outlined"
+                                    type="text"
+                                    style={{ width: '250px' }}
+                                    className="input"
+                                    value={this.state.info.email} />
                                 <h3>Password</h3>
-                                <TextField variant="outlined" type="password" style={{ width: '250px' }} className="input" defaultValue="brightcode" />
+                                <TextField
+                                    variant="outlined"
+                                    type="password"
+                                    style={{ width: '250px' }}
+                                    className="input"
+                                    defaultValue="brightcode" />
                                 <br /><br />
-                                <Button variant="contained" color="secondary">Update Personal Info</Button>
+                                <Button variant="contained" color="secondary">
+                                    Update Personal Info
+                                </Button>
                                 <br /><br />
                                 <hr style={{ backgroundColor: 'black', height: '3px', border: '0px' }} />
                             </form>
@@ -228,13 +258,30 @@ class MyProfileBase extends React.Component {
                             <form>
                                 <h2>Payment Info</h2>
                                 <h3>Payment Method</h3>
-                                <TextField variant="outlined" type="text" style={{ width: '250px' }} className="input" defaultValue="Visa - 0919 **** **** 1413" />
+                                <TextField
+                                    variant="outlined"
+                                    type="text"
+                                    style={{ width: '250px' }}
+                                    className="input"
+                                    defaultValue="Visa - 0919 **** **** 1413" />
                                 <h3>Billing Address</h3>
-                                <TextField variant="outlined" type="text" style={{ width: '250px' }} className="input" defaultValue="XXX St, Waterloo, ON" />
+                                <TextField
+                                    variant="outlined"
+                                    type="text"
+                                    style={{ width: '250px' }}
+                                    className="input"
+                                    defaultValue="XXX St, Waterloo, ON" />
                                 <h3>Postal Code</h3>
-                                <TextField variant="outlined" type="text" style={{ width: '250px' }} className="input" defaultValue="N2L XXX" />
+                                <TextField
+                                    variant="outlined"
+                                    type="text"
+                                    style={{ width: '250px' }}
+                                    className="input"
+                                    defaultValue="N2L XXX" />
                                 <br /><br />
-                                <Button variant="contained" color="secondary">Update Payment Method</Button>
+                                <Button variant="contained" color="secondary">
+                                    Update Payment Method
+                                </Button>
                                 <br /><br />
                                 <hr style={{ backgroundColor: 'black', height: '3px', border: '0px' }} />
                             </form>

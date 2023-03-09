@@ -21,9 +21,9 @@ import { ResultsTable } from './ResultsTable';
 import { DateSelection } from './DateSelection';
 import { StopSelection } from './StopSelection';
 
-const serverURL = ""; //enable for dev mode
+// const serverURL = ""; //enable for dev mode
 
-// const serverURL = "http://localhost:8081";
+const serverURL = "http://localhost:8081";
 
 const opacityValue = 0.9;
 
