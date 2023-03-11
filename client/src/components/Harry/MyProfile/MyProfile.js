@@ -50,13 +50,18 @@ class MyProfileBase extends React.Component {
             token: '',
             userID: '',
             mode: 0,
-            info: []
+            firstName: '',
+            lastName: '',
+            phone: 0,
+            email: '',
+            pw: ''
         };
     }
 
     async componentDidMount() {
         if (this.props.authUser.uid !== null) {
             this.setState({ userID: this.props.authUser.uid });
+            // this.setState({ pw: this.props.authUser.password });
             await this.getToken();
             this.loadUserSettings();
         }
@@ -83,17 +88,14 @@ class MyProfileBase extends React.Component {
     };
 
     loadUserSettings() {
-        console.log("called load user settings");
-
         this.callApiLoadUserSettings()
             .then(res => {
-                //console.log("loadUserSettings returned: ", res)
                 var parsed = JSON.parse(res.express);
-                // console.log("loadUserSettings parsed: ", parsed[0].mode)
-                // this.setState({ mode: parsed[0].mode });
-                // this.setState({ firstName: parsed[0].firstName });
-                // this.setState({ lastName: parsed[0].lastName });
-                this.setState({ info: parsed[0] });
+                this.setState({ mode: parsed[0].mode });
+                this.setState({ firstName: parsed[0].firstName });
+                this.setState({ lastName: parsed[0].lastName });
+                this.setState({ email: parsed[0].email });
+                this.setState({ phone: parsed[0].phone });
             });
     }
 
@@ -106,9 +108,7 @@ class MyProfileBase extends React.Component {
                 "Content-Type": "application/json",
                 authorization: `Bearer ${this.state.token}`
             },
-            body: JSON.stringify({
-                userID: this.state.userID
-            })
+            body: JSON.stringify(this.state)
         });
         const body = await response.json();
         if (response.status !== 200) throw Error(body.message);
@@ -121,6 +121,32 @@ class MyProfileBase extends React.Component {
         this.props.firebase.doSignOut();
         this.props.history.push("/");
     }
+
+
+    changeFname = (event) => this.setState({ firstName: event.target.value })
+    changeLname = (event) => this.setState({ lastName: event.target.value })
+    changePhone = (event) => {
+        if (event.target.value.toString().length <= 10) {
+            this.setState({ phone: event.target.value })
+        }
+    }
+
+    // onSubmit = () => {
+    //     const callApiUpdateUser = () => {
+    //         const url = serverURL + "/api/updateUser";
+
+    //         const response = fetch(url, {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 // authorization: `Bearer ${this.state.token}`
+    //             },
+    //             body: JSON.stringify(this.state)
+    //         });
+    //     }
+    //     callApiUpdateUser();
+    //     console.log("success")
+    // }
 
     render() {
         return (
@@ -210,49 +236,54 @@ class MyProfileBase extends React.Component {
                         overflow="scroll"
                     >
                         <div className="Personal Info">
-                            <form>
-                                <h2>Personal Info</h2>
-                                <h3>Full Name</h3>
-                                <TextField
-                                    variant="outlined"
-                                    type="text"
-                                    style={{ width: '250px' }}
-                                    className="input"
-                                    value={this.state.info.firstName + " " + this.state.info.lastName} />
-                                <h3>Birthday</h3>
-                                <TextField variant="outlined"
-                                    type="text"
-                                    style={{ width: '250px' }}
-                                    className="input"
-                                    value={this.state.info.dateOfBirth} />
-                                <h3>Phone</h3>
-                                <TextField
-                                    variant="outlined"
-                                    type="number"
-                                    style={{ width: '250px' }}
-                                    className="input"
-                                    value={this.state.info.phone} />
-                                <h3>Email</h3>
-                                <TextField
-                                    variant="outlined"
-                                    type="text"
-                                    style={{ width: '250px' }}
-                                    className="input"
-                                    value={this.state.info.email} />
-                                <h3>Password</h3>
-                                <TextField
-                                    variant="outlined"
-                                    type="password"
-                                    style={{ width: '250px' }}
-                                    className="input"
-                                    defaultValue="brightcode" />
-                                <br /><br />
-                                <Button variant="contained" color="secondary">
-                                    Update Personal Info
-                                </Button>
-                                <br /><br />
-                                <hr style={{ backgroundColor: 'black', height: '3px', border: '0px' }} />
-                            </form>
+                            <h2>Personal Info</h2>
+                            <h3>First Name</h3>
+                            <TextField
+                                variant="outlined"
+                                type="text"
+                                style={{ width: '250px' }}
+                                className="input"
+                                value={this.state.firstName}
+                                onChange={this.changeFname} />
+                            <h3>Last Name</h3>
+                            <TextField
+                                variant="outlined"
+                                type="text"
+                                style={{ width: '250px' }}
+                                className="input"
+                                value={this.state.lastName}
+                                onChange={this.changeLname} />
+                            <h3>Phone</h3>
+                            <TextField
+                                variant="outlined"
+                                type="number"
+                                style={{ width: '250px' }}
+                                className="input"
+                                value={this.state.phone}
+                                onChange={this.changePhone} />
+                            <br />
+                            <br />
+                            <Button variant="contained" color="secondary">
+                                Update Personal Info
+                            </Button>
+                            <h3>Email</h3>
+                            <TextField
+                                variant="outlined"
+                                type="text"
+                                style={{ width: '250px' }}
+                                className="input"
+                                value={this.state.email}
+                            />
+                            <h3>Password</h3>
+                            <TextField
+                                variant="outlined"
+                                type="password"
+                                style={{ width: '250px' }}
+                                className="input"
+                                defaultValue="brightcode" />
+                            <br /> <br />
+                            <hr style={{ backgroundColor: 'black', height: '3px', border: '0px' }} />
+
                         </div>
                         <div className="Payment Method">
                             <form>

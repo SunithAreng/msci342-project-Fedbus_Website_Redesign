@@ -68,7 +68,6 @@ app.post("/login", (req, res) => {
 			const token = jwt.sign({ userID: uid, sub: uid }, process.env.JWT_KEY, {
 				expiresIn: 86400 // expires in 24 hours
 			});
-			//console.log(token);
 			res.status(200).send({ auth: true, token: token });
 
 		})
@@ -83,12 +82,9 @@ app.post('/api/loadUserDetails', auth, (req, res) => {
 
 	let connection = mysql.createConnection(config);
 	let userID = req.body.userID;
-	// console.log(userID);
 
 	let sql = `SELECT * FROM user WHERE uid = (?)`;
-	// console.log(sql);
 	let data = [userID];
-	// console.log(data);
 
 	connection.query(sql, data, (error, results, fields) => {
 		if (error) {
@@ -97,6 +93,51 @@ app.post('/api/loadUserDetails', auth, (req, res) => {
 
 		let string = JSON.stringify(results);
 		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
+app.post('/api/addNewUser', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+	let userID = req.body.user;
+	let email = req.body.email;
+
+	let sql = `INSERT INTO user (email, UID) VALUES (?,?)`;
+	let data = [email, userID];
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
+app.post('/api/updateUser', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+	let userID = req.body.userID;
+	let firstName = req.body.firstName;
+	let lastName = req.body.lastName;
+	let phone = req.body.phone;
+	// console.log(firstName);
+
+	let sql = `UPDATE user SET firstName = (?), lastName = (?), phone = (?) WHERE UID = (?)`;
+	let data = [firstName, lastName, phone, userID];
+	// console.log(sql);
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
 		res.send({ express: string });
 	});
 	connection.end();
