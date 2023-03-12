@@ -14,6 +14,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import { Typography } from '@material-ui/core';
 
 const serverURL = "";
 
@@ -60,8 +61,17 @@ class MyProfileBase extends React.Component {
             lastName: '',
             phone: null,
             email: '',
+            newEmail: '',
             admin: 0,
-            open: false
+            open: false,
+            currentPassword: '',
+            newPassword: '',
+            errAuth: false,
+            passwordChanged: false,
+            errPw: false,
+            emailChanged: false,
+            errEmail: false,
+            errMsg: ''
         };
         this.onSubmit = this.onSubmit.bind(this);
     }
@@ -163,6 +173,54 @@ class MyProfileBase extends React.Component {
         }
         this.setState({ open: false });
     };
+
+    onChangeNewPw = (event) => this.setState({ newPassword: event.target.value });
+    onChangeCurrPw = (event) => this.setState({ currentPassword: event.target.value });
+    onChangeNewEmail = (event) => this.setState({ newEmail: event.target.value })
+
+    changePassword = () => {
+        this.props.firebase.doReAuthenticateUser(this.state.currentPassword).then((data) => {
+            this.props.firebase.doPasswordUpdate(this.state.newPassword).then(() => {
+                console.log("success")
+                this.setState({ passwordChanged: true });
+            }).catch((error) => {
+                console.log("Unsucessful to change pw")
+                this.setState({ errMsg: error.message })
+            })
+        }).catch((error) => {
+            this.setState({ errMsg: error.message })
+            this.setState({ errAuth: true })
+        });
+    }
+
+    changeEmail = () => {
+        this.props.firebase.doReAuthenticateUser(this.state.currentPassword).then(() => {
+            this.props.firebase.doEmailUpdate(this.state.newEmail).then(() => {
+                const callApiUpdateUserEmail = () => {
+                    const url = serverURL + "/api/updateEmail";
+
+                    fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            // authorization: `Bearer ${this.state.token}`
+                        },
+                        body: JSON.stringify({
+                            userID: this.state.userID,
+                            newEmail: this.state.newEmail
+                        })
+                    });
+                }
+                callApiUpdateUserEmail();
+                this.setState({ emailChanged: true });
+            }).catch((error) => {
+                this.setState({ errMsg: error.message })
+            })
+        }).catch((error) => {
+            this.setState({ errMsg: error.message })
+            this.setState({ errAuth: true })
+        });
+    }
 
     render() {
         return (
@@ -286,8 +344,7 @@ class MyProfileBase extends React.Component {
                                 className="input"
                                 value={this.state.phone}
                                 onChange={this.changePhone} />
-                            <br />
-                            <br />
+                            <br /><br />
                             <Button variant="contained" color="secondary" onClick={this.onSubmit}>
                                 Update Personal Info
                             </Button>
@@ -299,21 +356,57 @@ class MyProfileBase extends React.Component {
                             <h3>Email</h3>
                             <TextField
                                 variant="outlined"
+                                placeholder='Current Email'
                                 type="text"
                                 style={{ width: '250px' }}
                                 className="input"
                                 value={this.state.email}
                             />
+                            <br /> <br />
+                            <TextField
+                                variant="outlined"
+                                placeholder='New Email'
+                                type="text"
+                                style={{ width: '250px' }}
+                                className="input"
+                                value={this.state.newEmail}
+                            />
+                            <br /><br />
+                            <Button variant="contained" color="secondary" >
+                                Update Email
+                            </Button>
                             <h3>Password</h3>
                             <TextField
                                 variant="outlined"
                                 type="password"
+                                placeholder='Current Password'
                                 style={{ width: '250px' }}
                                 className="input"
-                                defaultValue="brightcode" />
+                                value={this.state.currentPassword}
+                                onChange={this.onChangeCurrPw}
+                            />
+                            <br /> <br />
+                            <TextField
+                                variant="outlined"
+                                type="password"
+                                placeholder='New Password'
+                                style={{ width: '250px' }}
+                                className="input"
+                                value={this.state.newPassword}
+                                onChange={this.onChangeNewPw}
+                            />
+                            <br /><br />
+                            <Button variant="contained" color="secondary" onClick={this.changePassword.bind(this)}>
+                                Update Password
+                            </Button>
+                            {this.state.passwordChanged ? "" : <Typography variant="h6" color="secondary">{this.state.errMsg}</Typography>}
+                            <Snackbar open={this.state.passwordChanged} autoHideDuration={6000} onClose={this.handleClose}>
+                                <Alert onClose={this.handleClose} severity="success">
+                                    Your password has been changed!
+                                </Alert>
+                            </Snackbar>
                             <br /> <br />
                             <hr style={{ backgroundColor: 'black', height: '3px', border: '0px' }} />
-
                         </div>
                         <div className="Payment Method">
                             <form>

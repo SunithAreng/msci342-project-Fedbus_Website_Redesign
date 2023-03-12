@@ -34,8 +34,11 @@ class Firebase {
   doEmailUpdate = (email) =>
     this.auth.currentUser.updateEmail(email);
 
-  doReAuthenticateUser = (email, password) =>
-    this.auth.currentUser.reauthenticateWithCredential(email, password);
+  doReAuthenticateUser = (password) => {
+    var user = this.auth.currentUser;
+    var cred = app.auth.EmailAuthProvider.credential(user.email, password)
+    return this.auth.currentUser.reauthenticateWithCredential(cred);
+  }
 
   doGetIdToken = (bool) => {
     return this.auth.currentUser.getIdToken(/* forceRefresh */ bool);

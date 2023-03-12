@@ -143,6 +143,28 @@ app.post('/api/updateUser', (req, res) => {
 	connection.end();
 });
 
+app.post('/api/updateEmail', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+	let userID = req.body.userID;
+	let email = req.body.newEmail;
+	// console.log(firstName);
+
+	let sql = `UPDATE user SET email = (?) WHERE UID = (?)`;
+	let data = [email, userID];
+	// console.log(sql);
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
 app.post('/api/loadUserSettings', auth, (req, res) => {
 
 	let connection = mysql.createConnection(config);
