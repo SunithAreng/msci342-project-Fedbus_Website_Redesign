@@ -142,7 +142,7 @@ class MyProfileBase extends React.Component {
         const callApiUpdateUser = () => {
             const url = serverURL + "/api/updateUser";
 
-            const response = fetch(url, {
+            fetch(url, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

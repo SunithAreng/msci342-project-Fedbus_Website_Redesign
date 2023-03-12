@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, useHistory, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { createTheme, ThemeProvider, styled } from '@material-ui/core/styles';
@@ -8,18 +8,15 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import Box from "@material-ui/core/Box";
-import { MenuItem } from '@material-ui/core';
-import Select from '@material-ui/core/Select';
 import history from '../../Navigation/history';
 import AppBar from '@material-ui/core/AppBar';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import { ResultsTable } from './ResultsTable';
 import { DateSelection } from './DateSelection';
-import { StopSelection } from './StopSelection';
+import { Selection } from './Selection';
 
 const serverURL = ""; //enable for dev mode
 
@@ -181,7 +178,7 @@ const SearchSchdeule = () => {
     };
 
     var today = new Date(),
-        t = today.getHours() + 1 + ':00:00';
+        t = (today.getHours() + 1).toString().padStart(2, '0') + ':00:00';
 
     var x = (today.getHours() + 1) * 4;
 
@@ -337,34 +334,34 @@ const SearchSchdeule = () => {
                         Get Schedule
                     </Typography>
                     <Grid container>
-                        <StopSelection
+                        <Selection
                             handleChange={handleOriginChange}
                             classes={classes}
-                            stopName={originName}
+                            elementName={originName}
                             label={"Origin"}
                             idlabel={"origin-list"}
-                            stations={stations}
+                            objectList={stations}
                         />
-                        <StopSelection
+                        <Selection
                             handleChange={handleDestinationChange}
                             classes={classes}
-                            stopName={destinationName}
+                            elementName={destinationName}
                             label={"Destination"}
                             idlabel={"destination-list"}
-                            stations={stations}
+                            objectList={stations}
                         />
                         <TimePrefernce
                             classes={classes}
                             spacing={value}
                             handleChange={handleChange}
                         />
-                        <TimeSelection
+                        <Selection
                             handleChange={handleTimeChange}
                             classes={classes}
-                            time={time}
+                            elementName={time}
                             label={"What time?"}
                             idlabel={"times-list"}
-                            timesList={timesList}
+                            objectList={timesList}
                         />
                         <br />
                     </Grid>
@@ -458,31 +455,6 @@ const TripPreference = ({ classes, spacing, handleChange }) => {
                 </Grid>
             </FormControl>
 
-        </>
-    )
-}
-
-const TimeSelection = ({ timesList, handleChange, classes, time, label, idlabel }) => {
-    return (
-        <>
-            <FormControl variant='outlined' className={classes.formControl}>
-                <InputLabel id={idlabel}>{label}</InputLabel>
-                <Select
-                    required
-                    labelId={idlabel}
-                    id={idlabel}
-                    value={time}
-                >
-                    {timesList.map((timeSlot) => {
-                        return (
-                            <MenuItem key={timeSlot.id} value={timeSlot.time} onClick={() => handleChange(timeSlot)}>
-                                {timeSlot.time}
-                            </MenuItem>
-                        )
-                    }
-                    )}
-                </Select>
-            </FormControl>
         </>
     )
 }
