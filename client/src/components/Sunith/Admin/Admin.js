@@ -12,7 +12,16 @@ const Admin = (props) => {
                 variant="contained" color="primary"
                 sx={{ my: 2, display: 'block' }}>Go Back</Button>
             <h1>Hello World!</h1>
-            <p>Welcome to the Admin page.</p>
+            <p>
+                Welcome to the Admin page.
+                <br /> <br />
+                Here are the following functionalities: <br />
+                1. Add new route <br />
+                2. Delete existing routes <br />
+                3. Add new stations <br />
+                4. Add Announcements
+            </p>
+
         </div>
     );
 }
