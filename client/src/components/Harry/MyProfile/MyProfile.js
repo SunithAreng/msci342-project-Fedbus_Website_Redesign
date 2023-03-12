@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withFirebase } from '../../Firebase';
 import AppBar from '@material-ui/core/AppBar';
@@ -58,8 +58,9 @@ class MyProfileBase extends React.Component {
             mode: 0,
             firstName: '',
             lastName: '',
-            phone: 0,
+            phone: null,
             email: '',
+            admin: 0,
             open: false
         };
         this.onSubmit = this.onSubmit.bind(this);
@@ -103,6 +104,7 @@ class MyProfileBase extends React.Component {
                 this.setState({ lastName: parsed[0].lastName });
                 this.setState({ email: parsed[0].email });
                 this.setState({ phone: parsed[0].phone });
+                this.setState({ admin: parsed[0].admin });
             });
     }
 
@@ -238,6 +240,16 @@ class MyProfileBase extends React.Component {
                     <br />
                     <img src={logo} alt="" />
                     <br /><br />
+                    {this.state.admin == 1 ?
+                        (<Link to={{
+                            pathname: '/Admin', state: {
+                                stuff: this.state.admin
+                            }
+                        }} style={{ textDecoration: 'none', marginLeft: '10px' }}>
+                            <Button variant="contained" color="secondary">
+                                Admin
+                            </Button> <br /><br />
+                        </Link>) : ""}
                     <hr style={{ backgroundColor: 'black', height: '4px', border: '0px' }} />
                     <MainGridContainer
                         container

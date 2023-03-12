@@ -10,6 +10,7 @@ import FAQ from '../Rama/FAQ/FAQ';
 import Location from '../Harry/Location/Location';
 import SignInForm from '../Rama/Login/SignIn';
 import SignUpForm from '../Rama/Login/SignUp';
+import Admin from "../Sunith/Admin/Admin";
 
 export default function PrivateRoute({
   authenticated,
@@ -32,6 +33,9 @@ export default function PrivateRoute({
         <Route path="/Payment" exact component={Payment} />
         <Route path="/FAQ" exact component={FAQ} />
         <Route path="/Location" exact component={Location} />
+        <Route path="/Admin" exact {...rest}
+          render={props => authenticated === true ?
+            (<Admin {...props} {...rest} />) : ""} />
       </Switch>
     </Router>
   );
