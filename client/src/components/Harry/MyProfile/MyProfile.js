@@ -12,6 +12,8 @@ import Box from "@material-ui/core/Box";
 import { createTheme, ThemeProvider, styled } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const serverURL = "";
 
@@ -43,6 +45,10 @@ const MainGridContainer = styled(Grid)(({ theme }) => ({
 
 const opacityValue = 0.9;
 
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 class MyProfileBase extends React.Component {
     constructor(props) {
         super(props);
@@ -54,8 +60,9 @@ class MyProfileBase extends React.Component {
             lastName: '',
             phone: 0,
             email: '',
-            pw: ''
+            open: false
         };
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     async componentDidMount() {
@@ -131,22 +138,29 @@ class MyProfileBase extends React.Component {
         }
     }
 
-    // onSubmit = () => {
-    //     const callApiUpdateUser = () => {
-    //         const url = serverURL + "/api/updateUser";
+    onSubmit = () => {
+        const callApiUpdateUser = () => {
+            const url = serverURL + "/api/updateUser";
 
-    //         const response = fetch(url, {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //                 // authorization: `Bearer ${this.state.token}`
-    //             },
-    //             body: JSON.stringify(this.state)
-    //         });
-    //     }
-    //     callApiUpdateUser();
-    //     console.log("success")
-    // }
+            const response = fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    // authorization: `Bearer ${this.state.token}`
+                },
+                body: JSON.stringify(this.state)
+            });
+        }
+        callApiUpdateUser();
+        this.setState({ open: true })
+    }
+
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({ open: false });
+    };
 
     render() {
         return (
@@ -156,7 +170,6 @@ class MyProfileBase extends React.Component {
                         height: '100vh',
                         opacity: opacityValue,
                         overflow: 'scroll',
-                        // backgroundImage: `url(https://images.unsplash.com/photo-1638722712332-731b0e338e18?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80)`,
                         backgroundSize: "cover"
                     }}
                 >
@@ -263,9 +276,14 @@ class MyProfileBase extends React.Component {
                                 onChange={this.changePhone} />
                             <br />
                             <br />
-                            <Button variant="contained" color="secondary">
+                            <Button variant="contained" color="secondary" onClick={this.onSubmit}>
                                 Update Personal Info
                             </Button>
+                            <Snackbar open={this.state.open} autoHideDuration={6000} onClose={this.handleClose}>
+                                <Alert onClose={this.handleClose} severity="success">
+                                    Your changes have been saved!
+                                </Alert>
+                            </Snackbar>
                             <h3>Email</h3>
                             <TextField
                                 variant="outlined"
