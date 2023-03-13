@@ -8,6 +8,11 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
+
+const serverURL = "";
+
+// const serverURL = "http://localhost:8081";
+
 const INITIAL_STATE = {
   email: "",
   password: "",
@@ -33,14 +38,37 @@ class SignUpFormBase extends Component {
     //
   }
 
+  callApiInsertNewUser = async (userID, email) => {
+    const url = serverURL + "/api/addNewuser";
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        user: userID,
+        email: email
+      })
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    console.log("User settings: ", body);
+    return body;
+  }
+
   onSubmit = (event) => {
     const { email, password } = this.state;
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, password)
-      .then(() => {
+      .then((userCredential) => {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push("/MyProfile");
+        var user = userCredential.user.uid;
+        console.log(user);
+        this.callApiInsertNewUser(user, email);
       })
       .catch((error) => {
         console.log(error.code);

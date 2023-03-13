@@ -1,7 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom'
 import { render, screen, fireEvent } from "@testing-library/react";
-import { StopSelection } from './StopSelection';
+import { Selection } from './Selection';
 
 it("displays the stop", () => {
     const handleOriginChange = jest.fn();
@@ -15,8 +15,8 @@ it("displays the stop", () => {
         station_name: 'Toronto'
     }]
 
-    render(<StopSelection handleChange={handleOriginChange} classes={noop} stopName={x} label={"Origin"} idlabel={"origin-list"}
-        stations={s} />)
+    render(<Selection handleChange={handleOriginChange} classes={noop} elementName={x} label={"Origin"} idlabel={"origin-list"}
+        objectList={s} />)
     expect(screen.getByRole('button', { id: 1, station_name: 'Waterloo' }));
     expect(screen.getByRole('button', { id: 2, station_name: 'Toronto' }));
 

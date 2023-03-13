@@ -26,10 +26,19 @@ class Firebase {
 
   doSignOut = () => this.auth.signOut();
 
-  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+  doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
 
-  doPasswordUpdate = password =>
+  doPasswordUpdate = (password) =>
     this.auth.currentUser.updatePassword(password);
+
+  doEmailUpdate = (email) =>
+    this.auth.currentUser.updateEmail(email);
+
+  doReAuthenticateUser = (password) => {
+    var user = this.auth.currentUser;
+    var cred = app.auth.EmailAuthProvider.credential(user.email, password)
+    return this.auth.currentUser.reauthenticateWithCredential(cred);
+  }
 
   doGetIdToken = (bool) => {
     return this.auth.currentUser.getIdToken(/* forceRefresh */ bool);

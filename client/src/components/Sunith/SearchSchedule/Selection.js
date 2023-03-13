@@ -4,7 +4,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { MenuItem } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 
-export const StopSelection = ({ stations, handleChange, classes, stopName, label, idlabel }) => {
+export const Selection = ({ objectList, handleChange, classes, elementName, label, idlabel }) => {
     return (
         <>
             <FormControl variant='outlined' className={classes.formControl}>
@@ -13,12 +13,14 @@ export const StopSelection = ({ stations, handleChange, classes, stopName, label
                     required
                     labelId={idlabel}
                     id={idlabel}
-                    value={stopName}
+                    value={elementName}
                 >
-                    {stations.map((stop) => {
+                    {objectList.map((stop) => {
+                        const elements = Object.values(stop);
+                        // console.log(elements);
                         return (
-                            <MenuItem key={stop.id} value={stop.station_name} onClick={() => handleChange(stop)}>
-                                {stop.station_name}
+                            <MenuItem key={elements[0]} value={elements[1]} onClick={() => handleChange(stop)}>
+                                {elements[1]}
                             </MenuItem>
                         )
                     }
