@@ -16,10 +16,8 @@ import { Selection } from './Selection';
 import { Preference } from './Preference';
 import { Stations } from './Stations';
 import { Timings } from './Timings';
+import { useSelector } from 'react-redux';
 
-const serverURL = ""; //enable for dev mode
-
-// const serverURL = "http://localhost:8081";
 
 const opacityValue = 0.9;
 
@@ -91,6 +89,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SearchSchdeule = () => {
+
+    const serverURL = useSelector((state) => state.serverURL.value);
 
     const classes = useStyles();
 

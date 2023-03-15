@@ -1,10 +1,9 @@
 import React from 'react';
-
-const serverURL = ""; //enable for dev mode
-
-// const serverURL = "http://localhost:8081";
+import { useSelector } from 'react-redux';
 
 export const Stations = () => {
+
+    const serverURL = useSelector((state) => state.serverURL.value);
 
     React.useEffect(() => {
         getOrigin();
