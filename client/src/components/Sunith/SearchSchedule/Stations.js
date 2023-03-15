@@ -1,8 +1,8 @@
 import React from 'react';
 
-// const serverURL = ""; //enable for dev mode
+const serverURL = ""; //enable for dev mode
 
-const serverURL = "http://localhost:8081";
+// const serverURL = "http://localhost:8081";
 
 export const Stations = () => {
 
