@@ -9,9 +9,9 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
 
-const serverURL = "";
+// const serverURL = "";
 
-// const serverURL = "http://localhost:8081";
+const serverURL = "http://localhost:8081";
 
 const INITIAL_STATE = {
   email: "",
@@ -102,7 +102,6 @@ class SignUpFormBase extends Component {
 
   render() {
     const { email, password } = this.state;
-    console.log(this.state)
     const isInvalid = password === "" || email === "";
 
     return (

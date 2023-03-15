@@ -8,6 +8,7 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import history from '../../../Navigation/history';
 
 
 const INITIAL_STATE = {
@@ -175,6 +176,11 @@ class SignInFormBase extends Component {
                   Sign In
                 </Button>
               </form>
+              <Typography>Don't have an account? 
+                <Link key='9'
+                  onClick={() => history.push('/SignUp')}>Sign Up
+                </Link>
+              </Typography>
             </Container>
           </Grid>
         </Grid>
