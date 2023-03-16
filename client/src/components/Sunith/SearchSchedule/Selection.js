@@ -1,8 +1,5 @@
 import React from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import { MenuItem } from '@material-ui/core';
-import Select from '@material-ui/core/Select';
+import { MenuItem, FormControl, InputLabel, Select } from '@material-ui/core';
 
 export const Selection = ({ objectList, handleChange, classes, elementName, label, idlabel }) => {
     return (
@@ -17,7 +14,6 @@ export const Selection = ({ objectList, handleChange, classes, elementName, labe
                 >
                     {objectList.map((stop) => {
                         const elements = Object.values(stop);
-                        // console.log(elements);
                         return (
                             <MenuItem key={elements[0]} value={elements[1]} onClick={() => handleChange(stop)}>
                                 {elements[1]}

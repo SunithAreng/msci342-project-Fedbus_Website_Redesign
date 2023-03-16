@@ -2,22 +2,12 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withFirebase } from '../../Firebase';
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import Toolbar from '@material-ui/core/Toolbar';
+import { AppBar, Button, Container, Toolbar, Box, TextField, Snackbar, Grid } from '@material-ui/core';
 import history from '../../Navigation/history';
 import logo from './logo.png';
-import Box from "@material-ui/core/Box";
 import { createTheme, ThemeProvider, styled } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-
-const serverURL = "";
-
-// const serverURL = "http://localhost:8081";
+import { connect } from "react-redux";
 
 const lightTheme = createTheme({
     palette: {
@@ -49,6 +39,13 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
+function mapStateToProps(state) {
+    const serverURL = state.serverURL.value;
+    return {
+        serverURL
+    };
+}
+
 class MyProfileBase extends React.Component {
     constructor(props) {
         super(props);
@@ -75,6 +72,7 @@ class MyProfileBase extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
+
     async componentDidMount() {
         if (this.props.authUser.uid !== null) {
             this.setState({ userID: this.props.authUser.uid });
@@ -85,6 +83,7 @@ class MyProfileBase extends React.Component {
     }
 
     getToken = async () => {
+        var serverURL = this.props.serverURL;
         const url = serverURL + "/login";
         await this.props.firebase.doGetIdToken(true).then(async idToken => {
             const response = await fetch(url, {
@@ -118,6 +117,7 @@ class MyProfileBase extends React.Component {
     }
 
     callApiLoadUserSettings = async () => {
+        var serverURL = this.props.serverURL;
         const url = serverURL + "/api/loadUserDetails";
 
         const response = await fetch(url, {
@@ -151,6 +151,7 @@ class MyProfileBase extends React.Component {
 
     onSubmit = () => {
         const callApiUpdateUser = () => {
+            var serverURL = this.props.serverURL;
             const url = serverURL + "/api/updateUser";
 
             fetch(url, {
@@ -206,6 +207,7 @@ class MyProfileBase extends React.Component {
         this.props.firebase.doReAuthenticateUser(this.state.currentPassword).then(() => {
             this.props.firebase.doEmailUpdate(this.state.newEmail).then(() => {
                 const callApiUpdateUserEmail = () => {
+                    var serverURL = this.props.serverURL;
                     const url = serverURL + "/api/updateEmail";
                     fetch(url, {
                         method: "POST",
@@ -501,11 +503,9 @@ class MyProfileBase extends React.Component {
     }
 }
 
-
-
 const MyProfile = compose(
     withRouter,
     withFirebase,
 )(MyProfileBase);
 
-export default MyProfile;
+export default connect(mapStateToProps)(MyProfile);
