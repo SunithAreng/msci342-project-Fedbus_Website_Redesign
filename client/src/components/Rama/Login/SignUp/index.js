@@ -7,16 +7,20 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-
-const serverURL = "";
-
-// const serverURL = "http://localhost:8081";
+import { connect } from "react-redux";
 
 const INITIAL_STATE = {
   email: "",
   password: "",
   error: null,
 };
+
+function mapStateToProps(state) {
+  const serverURL = state.serverURL.value;
+  return {
+    serverURL
+  };
+}
 
 class SignUpFormBase extends Component {
   constructor(props) {
@@ -38,6 +42,7 @@ class SignUpFormBase extends Component {
   }
 
   callApiInsertNewUser = async (userID, email) => {
+    var serverURL = this.props.serverURL;
     const url = serverURL + "/api/addNewuser";
 
     const response = await fetch(url, {
@@ -169,4 +174,4 @@ class SignUpFormBase extends Component {
 
 const SignUpForm = compose(withRouter, withFirebase)(SignUpFormBase);
 
-export default SignUpForm;
+export default connect(mapStateToProps)(SignUpForm);
