@@ -237,26 +237,26 @@ app.post('/api/search', (req, res) => {
 
 	// console.log(val)
 
-	let sql = `SELECT trip_id, origin, destination,departure_time,arrival_time, TIMEDIFF(arrival_time, departure_time) AS duration,
-	DATE_FORMAT(d.trip_date, '%Y-%m-%d') as trip_date, price, seats
-	From 
-	(SELECT a.station_name as origin, price, b.station_name as destination, (select time from sareng.timings where id=c.depart) as departure_time,
-	(select time from sareng.timings where id =c.arrive) as arrival_time, c.id FROM 
-	(select station_name, id from sareng.stations where id = ?) as a,
-	(select station_name, id from sareng.stations where id = ?) as b,
-	sareng.fedbus as c
-	where origin = a.id and destination=b.id `;
+	let sql = `SELECT trip_id, origin, destination, departure_time, arrival_time, 
+	TIMEDIFF(arrival_time, departure_time) AS duration, DATE_FORMAT(d.trip_date, '%Y-%m-%d') AS trip_date, price, seats
+	FROM (SELECT a.station_name AS origin, b.station_name AS destination, c.price, c.id 
+		FROM (SELECT station_name, id FROM sareng.stations WHERE id = ?) AS a, 
+		(SELECT station_name, id FROM sareng.stations WHERE id = ?) AS b, sareng.routes AS c 
+		WHERE origin = a.id AND destination = b.id) aa 
+		INNER JOIN (SELECT a.trip_id, a.seats, a.trip_date, a.bus_id, 
+			(SELECT time FROM sareng.timings WHERE id = a.depart_time) AS departure_time, 
+			(SELECT time FROM sareng.timings WHERE id = a.arrival_time) AS arrival_time 
+			FROM sareng.trips a WHERE trip_date = (?)`;
 
 	if (val == '1') {
-		sql = sql + `and c.depart >= (?)`;
+		sql = sql + `and depart_time >= (?)`;
 	} else if (val == '2') {
-		sql = sql + `and c.arrive < (?)`;
+		sql = sql + `and arrival_time <= (?)`;
 	}
 
-	sql = sql + `) aa Inner Join (Select * from sareng.trips
-		where trip_date = (?)) d on d.bus_id = aa.id;`
+	sql = sql + `) d ON d.bus_id = aa.id;`
 
-	let data = [origin_id, destination_id, time_ID, date];
+	let data = [origin_id, destination_id, date, time_ID];
 
 	console.log(data);
 
