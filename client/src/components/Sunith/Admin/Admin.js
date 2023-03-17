@@ -83,7 +83,7 @@ const Admin = (props) => {
     const [destinationStopID, setDestinationStopID] = React.useState(0);
     const [originName, setOrigin] = React.useState("");
     const [originStopID, setOriginStopID] = React.useState(0);
-    const [fedbus, setFebbus] = React.useState(0);
+    const [fedbus, setFedbus] = React.useState(0);
     const [price, setPrice] = React.useState();
     const [priceErr, setPriceErr] = React.useState(false);
     const [seats, setSeats] = React.useState();
@@ -161,7 +161,7 @@ const Admin = (props) => {
             });
         }
         sendAPInewRoute(userSelectection);
-    }
+    };
 
     const handleSubmitNewRoute = () => {
         const userSelectection = {
@@ -188,6 +188,28 @@ const Admin = (props) => {
         sendAPInewRoute(userSelectection);
     }
 
+    const handleNewStation = (event) => {
+        setNewStation(event.target.value);
+    }
+
+    const handleSubmitNewStation = () => {
+        const userSelectection = {
+            name: newStation,
+        }
+        console.log(userSelectection);
+        const sendAPInewRoute = async (userSelectection) => {
+            const url = serverURL + "/api/newStation";
+            console.log(url);
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(userSelectection)
+            });
+        }
+        sendAPInewRoute(userSelectection);
+    }
 
     return (
         <ThemeProvider theme={lightTheme}>
@@ -250,6 +272,24 @@ const Admin = (props) => {
                     justifyContent="center"
                     alignItems="center"
                 >
+                    <Typography variant="h4" component="h4">Add New Station</Typography>
+                    <br />
+                    <TextInput
+                        label={"Station Name"}
+                        valueState={newStation}
+                        onEntry={handleNewStation}
+                        errState={seatsErr}
+                    />
+                    <br />
+                    <Button variant="contained" color="secondary" onClick={handleSubmitNewStation}>Submit</Button>
+                </Grid>
+                <br />
+                <Grid
+                    container
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                >
                     <Typography variant="h4" component="h4">Add New Route</Typography>
                     <Selection
                         handleChange={handleOriginChange}
@@ -282,24 +322,6 @@ const Admin = (props) => {
                     />
                     <br />
                     <Button variant="contained" color="secondary" onClick={handleSubmitNewRoute}>Submit</Button>
-                </Grid>
-                <br />
-                <Grid
-                    container
-                    direction="column"
-                    justifyContent="center"
-                    alignItems="center"
-                >
-                    <Typography variant="h4" component="h4">Add New Station</Typography>
-                    <br />
-                    <TextInput
-                        label={"Station Name"}
-                        valueState={seats}
-                        onEntry={handleSeatsChange}
-                        errState={seatsErr}
-                    />
-                    <br />
-                    <Button variant="contained" color="secondary">Submit</Button>
                 </Grid>
             </Box>
         </ThemeProvider>

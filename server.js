@@ -302,8 +302,6 @@ app.post('/api/newRoute', (req, res) => {
 	let seats = req.body.seats;
 	let date = req.body.date;
 
-	// console.log(val)
-
 	let sql = `INSERT INTO sareng.trips (bus_id, depart_time, arrival_time, trip_date, seats) 
 				VALUES ((?), (?), (?), (?), (?));`;
 
@@ -315,11 +313,30 @@ app.post('/api/newRoute', (req, res) => {
 		if (error) {
 			return console.error(error.message);
 		}
-		// console.log(sql);
 		let string = JSON.stringify(results);
-		let obj = JSON.parse(string);
 		res.send({ express: string });
-		// console.log(string);
+		connection.end();
+	});
+});
+
+app.post('/api/newStation', (req, res) => {
+	let connection = mysql.createConnection(config);
+
+	let station_name = req.body.name;
+
+	let sql = `INSERT INTO sareng.stations (station_name) 
+				VALUES ((?));`;
+
+	let data = [station_name];
+
+	console.log(data);
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results);
+		res.send({ express: string });
 		connection.end();
 	});
 });
