@@ -305,6 +305,13 @@ class MyProfileBase extends React.Component {
                                 >
                                     Sign Out
                                 </Button>
+                                <Button
+                  key='10'
+                  onClick={() => history.push('/OtherReviews')}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Reviews
+                </Button>
                             </Toolbar>
                         </Container>
                     </AppBar>

@@ -144,6 +144,7 @@ class SignInFormBase extends Component {
                         <p> </p>
                         Reset password.
                       </Link>
+                     
                     </Typography>
                   ) : (
                     ''
@@ -175,6 +176,22 @@ class SignInFormBase extends Component {
                 >
                   Sign In
                 </Button>
+                <div></div>
+                <p></p>
+                Don't have an account? 
+                 Sign up here! 
+                <Button
+              key='9'
+              onClick={() => history.push('/SignUp')}
+              type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="secondary"
+            >
+              Sign Up
+            </Button>
+               
+
               </form>
               <Typography>Don't have an account? 
                 <Link key='9'

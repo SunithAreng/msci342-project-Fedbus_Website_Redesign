@@ -260,6 +260,13 @@ const SearchSchdeule = () => {
                             >
                                 Location
                             </Button>
+                            <Button
+                  key='10'
+                  onClick={() => history.push('/OtherReviews')}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Reviews
+                </Button>
                         </Toolbar>
                     </Container>
                 </AppBar>
