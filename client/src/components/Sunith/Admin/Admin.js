@@ -1,7 +1,8 @@
 import React from 'react';
 import history from '../../Navigation/history';
 import { createTheme, ThemeProvider, styled, makeStyles } from '@material-ui/core/styles';
-import { Grid, Typography, Box, Button, TextField } from '@material-ui/core';
+import { Grid, Typography, Box, Button, TextField, Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import { Selection } from '../SearchSchedule/Selection';
 import { Stations } from '../SearchSchedule/Stations';
 import { Timings } from '../SearchSchedule/Timings';
@@ -72,6 +73,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const Admin = (props) => {
     const adminConfirm = props.location.state.stuff[0];
@@ -118,6 +122,12 @@ const Admin = (props) => {
         setDestinationStopID(selectedStop.id);
         setDesErr(false);
     };
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClose = () => {
+        setOpen(false);
+    }
 
     const [ogErr, setOgErr] = React.useState(false);
 
@@ -171,6 +181,7 @@ const Admin = (props) => {
                 },
                 body: JSON.stringify(userSelectection)
             });
+            setOpen(true);
         }
         routeID && originTimeID && destinationTimeID ? sendAPInewRoute(userSelectection) : emptyChk2();
     };
@@ -203,6 +214,7 @@ const Admin = (props) => {
                 },
                 body: JSON.stringify(userSelectection)
             });
+            setOpen(true);
         };
         originStopID && destinationStopID && price && seats ? sendAPInewRoute(userSelectection) : emptyChk1();
     }
@@ -241,6 +253,7 @@ const Admin = (props) => {
                 },
                 body: JSON.stringify(userSelectection)
             });
+            setOpen(true);
         };
         newStation ? sendAPInewRoute(userSelectection) : setNewStationErr(true);
     }
@@ -363,6 +376,11 @@ const Admin = (props) => {
                     <br />
                     <Button variant="contained" color="secondary" onClick={handleSubmitNewRoute}>Submit</Button>
                 </Grid>
+                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="success">
+                        Your changes have been saved!
+                    </Alert>
+                </Snackbar>
             </Box>
         </ThemeProvider>
     );
