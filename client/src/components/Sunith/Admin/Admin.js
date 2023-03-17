@@ -79,24 +79,26 @@ const Admin = (props) => {
 
     const classes = useStyles();
 
-    const [destinationName, setDestinationName] = React.useState("");
+    const [destinationName, setDestinationName] = React.useState('');
     const [destinationStopID, setDestinationStopID] = React.useState(0);
-    const [originName, setOrigin] = React.useState("");
+    const [originName, setOrigin] = React.useState('');
     const [originStopID, setOriginStopID] = React.useState(0);
     const [fedbus, setFedbus] = React.useState(0);
-    const [price, setPrice] = React.useState();
+    const [price, setPrice] = React.useState("");
     const [priceErr, setPriceErr] = React.useState(false);
-    const [seats, setSeats] = React.useState();
+    const [seats, setSeats] = React.useState("");
     const [seatsErr, setSeatsErr] = React.useState(false);
     const [newStation, setNewStation] = React.useState('');
     const [route, setRoute] = React.useState('');
     const [routeID, setRouteID] = React.useState('');
+    const [routeErr, setRouteErr] = React.useState(false);
 
     const handleRouteSelection = (selectedRoute) => {
         // console.log(selectedRoute);
         setRoute(selectedRoute.route);
         setRouteID(selectedRoute.id);
         setESeat(selectedRoute.seatsCap);
+        setRouteErr(false);
     }
 
     const handlePriceChange = (event) => {
@@ -109,32 +111,42 @@ const Admin = (props) => {
         setSeatsErr(false);
     }
 
+    const [desErr, setDesErr] = React.useState(false);
+
     const handleDestinationChange = (selectedStop) => {
         setDestinationName(selectedStop.station_name);
         setDestinationStopID(selectedStop.id);
+        setDesErr(false);
     };
+
+    const [ogErr, setOgErr] = React.useState(false);
 
     const handleOriginChange = (selectedStop) => {
         setOrigin(selectedStop.station_name);
         setOriginStopID(selectedStop.id);
+        setOgErr(false);
     };
 
-    const [originTime, setOriginTime] = React.useState();
-    const [originTimeID, setOriginTimeID] = React.useState();
+    const [originTime, setOriginTime] = React.useState('');
+    const [originTimeID, setOriginTimeID] = React.useState('');
 
-    const [destinationTime, setDestinationTime] = React.useState();
-    const [destinationTimeID, setDestinationTimeID] = React.useState();
+    const [destinationTime, setDestinationTime] = React.useState('');
+    const [destinationTimeID, setDestinationTimeID] = React.useState('');
 
     const [eSeat, setESeat] = React.useState();
+    const [ogTimeErr, setOgTimeErr] = React.useState(false);
 
     const handleOgTimeChange = (selectedTime) => {
         setOriginTime(selectedTime.time);
         setOriginTimeID(selectedTime.id);
+        setOgTimeErr(false);
     };
 
+    const [desTimeErr, setDesTimeErr] = React.useState(false);
     const handleDesTimeChange = (selectedTime) => {
         setDestinationTime(selectedTime.time);
         setDestinationTimeID(selectedTime.id);
+        setDesTimeErr(false);
     };
 
     const [date, setDate] = React.useState(new Date());
@@ -160,8 +172,18 @@ const Admin = (props) => {
                 body: JSON.stringify(userSelectection)
             });
         }
-        sendAPInewRoute(userSelectection);
+        routeID && originTimeID && destinationTimeID ? sendAPInewRoute(userSelectection) : emptyChk2();
     };
+
+    const emptyChk2 = () => {
+        if (routeID == '') {
+            setRouteErr(true);
+        } else if (originTimeID == '') {
+            setOgTimeErr(true);
+        } else if (destinationTimeID == '') {
+            setDesTimeErr(true);
+        };
+    }
 
     const handleSubmitNewRoute = () => {
         const userSelectection = {
@@ -174,26 +196,41 @@ const Admin = (props) => {
         const sendAPInewRoute = async (userSelectection) => {
             const url = serverURL + "/api/newRoute";
             console.log(url);
-            const response = await fetch(url, {
+            fetch(url, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(userSelectection)
             });
+        };
+        originStopID && destinationStopID && price && seats ? sendAPInewRoute(userSelectection) : emptyChk1();
+    }
+
+    const emptyChk1 = () => {
+        if (originStopID == 0) {
+            setOgErr(true);
+        } else if (destinationStopID == 0) {
+            setDesErr(true);
+        } else if (price == "") {
+            setPriceErr(true);
+        } else if (seats == "") {
+            setSeatsErr(true);
         }
-        sendAPInewRoute(userSelectection);
     }
 
     const handleNewStation = (event) => {
         setNewStation(event.target.value);
+        setNewStationErr(false);
     }
+
+    const [newStationErr, setNewStationErr] = React.useState(false);
 
     const handleSubmitNewStation = () => {
         const userSelectection = {
             name: newStation,
         }
-        console.log(userSelectection);
+        // console.log(userSelectection);
         const sendAPInewRoute = async (userSelectection) => {
             const url = serverURL + "/api/newStation";
             console.log(url);
@@ -204,8 +241,8 @@ const Admin = (props) => {
                 },
                 body: JSON.stringify(userSelectection)
             });
-        }
-        sendAPInewRoute(userSelectection);
+        };
+        newStation ? sendAPInewRoute(userSelectection) : setNewStationErr(true);
     }
 
     return (
@@ -222,7 +259,7 @@ const Admin = (props) => {
                     onClick={() => history.push('/MyProfile')}
                     variant="contained" color="primary"
                     sx={{ my: 2, display: 'block' }}>Go Back</Button>
-                <h1> Welcome to the Admin page.</h1>
+                <h1> This is the Admin page.</h1>
                 <Grid
                     container
                     direction="column"
@@ -237,6 +274,7 @@ const Admin = (props) => {
                         label={"Route"}
                         idlabel={"route-list"}
                         objectList={RouteAPI()}
+                        errorState={routeErr}
                     />
                     <Selection
                         handleChange={handleOgTimeChange}
@@ -245,6 +283,7 @@ const Admin = (props) => {
                         label={"Departure time?"}
                         idlabel={"times-list"}
                         objectList={Timings()}
+                        errorState={ogTimeErr}
                     />
                     <Selection
                         handleChange={handleDesTimeChange}
@@ -253,12 +292,14 @@ const Admin = (props) => {
                         label={"Arrival time?"}
                         idlabel={"times-list"}
                         objectList={Timings()}
+                        errorState={desTimeErr}
                     />
                     <br />
                     <DateSelection
                         onChange={setDate}
                         date={date}
                     />
+                    <Typography>Please make sure that you pick the right date!</Typography>
                     <br />
                     <Button variant="contained" color="secondary" onClick={handleSubmitNewSchedule}>Submit</Button>
                 </Grid>
@@ -275,7 +316,7 @@ const Admin = (props) => {
                         label={"Station Name"}
                         valueState={newStation}
                         onEntry={handleNewStation}
-                        errState={seatsErr}
+                        errState={newStationErr}
                     />
                     <br />
                     <Button variant="contained" color="secondary" onClick={handleSubmitNewStation}>Submit</Button>
@@ -295,6 +336,7 @@ const Admin = (props) => {
                         label={"Origin"}
                         idlabel={"origin-list"}
                         objectList={Stations()}
+                        errorState={ogErr}
                     />
                     <Selection
                         handleChange={handleDestinationChange}
@@ -303,6 +345,7 @@ const Admin = (props) => {
                         label={"Destination"}
                         idlabel={"destination-list"}
                         objectList={Stations()}
+                        errorState={desErr}
                     />
                     <NumberInput
                         label={"Price Input"}
@@ -337,7 +380,7 @@ const NumberInput = ({ label, valueState, onEntry, errState }) => {
                 onChange={onEntry}
                 value={valueState}
                 error={errState}
-                helperText={errState ? "Please fill in the data" : ""}
+                helperText={errState ? "Please fill in the missing data" : ""}
             />
         </>
     )
@@ -355,7 +398,7 @@ const TextInput = ({ label, valueState, onEntry, errState }) => {
                 onChange={onEntry}
                 value={valueState}
                 error={errState}
-                helperText={errState ? "Please fill in the data" : ""}
+                helperText={errState ? "Please fill in the missing data" : ""}
             />
         </>
     )
