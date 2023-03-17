@@ -1,10 +1,7 @@
 import React from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import { MenuItem } from '@material-ui/core';
-import Select from '@material-ui/core/Select';
+import { MenuItem, FormControl, InputLabel, Select, FormHelperText } from '@material-ui/core';
 
-export const Selection = ({ objectList, handleChange, classes, elementName, label, idlabel }) => {
+export const Selection = ({ objectList, handleChange, classes, elementName, label, idlabel, errorState }) => {
     return (
         <>
             <FormControl variant='outlined' className={classes.formControl}>
@@ -17,7 +14,6 @@ export const Selection = ({ objectList, handleChange, classes, elementName, labe
                 >
                     {objectList.map((stop) => {
                         const elements = Object.values(stop);
-                        // console.log(elements);
                         return (
                             <MenuItem key={elements[0]} value={elements[1]} onClick={() => handleChange(stop)}>
                                 {elements[1]}
@@ -26,6 +22,7 @@ export const Selection = ({ objectList, handleChange, classes, elementName, labe
                     }
                     )}
                 </Select>
+                <FormHelperText>{errorState ? "Please make a selection" : ""}</FormHelperText>
             </FormControl>
         </>
     )

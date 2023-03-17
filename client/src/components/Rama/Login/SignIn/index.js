@@ -193,6 +193,11 @@ class SignInFormBase extends Component {
                
 
               </form>
+              <Typography>Don't have an account? 
+                <Link key='9'
+                  onClick={() => history.push('/SignUp')}>Sign Up
+                </Link>
+              </Typography>
             </Container>
           </Grid>
         </Grid>
