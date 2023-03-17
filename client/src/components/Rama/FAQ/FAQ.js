@@ -19,10 +19,10 @@ import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
 
 //Dev mode
- const serverURL = ""; //enable for dev mode
+const serverURL = ""; //enable for dev mode
 
 const fetch = require("node-fetch");
- const opacityValue = 0.1;
+const opacityValue = 0.1;
 
 const theme = createTheme({
   palette: {
@@ -89,7 +89,7 @@ const useStyles = makeStyles({
 const FAQ = (props) => {
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
-  
+
   //const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const [expanded2, setExpanded2] = React.useState(false);
@@ -174,12 +174,19 @@ const FAQ = (props) => {
               Location
             </Button>
             <Button
-                  key='10'
-                  onClick={() => history.push('/OtherReviews')}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  Reviews
-                </Button>
+              key='10'
+              onClick={() => history.push('/OtherReviews')}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              Reviews
+            </Button>
+            <Button
+              key='11'
+              onClick={() => history.push('/Annoucements')}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              Annoucements
+            </Button>
           </Toolbar>
         </Container>
       </AppBar>
@@ -198,184 +205,184 @@ const FAQ = (props) => {
         </div>
         <p> </p>
         <Card className={classes.root} variant="contained" style={{ backgroundColor: '#fff5e6' }} >
-      <CardContent>
-       
-        <Typography variant="h6" component="h3">
-         How can I book?
-        </Typography>
-        <CardActions disableSpacing>
-        {/* <IconButton aria-label="add to favorites">
+          <CardContent>
+
+            <Typography variant="h6" component="h3">
+              How can I book?
+            </Typography>
+            <CardActions disableSpacing>
+              {/* <IconButton aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon /> */}
-        {/* </IconButton> */}
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Head over to the booking page and choose your desired date and locations </Typography>
+              {/* </IconButton> */}
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded,
+                })}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </CardActions>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <CardContent>
+                <Typography paragraph>Head over to the booking page and choose your desired date and locations </Typography>
 
-  
-        </CardContent>
-      </Collapse>
-      </CardContent>
-    </Card>
-    
-    <Card className={classes.root} variant="contained" style={{ backgroundColor: '#fff5e6' }}>
-      <CardContent>
-       
-        <Typography variant="h6" component="h2">
-         How can I pay?
-        </Typography>
-        <CardActions disableSpacing>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded2,
-          })}
-          onClick={handleExpandClick2}
-          aria-expanded={expanded2}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded2} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph> Head over to the payments page! </Typography>
 
-  
-        </CardContent>
-      </Collapse>
-      </CardContent>
-    </Card>
+              </CardContent>
+            </Collapse>
+          </CardContent>
+        </Card>
 
-    <Card className={classes.root} variant="contained" style={{ backgroundColor: '#fff5e6' }}>
-      <CardContent>
-       
-        <Typography variant="h6" component="h2">
-         How much luggage can I get?
-        </Typography>
-        <CardActions disableSpacing>
-        {/* <IconButton aria-label="add to favorites">
+        <Card className={classes.root} variant="contained" style={{ backgroundColor: '#fff5e6' }}>
+          <CardContent>
+
+            <Typography variant="h6" component="h2">
+              How can I pay?
+            </Typography>
+            <CardActions disableSpacing>
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded2,
+                })}
+                onClick={handleExpandClick2}
+                aria-expanded={expanded2}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </CardActions>
+            <Collapse in={expanded2} timeout="auto" unmountOnExit>
+              <CardContent>
+                <Typography paragraph> Head over to the payments page! </Typography>
+
+
+              </CardContent>
+            </Collapse>
+          </CardContent>
+        </Card>
+
+        <Card className={classes.root} variant="contained" style={{ backgroundColor: '#fff5e6' }}>
+          <CardContent>
+
+            <Typography variant="h6" component="h2">
+              How much luggage can I get?
+            </Typography>
+            <CardActions disableSpacing>
+              {/* <IconButton aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon /> */}
-        {/* </IconButton> */}
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded3,
-          })}
-          onClick={handleExpandClick3}
-          aria-expanded={expanded3}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded3} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Luggage is Limited to anything that fits on your lap </Typography>
+              {/* </IconButton> */}
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded3,
+                })}
+                onClick={handleExpandClick3}
+                aria-expanded={expanded3}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </CardActions>
+            <Collapse in={expanded3} timeout="auto" unmountOnExit>
+              <CardContent>
+                <Typography paragraph>Luggage is Limited to anything that fits on your lap </Typography>
 
-  
-        </CardContent>
-      </Collapse>
-      </CardContent>
-    </Card>
 
-    <Card className={classes.root} variant="contained" style={{ backgroundColor: '#fff5e6' }}>
-      <CardContent>
-       
-        <Typography variant="h6" component="h2">
-        Are Masks Required?
-        </Typography>
-        <CardActions disableSpacing>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded3,
-          })}
-          onClick={handleExpandClick4}
-          aria-expanded={expanded4}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded4} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph> Although Masks are not required, they are still recommended when travelling Fed Bus.</Typography>
+              </CardContent>
+            </Collapse>
+          </CardContent>
+        </Card>
 
-  
-        </CardContent>
-      </Collapse>
-      </CardContent>
-    </Card>
-    <Card className={classes.root} variant="contained" style={{ backgroundColor: '#fff5e6' }}>
-      <CardContent>
-       
-        <Typography variant="h6" component="h2">
-        When should I arrive to my bus' pickup location?
-        </Typography>
-        <CardActions disableSpacing>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded5,
-          })}
-          onClick={handleExpandClick5}
-          aria-expanded={expanded5}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded5} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Arrive 15 minutes before your departure time.</Typography>
-        </CardContent>
-      </Collapse>
-      </CardContent>
-    </Card>
+        <Card className={classes.root} variant="contained" style={{ backgroundColor: '#fff5e6' }}>
+          <CardContent>
 
-    <Card className={classes.root} variant="contained" style={{ backgroundColor: '#fff5e6' }}>
-      <CardContent>
-       
-        <Typography variant="h6" component="h2">
-        Do I need to bring my WatCard?
-        </Typography>
-        <CardActions disableSpacing>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded3,
-          })}
-          onClick={handleExpandClick6}
-          aria-expanded={expanded6}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded6} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>You must bring your Watcard when you buy your Fed Bus tickets and when boarding the bus!</Typography>
+            <Typography variant="h6" component="h2">
+              Are Masks Required?
+            </Typography>
+            <CardActions disableSpacing>
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded3,
+                })}
+                onClick={handleExpandClick4}
+                aria-expanded={expanded4}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </CardActions>
+            <Collapse in={expanded4} timeout="auto" unmountOnExit>
+              <CardContent>
+                <Typography paragraph> Although Masks are not required, they are still recommended when travelling Fed Bus.</Typography>
 
-  
-        </CardContent>
-      </Collapse>
-      </CardContent>
-    </Card>
+
+              </CardContent>
+            </Collapse>
+          </CardContent>
+        </Card>
+        <Card className={classes.root} variant="contained" style={{ backgroundColor: '#fff5e6' }}>
+          <CardContent>
+
+            <Typography variant="h6" component="h2">
+              When should I arrive to my bus' pickup location?
+            </Typography>
+            <CardActions disableSpacing>
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded5,
+                })}
+                onClick={handleExpandClick5}
+                aria-expanded={expanded5}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </CardActions>
+            <Collapse in={expanded5} timeout="auto" unmountOnExit>
+              <CardContent>
+                <Typography paragraph>Arrive 15 minutes before your departure time.</Typography>
+              </CardContent>
+            </Collapse>
+          </CardContent>
+        </Card>
+
+        <Card className={classes.root} variant="contained" style={{ backgroundColor: '#fff5e6' }}>
+          <CardContent>
+
+            <Typography variant="h6" component="h2">
+              Do I need to bring my WatCard?
+            </Typography>
+            <CardActions disableSpacing>
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded3,
+                })}
+                onClick={handleExpandClick6}
+                aria-expanded={expanded6}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </CardActions>
+            <Collapse in={expanded6} timeout="auto" unmountOnExit>
+              <CardContent>
+                <Typography paragraph>You must bring your Watcard when you buy your Fed Bus tickets and when boarding the bus!</Typography>
+
+
+              </CardContent>
+            </Collapse>
+          </CardContent>
+        </Card>
 
         <Typography>
-        
+
           <b> If you have more questions about the Fedbus, get in touch:  </b>
           <div> <b> Email: </b>turnkeys@uwaterloo.ca. </div>
           <div> <b> Phone Number: </b> 519-888-4434 </div>
@@ -390,7 +397,7 @@ const FAQ = (props) => {
         </Typography>
       </Grid>
     </MuiThemeProvider>
-    
+
   )
 
 }

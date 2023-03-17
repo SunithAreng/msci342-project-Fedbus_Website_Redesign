@@ -261,12 +261,19 @@ const SearchSchdeule = () => {
                                 Location
                             </Button>
                             <Button
-                  key='10'
-                  onClick={() => history.push('/OtherReviews')}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  Reviews
-                </Button>
+                                key='10'
+                                onClick={() => history.push('/OtherReviews')}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Reviews
+                            </Button>
+                            <Button
+                                key='11'
+                                onClick={() => history.push('/Annoucements')}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Annoucements
+                            </Button>
                         </Toolbar>
                     </Container>
                 </AppBar>

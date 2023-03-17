@@ -272,7 +272,8 @@ const Admin = (props) => {
                     onClick={() => history.push('/MyProfile')}
                     variant="contained" color="primary"
                     sx={{ my: 2, display: 'block' }}>Go Back</Button>
-                <h1> This is the Admin page.</h1>
+                <Typography variant="h2"> This is the Admin page.</Typography>
+                <Typography>Please make sure to refresh the page to see your changes reflected!</Typography>
                 <Grid
                     container
                     direction="column"

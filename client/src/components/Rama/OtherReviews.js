@@ -57,7 +57,7 @@ const styles = theme => ({
     },
   },
   paper: {
-     overflow: "hidden"
+    overflow: "hidden"
   },
   message: {
     opacity: opacityValue,
@@ -68,105 +68,105 @@ const styles = theme => ({
 
 
 const Review2 = () => {
-    
- return(
-  <MuiThemeProvider theme={theme}>
-    
-    <CssBaseline/>
-    <Review />
-    <Grid
-    container
-    direction="column"
-    justifyContent="center"
-    alignItems="center"
-    >
-      <Typography variant="h5" component="h5">
-        <p></p>
-        <div></div>
-        <div></div>
-        <div></div>
-       <i> Customer's Feedback! </i>
-       <p></p>
-      </Typography>
-      <Button
-       key='9'
-       onClick={() => history.push('/Review')}
-                type="submit"
-                  halfWidth
-                  variant="contained"
-                  color="primary"
-                >
-                  Add your review
-                </Button>
-        <div></div>
-    </Grid>
-    <Grid
-    container
-    direction="column"
-    justifyContent="center"
-    alignItems="center"
-    >
-     <Card style={{ backgroundColor: '#fffff', width: '800px' }}>
-  <CardContent>
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <div>
-        {/* <p> {"1."} </p> */}
-        <big> <b> {"John D"}</b></big>
-        <hr style={{ height: '1px', backgroundColor: '#ffe0ae', border: '0', width: '600px' }} />
-        <p> <b> Title: </b>{"bad experience" } </p>
-        <p><b>Review: </b> {"terrible bus" }  </p>
-      </div>
-      <div>
-        <h2> {"⭐" }  </h2>
-      </div>
-    </div>
-  </CardContent>
-</Card>
-      <Card style={{ backgroundColor: '#FFEFD5', width: '800px' }}>
-  <CardContent>
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <div>
-        {/* <p> {"2."} </p> */}
-        <big> <b> {"Alex E"}</b></big>
-        <hr style={{ height: '2px', backgroundColor: 'black', border: '0', width: '600px' }} />
-        <p> <b> Title: </b>{"Great experience" } </p>
-        <p><b>Review: </b> {"good bus" }  </p>
-      </div>
-      <div>
-        <h2> {"⭐⭐⭐⭐⭐" }  </h2>
-      </div>
-    </div>
-  </CardContent>
-</Card>
 
-<Card style={{ backgroundColor: '#fffff', width: '800px' }}>
-  <CardContent>
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <div>
-        {/* <p> {"3."} </p> */}
-        <big> <b> {"Sarah M"}</b></big>
-        <hr style={{ height: '2px', backgroundColor: '#ffe0ae', border: '0', width: '600px' }} />
-        <p> <b> Title: </b>{"okay experience" } </p>
-        <p><b>Review: </b> {"it was okay" }  </p>
-      </div>
-      <div>
-        <h2> {"⭐⭐⭐" }  </h2>
-      </div>
-    </div>
-  </CardContent>
-</Card>
+  return (
+    <MuiThemeProvider theme={theme}>
 
-    </Grid>
-    <CardContent/>
+      <CssBaseline />
+      <Review />
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Typography variant="h5" component="h5">
+          <p></p>
+          <div></div>
+          <div></div>
+          <div></div>
+          <i> Customer's Feedback! </i>
+          <p></p>
+        </Typography>
+        <Button
+          key='9'
+          onClick={() => history.push('/Review')}
+          type="submit"
+          halfWidth
+          variant="contained"
+          color="primary"
+        >
+          Add your review
+        </Button>
+        <div></div>
+      </Grid>
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Card style={{ backgroundColor: '#fffff', width: '800px' }}>
+          <CardContent>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                {/* <p> {"1."} </p> */}
+                <big> <b> {"John D"}</b></big>
+                <hr style={{ height: '1px', backgroundColor: '#ffe0ae', border: '0', width: '600px' }} />
+                <p> <b> Title: </b>{"bad experience"} </p>
+                <p><b>Review: </b> {"terrible bus"}  </p>
+              </div>
+              <div>
+                <h2> {"⭐"}  </h2>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card style={{ backgroundColor: '#FFEFD5', width: '800px' }}>
+          <CardContent>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                {/* <p> {"2."} </p> */}
+                <big> <b> {"Alex E"}</b></big>
+                <hr style={{ height: '2px', backgroundColor: 'black', border: '0', width: '600px' }} />
+                <p> <b> Title: </b>{"Great experience"} </p>
+                <p><b>Review: </b> {"good bus"}  </p>
+              </div>
+              <div>
+                <h2> {"⭐⭐⭐⭐⭐"}  </h2>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card style={{ backgroundColor: '#fffff', width: '800px' }}>
+          <CardContent>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                {/* <p> {"3."} </p> */}
+                <big> <b> {"Sarah M"}</b></big>
+                <hr style={{ height: '2px', backgroundColor: '#ffe0ae', border: '0', width: '600px' }} />
+                <p> <b> Title: </b>{"okay experience"} </p>
+                <p><b>Review: </b> {"it was okay"}  </p>
+              </div>
+              <div>
+                <h2> {"⭐⭐⭐"}  </h2>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+      </Grid>
+      <CardContent />
     </MuiThemeProvider>
-    
+
   )
 }
 
 
 const Review = (props) => {
-return (
-    
+  return (
+
     <MuiThemeProvider theme={theme}>
       <AppBar position="static">
         <Container maxWidth="xl">
@@ -221,18 +221,26 @@ return (
               Location
             </Button>
             <Button
-                  key='10'
-                  onClick={() => history.push('/OtherReviews')}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  Reviews
-                </Button>
+              key='10'
+              onClick={() => history.push('/OtherReviews')}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              Reviews
+            </Button>
+            <Button
+              key='11'
+              onClick={() => history.push('/Annoucements')}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              Annoucements
+            </Button>
           </Toolbar>
-          
+
         </Container>
       </AppBar>
       <CssBaseline />
-      </MuiThemeProvider>
-)}
+    </MuiThemeProvider>
+  )
+}
 
 export default Review2;

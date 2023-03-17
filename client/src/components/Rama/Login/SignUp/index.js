@@ -2,12 +2,10 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
 import { withFirebase } from "../../../Firebase";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
+import { TextField, Grid, Link, Button, Typography, Container } from "@material-ui/core";
 import { connect } from "react-redux";
+import history from '../../../Navigation/history';
+
 
 const INITIAL_STATE = {
   email: "",
@@ -164,6 +162,12 @@ class SignUpFormBase extends Component {
                   Sign In
                 </Button>
               </form>
+              <br />
+              <Typography>Have an account?&nbsp;
+                <Link key='9' underline='always'
+                  onClick={() => history.push('/SignIn')}>Log in!
+                </Link>
+              </Typography>
             </Container>
           </Grid>
         </Grid>

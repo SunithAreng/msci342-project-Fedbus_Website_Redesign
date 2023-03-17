@@ -5,9 +5,9 @@ import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import { Button, TextField} from '@material-ui/core';
-import { FormLabel, RadioGroup, FormControlLabel} from '@material-ui/core';  
-import {FormControl} from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
+import { FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
+import { FormControl } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import history from '../Navigation/history';
@@ -61,7 +61,7 @@ const styles = theme => ({
     },
   },
   paper: {
-     overflow: "hidden"
+    overflow: "hidden"
   },
   message: {
     opacity: opacityValue,
@@ -71,22 +71,22 @@ const styles = theme => ({
 });
 
 const Review2 = () => {
-  
+
   const [submitClick, setMessage] = React.useState(false);
   //const [selectedMovieID, setReviewMovieID] = React.useState('');
   //const [selectedMovie, setReviewMovie] = React.useState('');
   const [enteredTitle, setReviewTitle] = React.useState('');
   const [enteredReview, setReviewBody] = React.useState('');
   const [selectedRating, setReviewRating] = React.useState('');
-  const [userID, setUserID] = React.useState(1); 
+  const [userID, setUserID] = React.useState(1);
   const [submittedReviews, setSubmittedReviews] = React.useState([]);
   const [PrevSubmittedReviews, setPrevSubmittedReviews] = React.useState('')
   const [enteredName, setReviewName] = React.useState('')
-  
+
   React.useEffect(() => {
     getMovies();
   }, []);
-  
+
 
   const getMovies = () => {
     callApigetMovies()
@@ -101,7 +101,7 @@ const Review2 = () => {
 
   const [movies, setMovies] = React.useState([]);
 
-    const callApigetMovies = async () => {
+  const callApigetMovies = async () => {
     const url = serverURL + "/api/getMovies";
     console.log(url);
 
@@ -130,7 +130,7 @@ const Review2 = () => {
       }
       , body: JSON.stringify({
         // movie: selectedMovie,
-        body : enteredReview,
+        body: enteredReview,
         title: enteredTitle,
         rating: selectedRating,
         name: enteredName,
@@ -146,87 +146,87 @@ const Review2 = () => {
 
   const updateReviewBody = (event) => {
     setReviewBody(event.target.value)
-   // console.log(enteredReview)
-   
-  } 
+    // console.log(enteredReview)
+
+  }
   const updateReviewTitle = (event) => {
     setReviewTitle(event.target.value)
 
-   // console.log(enteredTitle)
+    // console.log(enteredTitle)
   }
   const updateReviewRating = (event) => {
     setReviewRating(event.target.value)
-   // console.log(selectedRating)
+    // console.log(selectedRating)
   }
   const updateReviewName = (event) => {
     setReviewName(event.target.value)
-   // console.log(selectedRating)
+    // console.log(selectedRating)
   }
   const submitButton = (event) => {
     setMessage(true);
-  
-   if(enteredTitle.length > 0 && enteredReview.length > 0 && selectedRating >0 , enteredName.length >0) {
-    let review = {
-      //movie: selectedMovie,
-      body : enteredReview,
-      title: enteredTitle,
-      rating: selectedRating,
-      name: enteredName,
-    }
-    let copy = [...submittedReviews];
-    copy.push(review);
-    setSubmittedReviews(copy);
-     callApiaddReview()
-     .then(res => {
-        
-        console.log(res);
-     })
-   
+
+    if (enteredTitle.length > 0 && enteredReview.length > 0 && selectedRating > 0, enteredName.length > 0) {
+      let review = {
+        //movie: selectedMovie,
+        body: enteredReview,
+        title: enteredTitle,
+        rating: selectedRating,
+        name: enteredName,
+      }
+      let copy = [...submittedReviews];
+      copy.push(review);
+      setSubmittedReviews(copy);
+      callApiaddReview()
+        .then(res => {
+
+          console.log(res);
+        })
+
     }
   }
   return (
-  <MuiThemeProvider theme={theme}>
-    
-    <CssBaseline/>
-    <Review />
-    <Grid
-    container
-    direction="column"
-    justifyContent="center"
-    alignItems="center"
-    >
-      <Typography variant="h5" component="h5">
-        <p></p>
-        <div></div>
-        <div></div>
-        <div></div>
-       <i> Add your Bus Review! </i>
-       <p></p>
-      </Typography>
-      <ReviewName currentValue = {enteredName} updateReviewName={updateReviewName}submitClick={submitClick}></ReviewName>
-      <ReviewTitle currentValue={enteredTitle} updateReviewTitle={updateReviewTitle} submitClick={submitClick}></ReviewTitle>
-      <ReviewBody currentValue={enteredReview} updateReviewBody={updateReviewBody} submitClick={submitClick}></ReviewBody>
-      <ReviewRating currentValue={selectedRating} updateReviewRating={updateReviewRating}submitClick={submitClick}></ReviewRating>
-      <p></p>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-  <Button variant="contained" color="primary" onClick={submitButton}>
-    Submit
-  </Button>
-  <SubmittedReviews list={submittedReviews} />
-  <Button
-    key='9'
-    onClick={() => history.push('/OtherReviews')}
-    type="submit"
-    halfWidth
-    variant="contained"
-    color="secondary"
-  >
-    Go back 
-  </Button>
-</div>
+    <MuiThemeProvider theme={theme}>
 
-                </Grid>
-        <div></div>
+      <CssBaseline />
+      <Review />
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Typography variant="h5" component="h5">
+          <p></p>
+          <div></div>
+          <div></div>
+          <div></div>
+          <i> Add your Bus Review! </i>
+          <p></p>
+        </Typography>
+        <ReviewName currentValue={enteredName} updateReviewName={updateReviewName} submitClick={submitClick}></ReviewName>
+        <ReviewTitle currentValue={enteredTitle} updateReviewTitle={updateReviewTitle} submitClick={submitClick}></ReviewTitle>
+        <ReviewBody currentValue={enteredReview} updateReviewBody={updateReviewBody} submitClick={submitClick}></ReviewBody>
+        <ReviewRating currentValue={selectedRating} updateReviewRating={updateReviewRating} submitClick={submitClick}></ReviewRating>
+        <p></p>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <Button variant="contained" color="primary" onClick={submitButton}>
+            Submit
+          </Button>
+          <SubmittedReviews list={submittedReviews} />
+          <Button
+            key='9'
+            onClick={() => history.push('/OtherReviews')}
+            type="submit"
+            halfWidth
+            variant="contained"
+            color="secondary"
+          >
+            Go back
+          </Button>
+        </div>
+
+      </Grid>
+      <div></div>
     </MuiThemeProvider>
   )
 }
@@ -236,114 +236,114 @@ const SubmittedReviews = (props) => {
 
     props.list.map((review) => {
       return (
-          <>
+        <>
           <p> {""} </p>
           <big> <b> {"Your feedback is submitted and under review now!"} </b></big>
           <hr style={{ height: '2px', backgroundColor: 'black', border: '0', width: '400px' }} />
           {/* <p> {"________________________________"} </p> */}
-          <p> {"Name: " } <i> {review.name} </i> </p>
-          <p> {"Title: " } <i> {review.title} </i> </p>
-          <p> {"Review: " } <i> {review.body} </i> </p>
-          <p> {"Rating: " } <i> {review.rating} </i> </p>
+          <p> {"Name: "} <i> {review.name} </i> </p>
+          <p> {"Title: "} <i> {review.title} </i> </p>
+          <p> {"Review: "} <i> {review.body} </i> </p>
+          <p> {"Rating: "} <i> {review.rating} </i> </p>
           {/* <p> {"________________________________"} </p> */}
-          </>
-          
-         
-      );
-      
-    })
-  ) 
-}
-const ReviewName = (props) => { 
-    return(
-        <>
-        <FormControl style = {{width:"40vw"}}>
-        <TextField  label="Enter Your Name"
-         variant="outlined"     
-         color="secondary"
-         value={props.currentValue}
-         onChange={props.updateReviewName} />
-  
-        </FormControl>
-        {props.currentValue === '' && props.submitClick ? (
-          <p><b>Please Enter A Name</b></p>
-    
-        ) : (
-          <div></div>
-  
-        )}
         </>
-      )
-    }
-const ReviewTitle = (props) => { 
-  return(
-      <>
-      <FormControl style = {{width:"40vw"}}>
-      <TextField  label="Enter Your Bus Review Title"
-       variant="outlined"     
-       color="secondary"
-       value={props.currentValue}
-       onChange={props.updateReviewTitle} />
+
+
+      );
+
+    })
+  )
+}
+const ReviewName = (props) => {
+  return (
+    <>
+      <FormControl style={{ width: "40vw" }}>
+        <TextField label="Enter Your Name"
+          variant="outlined"
+          color="secondary"
+          value={props.currentValue}
+          onChange={props.updateReviewName} />
 
       </FormControl>
       {props.currentValue === '' && props.submitClick ? (
-        <p><b>Please Enter A Title</b></p>
-  
+        <p><b>Please Enter A Name</b></p>
+
       ) : (
         <div></div>
 
       )}
-      </>
-    )
-  }
+    </>
+  )
+}
+const ReviewTitle = (props) => {
+  return (
+    <>
+      <FormControl style={{ width: "40vw" }}>
+        <TextField label="Enter Your Bus Review Title"
+          variant="outlined"
+          color="secondary"
+          value={props.currentValue}
+          onChange={props.updateReviewTitle} />
+
+      </FormControl>
+      {props.currentValue === '' && props.submitClick ? (
+        <p><b>Please Enter A Title</b></p>
+
+      ) : (
+        <div></div>
+
+      )}
+    </>
+  )
+}
 const ReviewBody = (props) => {
-    return(
-      <>
-      <FormControl style = {{width:"40vw"}}>
-        <TextField 
+  return (
+    <>
+      <FormControl style={{ width: "40vw" }}>
+        <TextField
           label="Enter Your Bus Review"
           multiline rows={4}
-          inputProps={{ maxLength: 200 }}  variant="outlined" color="secondary"
+          inputProps={{ maxLength: 200 }} variant="outlined" color="secondary"
           value={props.currentValue}
           onChange={props.updateReviewBody} />
 
       </FormControl>
       {props.currentValue === '' && props.submitClick ? (
         <p><b> Please Enter Your Review</b></p>
-  
+
       ) : (
         <div></div>
       )}
-      </>
-         )
-      } 
-  const ReviewRating = (props) => {
-    return(
-      <>
+    </>
+  )
+}
+const ReviewRating = (props) => {
+  return (
+    <>
       <p></p>
       <FormControl component="fieldset"
         value={props.currentValue}
         onChange={props.updateReviewRating}>
-        
-      <FormLabel color="secondary">Bus Review Rating</FormLabel>
-       
-      <RadioGroup row>
 
-        <FormControlLabel value="1" control={<Radio />} label="1/5" />  <FormControlLabel value="2" control={<Radio />} label="2/5" />
-        <FormControlLabel value="3" control={<Radio />} label="3/5" />  <FormControlLabel value="4" control={<Radio />} label="4/5" />
-        <FormControlLabel value="5" control={<Radio />} label="5/5" />
+        <FormLabel color="secondary">Bus Review Rating</FormLabel>
+
+        <RadioGroup row>
+
+          <FormControlLabel value="1" control={<Radio />} label="1/5" />  <FormControlLabel value="2" control={<Radio />} label="2/5" />
+          <FormControlLabel value="3" control={<Radio />} label="3/5" />  <FormControlLabel value="4" control={<Radio />} label="4/5" />
+          <FormControlLabel value="5" control={<Radio />} label="5/5" />
         </RadioGroup>
-        </FormControl>
+      </FormControl>
 
-        {props.currentValue === '' && props.submitClick ? (
-          <p><b> Please Select A Rating</b></p>
-    
-        ) : (
-          <div></div>
-        )}
-  
-        </>
-    ) 
+      {props.currentValue === '' && props.submitClick ? (
+        <p><b> Please Select A Rating</b></p>
+
+      ) : (
+        <div></div>
+      )}
+
+    </>
+  )
 }
 
 class Home extends Component {
@@ -444,8 +444,8 @@ Home.propTypes = {
 };
 
 const Review = (props) => {
-return (
-    
+  return (
+
     <MuiThemeProvider theme={theme}>
       <AppBar position="static">
         <Container maxWidth="xl">
@@ -500,18 +500,26 @@ return (
               Location
             </Button>
             <Button
-                  key='10'
-                  onClick={() => history.push('/Review')}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  Reviews
-                </Button>
+              key='10'
+              onClick={() => history.push('/Review')}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              Reviews
+            </Button>
+            <Button
+              key='11'
+              onClick={() => history.push('/Annoucements')}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              Annoucements
+            </Button>
           </Toolbar>
-          
+
         </Container>
       </AppBar>
       <CssBaseline />
-      </MuiThemeProvider>
-)}
+    </MuiThemeProvider>
+  )
+}
 
 export default Review2;

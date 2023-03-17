@@ -299,19 +299,26 @@ class MyProfileBase extends React.Component {
                                     Location
                                 </Button>
                                 <Button
+                                    key='12'
+                                    onClick={() => history.push('/OtherReviews')}
+                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                >
+                                    Reviews
+                                </Button>
+                                <Button
+                                    key='11'
+                                    onClick={() => history.push('/Annoucements')}
+                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                >
+                                    Annoucements
+                                </Button>
+                                <Button
                                     key='10'
                                     sx={{ my: 2, color: 'white', display: 'block' }}
                                     onClick={this.signOut.bind(this)}
                                 >
                                     Sign Out
                                 </Button>
-                                <Button
-                  key='10'
-                  onClick={() => history.push('/OtherReviews')}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  Reviews
-                </Button>
                             </Toolbar>
                         </Container>
                     </AppBar>

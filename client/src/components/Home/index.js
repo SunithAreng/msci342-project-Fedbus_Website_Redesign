@@ -162,6 +162,13 @@ class Home extends Component {
                 >
                   Reviews
                 </Button>
+                <Button
+                  key='11'
+                  onClick={() => history.push('/Annoucements')}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Annoucements
+                </Button>
               </Toolbar>
             </Container>
           </AppBar>
