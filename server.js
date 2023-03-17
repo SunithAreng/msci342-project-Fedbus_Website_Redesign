@@ -226,6 +226,26 @@ app.post('/api/getTimes', (req, res) => {
 
 });
 
+app.post('/api/getRoutes', (req, res) => {
+	let connection = mysql.createConnection(config);
+
+	let sql = `select id, concat((select station_name from stations b where b.id = a.origin), " to ", 
+	(select station_name from stations b where b.id = a.destination)) as route, seatsCap from routes a;`;
+	let data = [];
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+
+});
+
 app.post('/api/search', (req, res) => {
 	let connection = mysql.createConnection(config);
 
@@ -272,6 +292,38 @@ app.post('/api/search', (req, res) => {
 		connection.end();
 	});
 });
+
+app.post('/api/newRoute', (req, res) => {
+	let connection = mysql.createConnection(config);
+
+	let bus_id = req.body.routeID;
+	let depart_time = req.body.origin;
+	let arrival_time = req.body.destination;
+	let seats = req.body.seats;
+	let date = req.body.date;
+
+	// console.log(val)
+
+	let sql = `INSERT INTO sareng.trips (bus_id, depart_time, arrival_time, trip_date, seats) 
+				VALUES ((?), (?), (?), (?), (?));`;
+
+	let data = [bus_id, depart_time, arrival_time, date, seats];
+
+	console.log(data);
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		// console.log(sql);
+		let string = JSON.stringify(results);
+		let obj = JSON.parse(string);
+		res.send({ express: string });
+		// console.log(string);
+		connection.end();
+	});
+});
+
 
 // app.listen(8081, () => console.log(`Listening on port ${port}`)); //for the dev version
 
