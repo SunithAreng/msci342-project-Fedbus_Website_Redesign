@@ -11,6 +11,7 @@ import Location from '../Harry/Location/Location';
 import SignInForm from '../Rama/Login/SignIn';
 import SignUpForm from '../Rama/Login/SignUp';
 import Admin from "../Sunith/Admin/Admin";
+import Annoucements from "../Sunith/Annoucements/Annoucements";
 
 export default function PrivateRoute({
   authenticated,
@@ -36,6 +37,7 @@ export default function PrivateRoute({
         <Route path="/Admin" exact {...rest}
           render={props => authenticated === true ?
             (<Admin {...props} {...rest} />) : ""} />
+        <Route path="/Annoucements" exact component={Annoucements} />
       </Switch>
     </Router>
   );
