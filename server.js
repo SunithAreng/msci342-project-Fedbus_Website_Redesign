@@ -293,7 +293,7 @@ app.post('/api/search', (req, res) => {
 	});
 });
 
-app.post('/api/newRoute', (req, res) => {
+app.post('/api/newSchedule', (req, res) => {
 	let connection = mysql.createConnection(config);
 
 	let bus_id = req.body.routeID;
@@ -328,6 +328,31 @@ app.post('/api/newStation', (req, res) => {
 				VALUES ((?));`;
 
 	let data = [station_name];
+
+	console.log(data);
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results);
+		res.send({ express: string });
+		connection.end();
+	});
+});
+
+app.post('/api/newRoute', (req, res) => {
+	let connection = mysql.createConnection(config);
+
+	let origin = req.body.origin;
+	let destination = req.body.destination;
+	let price = req.body.price;
+	let seat = req.body.seat;
+
+	let sql = `INSERT INTO sareng.routes (origin, destination, price, seatsCap) 
+				VALUES ((?), (?), (?), (?));`;
+
+	let data = [origin, destination, price, seat];
 
 	console.log(data);
 

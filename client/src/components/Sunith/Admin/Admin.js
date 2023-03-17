@@ -150,7 +150,7 @@ const Admin = (props) => {
         }
         console.log(userSelectection);
         const sendAPInewRoute = async (userSelectection) => {
-            const url = serverURL + "/api/newRoute";
+            const url = serverURL + "/api/newSchedule";
             console.log(url);
             fetch(url, {
                 method: "POST",
@@ -170,7 +170,7 @@ const Admin = (props) => {
             price: price,
             seat: seats,
         }
-        // console.log(userSelectection);
+        console.log(userSelectection);
         const sendAPInewRoute = async (userSelectection) => {
             const url = serverURL + "/api/newRoute";
             console.log(url);
@@ -181,9 +181,6 @@ const Admin = (props) => {
                 },
                 body: JSON.stringify(userSelectection)
             });
-            const body = await response.json();
-            if (response.status !== 200) throw Error(body.message);
-            return body;
         }
         sendAPInewRoute(userSelectection);
     }
