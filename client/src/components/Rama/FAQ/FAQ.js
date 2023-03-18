@@ -231,7 +231,7 @@ const FAQ = (props) => {
     </div>
     <Collapse in={expanded} timeout="auto" unmountOnExit>
       <CardContent>
-        <Typography paragraph> Head over to the booking page and choose your desired date and locations. </Typography>
+        <Typography> Head over to the schedule page and choose your desired date and locations. </Typography>
       </CardContent>
     </Collapse>
   </CardContent>
@@ -256,7 +256,7 @@ const FAQ = (props) => {
     </div>
     <Collapse in={expanded2} timeout="auto" unmountOnExit>
       <CardContent>
-        <Typography paragraph> Head over to the payments page! </Typography>
+        <Typography> Head over to the schedule page, and choose your desired date and location, then proceed to payment! </Typography>
       </CardContent>
     </Collapse>
   </CardContent>
@@ -283,7 +283,7 @@ const FAQ = (props) => {
     </div>
     <Collapse in={expanded3} timeout="auto" unmountOnExit>
       <CardContent>
-        <Typography paragraph>Luggage is Limited to anything that fits on your lap </Typography>
+        <Typography>Luggage is Limited to anything that fits on your lap </Typography>
       </CardContent>
     </Collapse>
   </CardContent>
@@ -308,7 +308,7 @@ const FAQ = (props) => {
     </div>
     <Collapse in={expanded5} timeout="auto" unmountOnExit>
       <CardContent>
-        <Typography paragraph>Arrive 15 minutes before your departure time.</Typography>
+        <Typography>Arrive 15 minutes before your departure time.</Typography>
       </CardContent>
     </Collapse>
   </CardContent>
@@ -334,7 +334,7 @@ const FAQ = (props) => {
     </div>
     <Collapse in={expanded6} timeout="auto" unmountOnExit>
       <CardContent>
-        <Typography paragraph>You must bring your Watcard when you buy your Fed Bus tickets and when boarding the bus!</Typography>
+        <Typography>You must bring your Watcard when you buy your Fed Bus tickets and when boarding the bus!</Typography>
       </CardContent>
     </Collapse>
   </CardContent>
