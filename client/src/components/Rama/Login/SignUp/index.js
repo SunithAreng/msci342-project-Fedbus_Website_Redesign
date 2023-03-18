@@ -69,6 +69,7 @@ class SignUpFormBase extends Component {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push("/MyProfile");
         var user = userCredential.user.uid;
+        localStorage.setItem('userid',user)
         console.log(user);
         this.callApiInsertNewUser(user, email);
       })

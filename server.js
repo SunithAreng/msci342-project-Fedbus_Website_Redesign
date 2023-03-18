@@ -97,6 +97,25 @@ app.post('/api/loadUserDetails', auth, (req, res) => {
 	});
 	connection.end();
 });
+app.post('/api/loadUserDetailsPayment', auth, (req, res) => {
+
+	let connection = mysql.createConnection(config);
+	let userID = req.body.userID;
+
+	let sql = `SELECT * FROM user WHERE uid = (?)`;
+	let data = [userID];
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
 
 app.post('/api/addNewUser', (req, res) => {
 
@@ -152,6 +171,27 @@ app.post('/api/updateEmail', (req, res) => {
 
 	let sql = `UPDATE user SET email = (?) WHERE UID = (?)`;
 	let data = [email, userID];
+	// console.log(sql);
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+app.post('/api/updateUserBalance', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+	let userID = req.body.userID;
+	let balance = req.body.balance;
+	// console.log(firstName);
+
+	let sql = `UPDATE user SET balance = (?) WHERE UID = (?)`;
+	let data = [balance, userID];
 	// console.log(sql);
 
 	connection.query(sql, data, (error, results, fields) => {
