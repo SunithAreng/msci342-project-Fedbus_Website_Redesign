@@ -334,20 +334,15 @@ const FAQ = (props) => {
 </Card>
 
 
-        <Typography>
+<Typography>
+  <p></p>
+  <b> If you have more questions about the Fedbus, get in touch:  </b>
+  <div> <b>📩 Email:  </b> <a href="mailto:turnkeys@uwaterloo.ca">turnkeys@uwaterloo.ca</a>.  </div>
+  <div> <b>📲 Phone Number: </b> <a href="tel:+15198884434">519-888-4434</a> </div>
+</Typography>
 
-          <b> If you have more questions about the Fedbus, get in touch:  </b>
-          <div> <b> Email: </b>turnkeys@uwaterloo.ca. </div>
-          <div> <b> Phone Number: </b> 519-888-4434 </div>
-          <p> </p>
-          <p> </p>
-          <p> </p>
-          <p> </p>
-          <p> </p>
-          <b> If you have more questions about the GoBus, get in touch:  </b>
-          <div> <b> Customer Comment Form: </b>https://www.gotransit.com/en/contact-us/customer-comment-form </div>
-          <div> <b> Phone Number: </b> 416-869-3600 </div>
-        </Typography>
+
+       
       </Grid>
     </MuiThemeProvider>
 
