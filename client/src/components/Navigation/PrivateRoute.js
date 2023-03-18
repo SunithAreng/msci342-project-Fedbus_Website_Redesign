@@ -33,7 +33,10 @@ export default function PrivateRoute({
             (<MyProfile {...props} {...rest} />) : (<SignInForm {...props} {...rest} />)}
         />
         <Route path="/Booking" exact component={Booking} />
-        <Route path="/Payment" exact component={Payment} />
+        <Route path="/Payment" exact
+          {...rest}
+          render={props => authenticated === true ?
+            (<Payment {...props} {...rest} />) : (<SignInForm {...props} {...rest} />)} />
         <Route path="/FAQ" exact component={FAQ} />
         <Route path="/Review" exact component={Review} />
         <Route path="/Location" exact component={Location} />
