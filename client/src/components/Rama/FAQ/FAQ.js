@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
-import { Grid, Button } from "@material-ui/core/";
+import { Grid, Button , Link } from "@material-ui/core/";
 import Typography from "@material-ui/core/Typography";
 import history from '../../Navigation/history';
 import AppBar from '@material-ui/core/AppBar';
@@ -17,6 +17,8 @@ import CardContent from '@material-ui/core/CardContent';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
+
+// import Link from "@material-ui/core"
 
 //Dev mode
 const serverURL = ""; //enable for dev mode
@@ -231,7 +233,11 @@ const FAQ = (props) => {
     </div>
     <Collapse in={expanded} timeout="auto" unmountOnExit>
       <CardContent>
-        <Typography> Head over to the schedule page and choose your desired date and locations. </Typography>
+      <Typography> Head over to&nbsp; 
+  <Link key='9' underline='none' onClick={() => history.push('/SearchSchedule')}>
+    <span style={{ textDecoration: 'underline', color: 'blue'}}>Schedule Page</span>
+  </Link> and choose your desired date and location
+</Typography>
       </CardContent>
     </Collapse>
   </CardContent>
@@ -256,7 +262,13 @@ const FAQ = (props) => {
     </div>
     <Collapse in={expanded2} timeout="auto" unmountOnExit>
       <CardContent>
-        <Typography> Head over to the schedule page, and choose your desired date and location, then proceed to payment! </Typography>
+      <Typography> Head over to&nbsp; 
+  <Link key='9' underline='none' onClick={() => history.push('/SearchSchedule')}>
+    <span style={{ textDecoration: 'underline', color: 'blue'}}>Schedule Page</span>
+  </Link> and choose your desired date and location, choose a trip, then proceed to payment! 
+</Typography>
+
+
       </CardContent>
     </Collapse>
   </CardContent>
