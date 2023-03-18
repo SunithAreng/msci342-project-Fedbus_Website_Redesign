@@ -1,7 +1,7 @@
 import React from 'react';
-import { MenuItem, FormControl, InputLabel, Select } from '@material-ui/core';
+import { MenuItem, FormControl, InputLabel, Select, FormHelperText } from '@material-ui/core';
 
-export const Selection = ({ objectList, handleChange, classes, elementName, label, idlabel }) => {
+export const Selection = ({ objectList, handleChange, classes, elementName, label, idlabel, errorState }) => {
     return (
         <>
             <FormControl variant='outlined' className={classes.formControl}>
@@ -22,6 +22,7 @@ export const Selection = ({ objectList, handleChange, classes, elementName, labe
                     }
                     )}
                 </Select>
+                <FormHelperText>{errorState ? "Please make a selection" : ""}</FormHelperText>
             </FormControl>
         </>
     )

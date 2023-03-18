@@ -40,7 +40,9 @@ class SignInFormBase extends Component {
 
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
+      .then((userCredential) => {
+        let userId = userCredential.user.uid
+        localStorage.setItem('userid',userId)
         this.setState({ ...INITIAL_STATE });
         this.props.history.push("/MyProfile");
       })
@@ -144,7 +146,7 @@ class SignInFormBase extends Component {
                         <p> </p>
                         Reset password.
                       </Link>
-                     
+
                     </Typography>
                   ) : (
                     ''
@@ -176,26 +178,11 @@ class SignInFormBase extends Component {
                 >
                   Sign In
                 </Button>
-                <div></div>
-                <p></p>
-                Don't have an account? 
-                 Sign up here! 
-                <Button
-              key='9'
-              onClick={() => history.push('/SignUp')}
-              type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="secondary"
-            >
-              Sign Up
-            </Button>
-               
-
               </form>
-              <Typography>Don't have an account? 
-                <Link key='9'
-                  onClick={() => history.push('/SignUp')}>Sign Up
+              <br />
+              <Typography>Don't have an account?&nbsp;
+                <Link key='9' underline='always'
+                  onClick={() => history.push('/SignUp')}>Sign Up Here!
                 </Link>
               </Typography>
             </Container>

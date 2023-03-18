@@ -61,12 +61,19 @@ const Location = () => {
               Location
             </Button>
             <Button
-                  key='10'
-                  onClick={() => history.push('/OtherReviews')}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  Reviews
-                </Button>
+              key='10'
+              onClick={() => history.push('/OtherReviews')}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              Reviews
+            </Button>
+            <Button
+              key='11'
+              onClick={() => history.push('/Annoucements')}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              Annoucements
+            </Button>
           </Toolbar>
         </Container>
       </AppBar>
@@ -125,7 +132,7 @@ const Location = () => {
 
       <br /><br /><br />
       <hr style={{ height: '2px', backgroundColor: 'orange', border: '0' }} />
-      
+
 
       <br />
 
