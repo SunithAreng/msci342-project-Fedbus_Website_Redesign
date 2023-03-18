@@ -9,6 +9,7 @@ import { Timings } from '../SearchSchedule/Timings';
 import { DateSelection } from '../SearchSchedule/DateSelection';
 import { RouteAPI } from './RouteAPI';
 import { useSelector } from 'react-redux';
+import { AnnoucementAPI } from '../Annoucements/AnnoucementAPI'
 
 const lightTheme = createTheme({
     palette: {
@@ -258,6 +259,73 @@ const Admin = (props) => {
         newStation ? sendAPInewRoute(userSelectection) : setNewStationErr(true);
     }
 
+    const [annoucementsTitle, setAnnoucementTitle] = React.useState('');
+    const [annoucementsTitleErr, setAnnoucementTitleErr] = React.useState(false);
+
+    const handleAnnoucementTitle = (event) => {
+        setAnnoucementTitle(event.target.value);
+        setAnnoucementTitleErr(false);
+    }
+
+    const [annoucementsContent, setAnnoucementContent] = React.useState('');
+    const [annoucementsContentErr, setAnnoucementContentErr] = React.useState(false);
+
+    const handleAnnoucementContent = (event) => {
+        setAnnoucementContent(event.target.value);
+        setAnnoucementContentErr(false);
+    }
+
+    const handleSubmitNewAnnoucement = () => {
+        const userSelectection = {
+            title: annoucementsTitle,
+            content: annoucementsContent
+        }
+        console.log(userSelectection);
+        const sendAPInewAnnoucement = async (userSelectection) => {
+            const url = serverURL + "/api/newAnnoucement";
+            console.log(url);
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(userSelectection)
+            });
+            setOpen(true);
+        };
+        annoucementsTitle ? sendAPInewAnnoucement(userSelectection) : setAnnoucementTitleErr(true);
+    }
+
+    const [selectedAnnouce, setSelectedAnnouce] = React.useState('');
+    const [selectedAnnouceErr, setSelectedAnnouceErr] = React.useState(false);
+    const [selectedAnnouceID, setSelectedAnnouceID] = React.useState(0);
+
+    const handleAnnouce = (selection) => {
+        setSelectedAnnouce(selection.title);
+        setSelectedAnnouceID(selection.id);
+        setSelectedAnnouceErr(false);
+    }
+
+    const handleDeleteAnnoucement = () => {
+        const userSelectection = {
+            id: selectedAnnouceID,
+        }
+        console.log(userSelectection);
+        const sendAPIdeleteAnnoucement = async (userSelectection) => {
+            const url = serverURL + "/api/deleteAnnoucement";
+            console.log(url);
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(userSelectection)
+            });
+            setOpen(true);
+        };
+        selectedAnnouceID ? sendAPIdeleteAnnoucement(userSelectection) : setSelectedAnnouceErr(true);
+    }
+
     return (
         <ThemeProvider theme={lightTheme}>
             <Box
@@ -273,7 +341,7 @@ const Admin = (props) => {
                     variant="contained" color="primary"
                     sx={{ my: 2, display: 'block' }}>Go Back</Button>
                 <Typography variant="h2"> This is the Admin page.</Typography>
-                <Typography>Please make sure to refresh the page to see your changes reflected!</Typography>
+                <Typography>Please make sure to refresh the page to see your changes!</Typography>
                 <Grid
                     container
                     direction="column"
@@ -321,19 +389,24 @@ const Admin = (props) => {
                 <Grid
                     container
                     direction="column"
-                    justifyContent="center"
-                    alignItems="center"
+                    justifyContent='center'
+                    alignItems='center'
+                    spacing={2}
                 >
-                    <Typography variant="h4" component="h4">Add New Station</Typography>
-                    <br />
-                    <TextInput
-                        label={"Station Name"}
-                        valueState={newStation}
-                        onEntry={handleNewStation}
-                        errState={newStationErr}
-                    />
-                    <br />
-                    <Button variant="contained" color="secondary" onClick={handleSubmitNewStation}>Submit</Button>
+                    <Grid direction="column"
+                        item xs={30}>
+                        <Typography variant="h4" component="h4">Add New Station</Typography>
+                        <br />
+                        <TextInput
+                            label={"Station Name"}
+                            valueState={newStation}
+                            onEntry={handleNewStation}
+                            errState={newStationErr}
+                        />
+                    </Grid>
+                    <Grid item>
+                        <Button variant="contained" color="secondary" onClick={handleSubmitNewStation}>Submit</Button>
+                    </Grid>
                 </Grid>
                 <br />
                 <Grid
@@ -377,13 +450,72 @@ const Admin = (props) => {
                     <br />
                     <Button variant="contained" color="secondary" onClick={handleSubmitNewRoute}>Submit</Button>
                 </Grid>
+                <br />
+                <Grid
+                    container
+                    direction="column"
+                    justifyContent='center'
+                    alignItems='center'
+                    spacing={2}
+                >
+                    <Grid
+                        item
+                        xs={30}>
+                        <Typography variant="h4" component="h4">Add New Annoucements</Typography>
+                        <br />
+                        <TextInput
+                            label={"Annoucement Title"}
+                            valueState={annoucementsTitle}
+                            onEntry={handleAnnoucementTitle}
+                            errState={annoucementsTitleErr}
+                        />
+                        <br /> <br />
+                        <TextField
+                            id="Annon Body"
+                            label="Annoucement Content"
+                            multiline
+                            fullWidth
+                            minRows={4}
+                            value={annoucementsContent}
+                            onChange={handleAnnoucementContent}
+                            variant="outlined"
+                            inputProps={{ maxLength: 200 }}
+                            helperText={annoucementsContentErr ? "" : "Maximum 200 characters"}
+                        />
+                    </Grid>
+                    <Grid item>
+                        <Button variant="contained" color="secondary" onClick={handleSubmitNewAnnoucement}>Submit</Button>
+                    </Grid>
+                </Grid>
+                <br />
+                <Grid
+                    container
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <Typography variant="h4" component="h4">Delete Old Annoucements</Typography>
+                    <Typography>Routinely Check for old annoucements and delete accordingly!</Typography>
+                    <Selection
+                        handleChange={handleAnnouce}
+                        classes={classes}
+                        elementName={selectedAnnouce}
+                        label={"Annoucements"}
+                        idlabel={"Annoucement-list"}
+                        objectList={AnnoucementAPI()}
+                        errorState={selectedAnnouceErr}
+                    />
+                    <br />
+                    <Button variant="contained" color="secondary" onClick={handleDeleteAnnoucement}>Submit</Button>
+                </Grid>
                 <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity="success">
                         Your changes have been saved!
                     </Alert>
                 </Snackbar>
+                <br /><br />
             </Box>
-        </ThemeProvider>
+        </ThemeProvider >
     );
 }
 
@@ -417,6 +549,7 @@ const TextInput = ({ label, valueState, onEntry, errState }) => {
                 onChange={onEntry}
                 value={valueState}
                 error={errState}
+                fullWidth
                 helperText={errState ? "Please fill in the missing data" : ""}
             />
         </>

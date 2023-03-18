@@ -21,16 +21,8 @@ const theme = createTheme({
 });
 
 const Annoucements = () => {
-    const sample = [
-        {
-            id: 1,
-            title: "No bus services on Good Friday"
-        },
-        {
-            id: 2,
-            title: "New Routes available for Ottawa"
-        }
-    ]
+
+    let i = 0;
 
     return (
         <MuiThemeProvider theme={theme}>
@@ -111,13 +103,20 @@ const Annoucements = () => {
                 alignItems="center"
             >
                 <Typography variant="h3" component="h4">Important Annoucements:</Typography>
-                {sample.map((item) => {
+                <br />
+                {AnnoucementAPI().map((item) => {
+                    i++;
                     return (
                         <>
-                            <Typography variant="h5" key={item.id}>{item.id + ". " + item.title}</Typography>
+                            <p>
+                                <Typography variant="h5" key={item.id}>{i + ". " + item.title}</Typography>
+                                {item.content}
+                            </p>
                         </>
                     )
-                })}
+
+                }
+                )}
             </Grid>
         </MuiThemeProvider>
     )
