@@ -366,6 +366,69 @@ app.post('/api/newRoute', (req, res) => {
 	});
 });
 
+app.post('/api/getAnnoucements', (req, res) => {
+	let connection = mysql.createConnection(config);
+
+	let sql = `SELECT * FROM annoucements`;
+	let data = [];
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		res.send({ express: string });
+	});
+	connection.end();
+
+});
+
+app.post('/api/newAnnoucement', (req, res) => {
+	let connection = mysql.createConnection(config);
+
+	let title = req.body.title;
+	let content = req.body.content;
+
+	if (content === '') {
+		content = null;
+	}
+
+	let sql = `INSERT INTO annoucements (title, content) VALUES ((?), (?))`;
+	let data = [title, content];
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		res.send({ express: string });
+	});
+	connection.end();
+
+});
+
+app.post('/api/deleteAnnoucement', (req, res) => {
+	let connection = mysql.createConnection(config);
+
+	let id = req.body.id;
+
+	let sql = `DELETE FROM annoucements WHERE id = (?)`;
+	let data = [id];
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		res.send({ express: string });
+	});
+	connection.end();
+
+});
+
 
 // app.listen(8081, () => console.log(`Listening on port ${port}`)); //for the dev version
 
