@@ -84,7 +84,14 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
-});
+    expandedCard: {
+      height: 'auto',
+      transition: 'height 0.5s',
+    },
+    cardContent: {
+      overflow: 'auto',
+    },
+  });
 
 const FAQ = (props) => {
   const classes = useStyles();
@@ -208,7 +215,7 @@ const FAQ = (props) => {
         <Card className={classes.root} variant="outlined" style={{ backgroundColor: '#fff5e6' }}>
   <CardContent>
     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-      <Typography variant="h6" component="h2" style={{ marginRight: 'auto' }}>
+      <Typography variant="h6" component="h2" style={{ marginRight: 'auto' ,}}>
         How can I book?
       </Typography>
       <IconButton
@@ -336,7 +343,7 @@ const FAQ = (props) => {
 
 <Typography>
   <p></p>
-  <b> If you have more questions about the Fedbus, get in touch:  </b>
+  <b> If you have more questions about the Fedbus, Get in touch:  </b>
   <div> <b>📩 Email:  </b> <a href="mailto:turnkeys@uwaterloo.ca">turnkeys@uwaterloo.ca</a>.  </div>
   <div> <b>📲 Phone Number: </b> <a href="tel:+15198884434">519-888-4434</a> </div>
 </Typography>
