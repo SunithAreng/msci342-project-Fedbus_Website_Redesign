@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useLocation } from "react-router-dom";
 import history from '../../Navigation/history';
 import { AppBar,Toolbar, Typography,Button,IconButton, Link, Grid,Paper,Box, MenuItem, Select, FormControl, InputLabel, Divider, TextField} from '@material-ui/core';
@@ -17,7 +17,42 @@ const Payment = (props) => {
   const regexNumber = /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$/;
   const regexMMYY =  /^(?:0[1-9]|1[0-2])(\d{2})$/;
   const regexCVV = /^[0-9]{3,4}$/;
+  let userUid = localStorage.getItem('userid');
+  let token = localStorage.getItem('token');
+  let userURL = localStorage.getItem('userURL');
+  console.log("This is token" + token)
+  console.log("This is userUID"+userUid)
+  console.log("This is userURL"+userURL)
+  let [balance, setBalance] = React.useState(0)
+  useEffect(()=>{
+    loadUserSettings()
+  },[])
+  const loadUserSettings = () => {
+      callApiLoadUserSettings()
+          .then((res) => {
+              let parsed = JSON.parse(res.express);
+              setBalance(parseInt(parsed[0].balance))
+          });
+  }
 
+  const callApiLoadUserSettings = async () => {
+      const url = serverURL + "/api/loadUserDetailsPayment";
+
+      const response = await fetch(url, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              authorization: `Bearer ${token}`
+          },
+            body: JSON.stringify({
+                userID: userUid,
+            })
+      });
+      const body = await response.json();
+      if (response.status !== 200) throw Error(body.message);
+      console.log("User settings: ", body);
+      return body;
+  }
   const handleNameChange = (e) => {
     setName(e.target.value)
   }
@@ -54,6 +89,7 @@ const Payment = (props) => {
   return (
     <Box mt = {2}>
       <Typography variant = "h3" style={{color: 'black'}} align = "center">Checkout</Typography>
+      {balance}
       <h1></h1>
       <hr />
       <div>

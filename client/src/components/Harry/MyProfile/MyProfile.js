@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withFirebase } from '../../Firebase';
-import { AppBar, Button, Container, Toolbar, Box, TextField, Snackbar, Grid } from '@material-ui/core';
+import { AppBar, Button, Container, Toolbar, Box, TextField, Snackbar, Grid, Typography} from '@material-ui/core';
 import history from '../../Navigation/history';
 import logo from './logo.png';
 import { createTheme, ThemeProvider, styled } from '@material-ui/core/styles';
@@ -58,6 +58,7 @@ class MyProfileBase extends React.Component {
             phone: null,
             email: '',
             newEmail: '',
+            balance : 0,
             admin: 0,
             open: false,
             currentPassword: '',
@@ -70,8 +71,7 @@ class MyProfileBase extends React.Component {
             errMsg: ''
         };
         this.onSubmit = this.onSubmit.bind(this);
-    }
-
+    };
 
     async componentDidMount() {
         if (this.props.authUser.uid !== null) {
@@ -113,6 +113,9 @@ class MyProfileBase extends React.Component {
                 this.setState({ email: parsed[0].email });
                 this.setState({ phone: parsed[0].phone });
                 this.setState({ admin: parsed[0].admin });
+                this.setState({balance : parseInt(parsed[0].balance)})
+                localStorage.setItem('token',this.state.token)
+                localStorage.setItem('userURL',this.props.serverURL)
             });
     }
 
@@ -137,6 +140,7 @@ class MyProfileBase extends React.Component {
     signOut() {
         this.setState({ mobileMoreAnchorEl: null });
         this.props.firebase.doSignOut();
+        localStorage.clear()
         this.props.history.push("/");
     }
 
@@ -443,38 +447,7 @@ class MyProfileBase extends React.Component {
                             <br /> <br />
                             <hr style={{ backgroundColor: 'black', height: '3px', border: '0px' }} />
                         </div>
-                        <div className="Payment Method">
-                            <form>
-                                <h2>Payment Info</h2>
-                                <h3>Payment Method</h3>
-                                <TextField
-                                    variant="outlined"
-                                    type="text"
-                                    style={{ width: '250px' }}
-                                    className="input"
-                                    defaultValue="Visa - 0919 **** **** 1413" />
-                                <h3>Billing Address</h3>
-                                <TextField
-                                    variant="outlined"
-                                    type="text"
-                                    style={{ width: '250px' }}
-                                    className="input"
-                                    defaultValue="XXX St, Waterloo, ON" />
-                                <h3>Postal Code</h3>
-                                <TextField
-                                    variant="outlined"
-                                    type="text"
-                                    style={{ width: '250px' }}
-                                    className="input"
-                                    defaultValue="N2L XXX" />
-                                <br /><br />
-                                <Button variant="contained" color="secondary">
-                                    Update Payment Method
-                                </Button>
-                                <br /><br />
-                                <hr style={{ backgroundColor: 'black', height: '3px', border: '0px' }} />
-                            </form>
-                        </div>
+                        <Payment userId = {this.state.userID} serverUrl = {this.props.serverURL} currentBalance = {this.state.balance}/>
                         <div className="History & Settings">
                             <h2>History & Settings</h2>
                             <p />
@@ -496,6 +469,132 @@ class MyProfileBase extends React.Component {
     }
 }
 
+const Payment = (props) => {
+  let [name, setName] = React.useState('')
+  let [number, setNumber] = React.useState('')
+  let [mmyy, setMmyy] = React.useState('')
+  let [cvv, setCvv] = React.useState('')
+  let [money, setMoney] = React.useState()
+  let [errorMessage, setErrorMessage] = React.useState('')
+  let [successMessage, setSuccessMessage] = React.useState('')
+  const regexNumber = /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$/;
+  const regexMMYY =  /^(?:0[1-9]|1[0-2])(\d{2})$/;
+  const regexCVV = /^[0-9]{3,4}$/;
+
+  const serverUrl = props.serverUrl;
+  const userId = props.userId;
+  const currentBalance = props.currentBalance;
+  const handleNameChange = (e) => {
+    setName(e.target.value)
+  }
+  const handleMoneyChange = (e) => {
+    setMoney(e.target.value)
+  }
+  const handleNumberChange = (e) => {
+    setNumber(e.target.value)
+  }
+  const handleMmyyChange = (e) => {
+    setMmyy(e.target.value)
+  }
+  const handleCvvChange = (e) => {
+    setCvv(e.target.value)
+  }
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setSuccessMessage("")
+    if (!name || !number || !mmyy || !cvv){
+      setErrorMessage("Please fill out all credit card information")
+      return;
+    }
+    if (!money){
+        setErrorMessage("Please enter the amount of money you would like to load into your account")
+        return;
+    }
+    if (!regexNumber.test(number)){
+      setErrorMessage("Please enter correct credit card number")
+      return;
+    }
+    if (!regexMMYY.test(mmyy)){
+      setErrorMessage("Please enter correct MMYY")
+      return;
+    }
+    if (!regexCVV.test(cvv)){
+      setErrorMessage("Please enter correct CVV")
+      return;
+    }
+    const changeMoney = () => {
+        var serverURL = serverUrl;
+        const url = serverURL + "/api/updateUserBalance";
+        console.log("This is the url"+url)
+        let newBalance = parseInt(money) + parseInt(currentBalance);
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                // authorization: `Bearer ${this.state.token}`
+            },
+            body: JSON.stringify({
+                userID: userId,
+                balance : newBalance,
+            })
+        }).then(() => {
+            setErrorMessage("")
+            setSuccessMessage ("Money successfully loaded ! Please refresh to see your new updated balance")
+            setName("")
+            setMoney("")
+            setMmyy("")
+            setCvv("")
+            setNumber("")
+        }).catch((error)=>{
+            setErrorMessage(error)
+        });
+    }
+    changeMoney();
+  }
+    return(
+    <div className="Payment Method">
+        <form>
+            <h2>Load money into your balance </h2>
+            <h4>Current Balance : {currentBalance}</h4>
+            <h3>Cardholder Name</h3>
+            <TextField
+                variant="outlined"
+                type="text"
+                style={{ width: '250px' }}
+                value={name} onChange={handleNameChange}/>
+            <h3>Cardholder Number</h3>
+            <TextField
+                variant="outlined"
+                type="number"
+                style={{ width: '250px' }} 
+                value={number} onChange={handleNumberChange}/>
+            <h3>MMYY</h3>
+            <TextField
+                variant="outlined"
+                type="number"
+                value={mmyy}
+                style={{ width: '250px' }} onChange={handleMmyyChange}/>
+            <h3>CVV</h3>
+            <TextField
+                variant="outlined"
+                type="number"
+                style={{ width: '250px' }} value={cvv} onChange={handleCvvChange}/>
+            <h3>Amount of money you would like to load in</h3>
+            <TextField
+                variant="outlined"
+                type="number"
+                value={money}
+                style={{ width: '250px' }} onChange={handleMoneyChange}/>
+            <br /><br />
+            <Button variant="contained" color="secondary" onClick = {handleSubmit}>
+                Confirm payment
+            </Button>
+            <Typography  variant="subtitle2" color = "secondary">{errorMessage}</Typography>
+            <Typography variant="h6" style = {{color : "green"}}>{successMessage}</Typography>
+            <br /><br />
+            <hr style={{ backgroundColor: 'black', height: '3px', border: '0px' }} />
+        </form>
+    </div>)}
 const MyProfile = compose(
     withRouter,
     withFirebase,
