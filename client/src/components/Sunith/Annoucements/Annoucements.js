@@ -22,6 +22,8 @@ const theme = createTheme({
 
 const Annoucements = () => {
 
+    let i = 0;
+
     return (
         <MuiThemeProvider theme={theme}>
             <AppBar position="static">
@@ -103,10 +105,11 @@ const Annoucements = () => {
                 <Typography variant="h3" component="h4">Important Annoucements:</Typography>
                 <br />
                 {AnnoucementAPI().map((item) => {
+                    i++;
                     return (
                         <>
                             <p>
-                                <Typography variant="h5" key={item.id}>{item.id + ". " + item.title}</Typography>
+                                <Typography variant="h5" key={item.id}>{i + ". " + item.title}</Typography>
                                 {item.content}
                             </p>
                         </>
