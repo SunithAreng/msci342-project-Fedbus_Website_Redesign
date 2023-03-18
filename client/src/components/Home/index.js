@@ -155,6 +155,20 @@ class Home extends Component {
                 >
                   Location
                 </Button>
+                <Button
+                  key='10'
+                  onClick={() => history.push('/OtherReviews')}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Reviews
+                </Button>
+                <Button
+                  key='11'
+                  onClick={() => history.push('/Annoucements')}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Annoucements
+                </Button>
               </Toolbar>
             </Container>
           </AppBar>
@@ -172,6 +186,7 @@ class Home extends Component {
             <Typography variant="h3" color="inherit">
               Make Commuting Easy
             </Typography>
+            <p></p>
             <Typography variant="h5" color="inherit">
               Find your most convenient bus ride!
             </Typography>

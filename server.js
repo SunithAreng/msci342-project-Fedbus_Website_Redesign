@@ -226,6 +226,26 @@ app.post('/api/getTimes', (req, res) => {
 
 });
 
+app.post('/api/getRoutes', (req, res) => {
+	let connection = mysql.createConnection(config);
+
+	let sql = `select id, concat((select station_name from stations b where b.id = a.origin), " to ", 
+	(select station_name from stations b where b.id = a.destination)) as route, seatsCap from routes a;`;
+	let data = [];
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+
+});
+
 app.post('/api/search', (req, res) => {
 	let connection = mysql.createConnection(config);
 
@@ -237,26 +257,26 @@ app.post('/api/search', (req, res) => {
 
 	// console.log(val)
 
-	let sql = `SELECT trip_id, origin, destination,departure_time,arrival_time, TIMEDIFF(arrival_time, departure_time) AS duration,
-	DATE_FORMAT(d.trip_date, '%Y-%m-%d') as trip_date, price, seats
-	From 
-	(SELECT a.station_name as origin, price, b.station_name as destination, (select time from sareng.timings where id=c.depart) as departure_time,
-	(select time from sareng.timings where id =c.arrive) as arrival_time, c.id FROM 
-	(select station_name, id from sareng.stations where id = ?) as a,
-	(select station_name, id from sareng.stations where id = ?) as b,
-	sareng.fedbus as c
-	where origin = a.id and destination=b.id `;
+	let sql = `SELECT trip_id, origin, destination, departure_time, arrival_time, 
+	TIMEDIFF(arrival_time, departure_time) AS duration, DATE_FORMAT(d.trip_date, '%Y-%m-%d') AS trip_date, price, seats
+	FROM (SELECT a.station_name AS origin, b.station_name AS destination, c.price, c.id 
+		FROM (SELECT station_name, id FROM sareng.stations WHERE id = ?) AS a, 
+		(SELECT station_name, id FROM sareng.stations WHERE id = ?) AS b, sareng.routes AS c 
+		WHERE origin = a.id AND destination = b.id) aa 
+		INNER JOIN (SELECT a.trip_id, a.seats, a.trip_date, a.bus_id, 
+			(SELECT time FROM sareng.timings WHERE id = a.depart_time) AS departure_time, 
+			(SELECT time FROM sareng.timings WHERE id = a.arrival_time) AS arrival_time 
+			FROM sareng.trips a WHERE trip_date = (?)`;
 
 	if (val == '1') {
-		sql = sql + `and c.depart >= (?)`;
+		sql = sql + `and depart_time >= (?)`;
 	} else if (val == '2') {
-		sql = sql + `and c.arrive < (?)`;
+		sql = sql + `and arrival_time <= (?)`;
 	}
 
-	sql = sql + `) aa Inner Join (Select * from sareng.trips
-		where trip_date = (?)) d on d.bus_id = aa.id;`
+	sql = sql + `) d ON d.bus_id = aa.id;`
 
-	let data = [origin_id, destination_id, time_ID, date];
+	let data = [origin_id, destination_id, date, time_ID];
 
 	console.log(data);
 
@@ -272,6 +292,143 @@ app.post('/api/search', (req, res) => {
 		connection.end();
 	});
 });
+
+app.post('/api/newSchedule', (req, res) => {
+	let connection = mysql.createConnection(config);
+
+	let bus_id = req.body.routeID;
+	let depart_time = req.body.origin;
+	let arrival_time = req.body.destination;
+	let seats = req.body.seats;
+	let date = req.body.date;
+
+	let sql = `INSERT INTO sareng.trips (bus_id, depart_time, arrival_time, trip_date, seats) 
+				VALUES ((?), (?), (?), (?), (?));`;
+
+	let data = [bus_id, depart_time, arrival_time, date, seats];
+
+	console.log(data);
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results);
+		res.send({ express: string });
+		connection.end();
+	});
+});
+
+app.post('/api/newStation', (req, res) => {
+	let connection = mysql.createConnection(config);
+
+	let station_name = req.body.name;
+
+	let sql = `INSERT INTO sareng.stations (station_name) 
+				VALUES ((?));`;
+
+	let data = [station_name];
+
+	console.log(data);
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results);
+		res.send({ express: string });
+		connection.end();
+	});
+});
+
+app.post('/api/newRoute', (req, res) => {
+	let connection = mysql.createConnection(config);
+
+	let origin = req.body.origin;
+	let destination = req.body.destination;
+	let price = req.body.price;
+	let seat = req.body.seat;
+
+	let sql = `INSERT INTO sareng.routes (origin, destination, price, seatsCap) 
+				VALUES ((?), (?), (?), (?));`;
+
+	let data = [origin, destination, price, seat];
+
+	console.log(data);
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results);
+		res.send({ express: string });
+		connection.end();
+	});
+});
+
+app.post('/api/getAnnoucements', (req, res) => {
+	let connection = mysql.createConnection(config);
+
+	let sql = `SELECT * FROM annoucements`;
+	let data = [];
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		res.send({ express: string });
+	});
+	connection.end();
+
+});
+
+app.post('/api/newAnnoucement', (req, res) => {
+	let connection = mysql.createConnection(config);
+
+	let title = req.body.title;
+	let content = req.body.content;
+
+	if (content === '') {
+		content = null;
+	}
+
+	let sql = `INSERT INTO annoucements (title, content) VALUES ((?), (?))`;
+	let data = [title, content];
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		res.send({ express: string });
+	});
+	connection.end();
+
+});
+
+app.post('/api/deleteAnnoucement', (req, res) => {
+	let connection = mysql.createConnection(config);
+
+	let id = req.body.id;
+
+	let sql = `DELETE FROM annoucements WHERE id = (?)`;
+	let data = [id];
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		res.send({ express: string });
+	});
+	connection.end();
+
+});
+
 
 // app.listen(8081, () => console.log(`Listening on port ${port}`)); //for the dev version
 

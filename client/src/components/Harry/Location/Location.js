@@ -60,6 +60,20 @@ const Location = () => {
             >
               Location
             </Button>
+            <Button
+              key='10'
+              onClick={() => history.push('/OtherReviews')}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              Reviews
+            </Button>
+            <Button
+              key='11'
+              onClick={() => history.push('/Annoucements')}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              Annoucements
+            </Button>
           </Toolbar>
         </Container>
       </AppBar>
@@ -117,37 +131,8 @@ const Location = () => {
       <iframe title='Markham' style={{ width: "80%", height: "40%", borderRadius: '14px' }} src="https://maps.google.com/maps?q=43.868462,%20-79.291938&t=&z=17&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
 
       <br /><br /><br />
-      <hr style={{ height: '2px', backgroundColor: 'black', border: '0' }} />
-      <h3>Useful Information</h3>
-      <h5>1. The Fed Bus is a school bus. Only baggage that will fit on your lap or under your seat will be accommodated.
-        <br />
-        2. Tickets are limited, please purchase early!
-        <br />
-        3. You must show your Watcard for every ticket purchase and upon boarding.
-        <br />
-        4. The Fed Bus does not run during examination periods. When classes finish, so does the Fed Bus.
-        <br />
-        5. No refunds on ticket purchases. Please arrive 15 minutes prior to your departure time.
-      </h5>
+      <hr style={{ height: '2px', backgroundColor: 'orange', border: '0' }} />
 
-
-      <hr style={{ height: '2px', backgroundColor: 'black', border: '0' }} />
-      <h3>Contact</h3>
-      <h5>Student Life Centre - Turnkey Desk:
-        <br />
-        200 University Ave West
-        <br />
-        Waterloo, ON N2L 3G1
-        <br />
-        519-888-4434
-        <br />
-        turnkeys@uwaterloo.ca <br />
-      </h5>
-
-      <h5>Fed Bus Email:
-        <br />
-        fedbus@wusa.ca
-      </h5>
 
       <br />
 

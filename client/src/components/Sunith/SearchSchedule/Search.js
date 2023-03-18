@@ -4,10 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { createTheme, ThemeProvider, styled } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import Box from "@material-ui/core/Box";
 import history from '../../Navigation/history';
@@ -17,10 +13,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { ResultsTable } from './ResultsTable';
 import { DateSelection } from './DateSelection';
 import { Selection } from './Selection';
+import { Preference } from './Preference';
+import { Stations } from './Stations';
+import { Timings } from './Timings';
+import { useSelector } from 'react-redux';
 
-const serverURL = ""; //enable for dev mode
-
-// const serverURL = "http://localhost:8081";
 
 const opacityValue = 0.9;
 
@@ -93,62 +90,10 @@ const useStyles = makeStyles((theme) => ({
 
 const SearchSchdeule = () => {
 
+    const serverURL = useSelector((state) => state.serverURL.value);
+
     const classes = useStyles();
 
-    React.useEffect(() => {
-        getOrigin();
-        getTimes();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const getOrigin = () => {
-        const callApiGetOrigin = async () => {
-            const url = serverURL + "/api/getOrigin";
-            console.log(url);
-
-            const response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            });
-            const body = await response.json();
-            if (response.status !== 200) throw Error(body.message);
-            return body;
-        };
-
-        callApiGetOrigin()
-            .then(res => {
-                var parsed = JSON.parse(res.express);
-                setStations(parsed);
-                // console.log(parsed);
-            })
-    }
-
-    const getTimes = () => {
-        const callApiGetTimes = async () => {
-            const url = serverURL + "/api/getTimes";
-            console.log(url);
-
-            const response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            });
-            const body = await response.json();
-            if (response.status !== 200) throw Error(body.message);
-            return body;
-        };
-        callApiGetTimes()
-            .then(res => {
-                var parsed = JSON.parse(res.express);
-                setTimesList(parsed);
-                // console.log(parsed);
-            })
-    }
-
-    const [stations, setStations] = React.useState([]);
     const [destinationName, setDestinationName] = React.useState("");
     const [destinationStopID, setDestinationStopID] = React.useState(0);
 
@@ -178,13 +123,11 @@ const SearchSchdeule = () => {
     };
 
     var today = new Date(),
-        t = (today.getHours() + 1).toString().padStart(2, '0') + ':00:00';
-
-    var x = (today.getHours() + 1) * 4;
+        t = (today.getHours() + 1).toString().padStart(2, '0') + ':00:00',
+        x = (today.getHours() + 1) * 4;
 
     const [time, setTime] = React.useState(t);
     const [timeID, setTimeID] = React.useState(x);
-    const [timesList, setTimesList] = React.useState([]);
 
     const handleTimeChange = (selectedTime) => {
         setTime(selectedTime.time);
@@ -227,7 +170,6 @@ const SearchSchdeule = () => {
             .then(
                 res => {
                     var parsed = JSON.parse(res.express);
-                    console.log("callApiFindMovies parsed: ", parsed)
                     setResults(parsed);
                 }
             )
@@ -318,6 +260,20 @@ const SearchSchdeule = () => {
                             >
                                 Location
                             </Button>
+                            <Button
+                                key='10'
+                                onClick={() => history.push('/OtherReviews')}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Reviews
+                            </Button>
+                            <Button
+                                key='11'
+                                onClick={() => history.push('/Annoucements')}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Annoucements
+                            </Button>
                         </Toolbar>
                     </Container>
                 </AppBar>
@@ -340,7 +296,7 @@ const SearchSchdeule = () => {
                             elementName={originName}
                             label={"Origin"}
                             idlabel={"origin-list"}
-                            objectList={stations}
+                            objectList={Stations()}
                         />
                         <Selection
                             handleChange={handleDestinationChange}
@@ -348,12 +304,13 @@ const SearchSchdeule = () => {
                             elementName={destinationName}
                             label={"Destination"}
                             idlabel={"destination-list"}
-                            objectList={stations}
+                            objectList={Stations()}
                         />
-                        <TimePrefernce
+                        <Preference
                             classes={classes}
                             spacing={value}
                             handleChange={handleChange}
+                            object={[{ id: '1', name: "Depart at" }, { id: '2', name: "Arrive by" }]}
                         />
                         <Selection
                             handleChange={handleTimeChange}
@@ -361,7 +318,7 @@ const SearchSchdeule = () => {
                             elementName={time}
                             label={"What time?"}
                             idlabel={"times-list"}
-                            objectList={timesList}
+                            objectList={Timings()}
                         />
                         <br />
                     </Grid>
@@ -371,10 +328,11 @@ const SearchSchdeule = () => {
                             onChange={setDate}
                             date={date}
                         />
-                        <TripPreference
+                        <Preference
                             classes={classes}
                             spacing={tripPref}
                             handleChange={handlePrefChange}
+                            object={[{ id: '1', name: "One way" }, { id: '2', name: "Round Trip" }]}
                         />
                     </Grid>
                     <br />
@@ -383,7 +341,6 @@ const SearchSchdeule = () => {
                             Search
                         </Button>
                     </div>
-                    <br />
                 </MainGridContainer>
                 <div style={{ marginLeft: '33px' }}>
                     <Button variant="contained" color="secondary" onClick={payment} >
@@ -402,61 +359,15 @@ const SearchSchdeule = () => {
                             </Link>) : <Typography variant="h6" color="secondary">{showErrorMessage}</Typography>
                     }
                 </div>
+                <br />
                 <ResultsTable
                     results={results}
                     setSelectionModel={setSelectionModel}
                     selectionModel={selectionModel}
                 />
-
             </Box>
         </ThemeProvider>
     );
-}
-
-const TimePrefernce = ({ classes, spacing, handleChange }) => {
-    return (
-        <>
-            <FormControl className={classes.root} noValidate autoComplete="off">
-                <Grid item>
-                    {/* <FormLabel>Rating</FormLabel> */}
-                    <RadioGroup
-                        name="Time of Journey"
-                        aria-label="Time"
-                        value={spacing}
-                        onChange={handleChange}
-                        row
-                    >
-                        <FormControlLabel value='1' control={<Radio />} label="Depart at" />
-                        <FormControlLabel value='2' control={<Radio />} label="Arrive by" />
-                    </RadioGroup>
-                </Grid>
-            </FormControl>
-
-        </>
-    )
-}
-
-const TripPreference = ({ classes, spacing, handleChange }) => {
-    return (
-        <>
-            <FormControl className={classes.root} noValidate autoComplete="off">
-                <Grid item>
-                    {/* <FormLabel>Rating</FormLabel> */}
-                    <RadioGroup
-                        // name="Rating"
-                        // aria-label="Rating"
-                        value={spacing}
-                        onChange={handleChange}
-                        row
-                    >
-                        <FormControlLabel value='1' control={<Radio />} label="One Way" />
-                        <FormControlLabel value='2' control={<Radio />} label="Round Trip" />
-                    </RadioGroup>
-                </Grid>
-            </FormControl>
-
-        </>
-    )
 }
 
 export default SearchSchdeule;
