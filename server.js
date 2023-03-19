@@ -294,19 +294,22 @@ app.post('/api/search', (req, res) => {
 	let val = req.body.preference;
 	let time_ID = req.body.time;
 	let date = req.body.date;
+	let pref = req.body.pref;
+	let returnDate = req.body.returnDate;
 
 	// console.log(val)
 
 	let sql = `SELECT trip_id, origin, destination, departure_time, arrival_time, 
-	TIMEDIFF(arrival_time, departure_time) AS duration, DATE_FORMAT(d.trip_date, '%Y-%m-%d') AS trip_date, price, seats
-	FROM (SELECT a.station_name AS origin, b.station_name AS destination, c.price, c.id 
-		FROM (SELECT station_name, id FROM sareng.stations WHERE id = ?) AS a, 
-		(SELECT station_name, id FROM sareng.stations WHERE id = ?) AS b, sareng.routes AS c 
-		WHERE origin = a.id AND destination = b.id) aa 
-		INNER JOIN (SELECT a.trip_id, a.seats, a.trip_date, a.bus_id, 
+			TIMEDIFF(arrival_time, departure_time) AS duration, DATE_FORMAT(d.trip_date, '%Y-%m-%d') AS trip_date, price, seats
+			FROM (SELECT a.station_name AS origin, b.station_name AS destination, c.price, c.id 
+			FROM (SELECT station_name, id FROM sareng.stations WHERE id = ?) AS a, 
+			(SELECT station_name, id FROM sareng.stations WHERE id = ?) AS b, sareng.routes AS c 
+			WHERE origin = a.id AND destination = b.id) aa 
+			INNER JOIN (SELECT a.trip_id, a.seats, a.trip_date, a.bus_id, 
 			(SELECT time FROM sareng.timings WHERE id = a.depart_time) AS departure_time, 
 			(SELECT time FROM sareng.timings WHERE id = a.arrival_time) AS arrival_time 
 			FROM sareng.trips a WHERE trip_date = (?)`;
+
 
 	if (val == '1') {
 		sql = sql + `and depart_time >= (?)`;
@@ -325,11 +328,44 @@ app.post('/api/search', (req, res) => {
 			return console.error(error.message);
 		}
 		// console.log(sql);
-		let string = JSON.stringify(results);
-		let obj = JSON.parse(string);
-		res.send({ express: string });
-		// console.log(string);
-		connection.end();
+
+		if (pref == 2 && date !== returnDate) {
+			let Mysql = `SELECT trip_id, origin, destination, departure_time, arrival_time, 
+				TIMEDIFF(arrival_time, departure_time) AS duration, DATE_FORMAT(d.trip_date, '%Y-%m-%d') AS trip_date, price, seats
+				FROM (SELECT a.station_name AS origin, b.station_name AS destination, c.price, c.id 
+				FROM (SELECT station_name, id FROM sareng.stations WHERE id = ?) AS a, 
+				(SELECT station_name, id FROM sareng.stations WHERE id = ?) AS b, sareng.routes AS c 
+				WHERE origin = a.id AND destination = b.id) aa 
+				INNER JOIN (SELECT a.trip_id, a.seats, a.trip_date, a.bus_id, 
+				(SELECT time FROM sareng.timings WHERE id = a.depart_time) AS departure_time, 
+				(SELECT time FROM sareng.timings WHERE id = a.arrival_time) AS arrival_time 
+				FROM sareng.trips a WHERE trip_date = (?)`;
+
+			Mysql = Mysql + `) d ON d.bus_id = aa.id;`
+
+			let data1 = [destination_id, origin_id, returnDate];
+
+			console.log(data1);
+
+			connection.query(Mysql, data1, (error, results1, fields) => {
+				if (error) {
+					return console.error(error.message);
+				}
+				results1.map((item) => {
+					results.push(item);
+				})
+
+				let string = JSON.stringify(results);
+				res.send({ express: string });
+				// console.log(string);
+				connection.end();
+			});
+		} else {
+			let string = JSON.stringify(results);
+			res.send({ express: string });
+			// console.log(string);
+			connection.end();
+		}
 	});
 });
 
