@@ -1,7 +1,7 @@
 import React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 
-export const ResultsTable = ({ results, selectionModel, setSelectionModel }) => {
+export const ResultsTable = ({ results, selectionModel, setSelectionModel, pref }) => {
     const columns = [
         {
             field: 'origin',
@@ -59,18 +59,21 @@ export const ResultsTable = ({ results, selectionModel, setSelectionModel }) => 
                 checkboxSelection
                 disableSelectionOnClick
                 selectionModel={selectionModel}
-                onSelectionModelChange={(selection) => {
-                    const newSelectionModel = [...selection];
-                    if (newSelectionModel.length > 1) {
-                        const selectionSet = new Set(selectionModel);
-                        const result = newSelectionModel.filter(
-                            (s) => !selectionSet.has(s)
-                        );
-                        setSelectionModel(result);
-                    } else {
-                        setSelectionModel(newSelectionModel);
+                onSelectionModelChange={pref == '1' ?
+                    (selection) => {
+                        const newSelectionModel = [...selection];
+                        if (newSelectionModel.length > 1) {
+                            const selectionSet = new Set(selectionModel);
+                            const result = newSelectionModel.filter(
+                                (s) => !selectionSet.has(s)
+                            );
+                            setSelectionModel(result);
+                        } else {
+                            setSelectionModel(newSelectionModel);
+                        }
                     }
-                }}
+                    :
+                    (selection) => setSelectionModel(selection)}
             />
         </>
     )
