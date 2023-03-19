@@ -139,12 +139,15 @@ const SearchSchdeule = () => {
 
     const handleClickSearch = () => {
         var dd = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+        var rd = returnDate.getFullYear() + "-" + (returnDate.getMonth() + 1) + "-" + returnDate.getDate()
         const userSelectection = {
             origin: originStopID,
             destination: destinationStopID,
             preference: value,
             time: timeID,
             date: dd,
+            pref: tripPref,
+            returnDate: rd
         }
         // console.log(userSelectection);
         handleSearch(userSelectection);
@@ -182,21 +185,26 @@ const SearchSchdeule = () => {
         var buy = [...results]
         var send = []
         buy.filter(x => {
-            if (x.trip_id == selectionModel) {
-                send.push(x)
-            }
+            selectionModel.map((con) => {
+                if (x.trip_id == con) {
+                    send.push(x)
+                }
+            })
         })
         console.log(send);
         setSendFinal(send);
         if (send.length > 0) {
             setShowConfirmLink(true)
+            console.log(sendFinal)
         } else {
             setShowConfirmLink(false)
             setShowErrorMessage('Please select at least 1 trip')
         }
         // return(<Redirect to = {{pathname : '/Payment', state : {send}}} />)
-
     }
+
+    const [returnDate, setReturnDate] = React.useState(new Date());
+
     return (
         <ThemeProvider theme={lightTheme}>
             <Box
@@ -334,6 +342,8 @@ const SearchSchdeule = () => {
                             handleChange={handlePrefChange}
                             object={[{ id: '1', name: "One way" }, { id: '2', name: "Round Trip" }]}
                         />
+                        {tripPref == 2 ? <DateSelection onChange={setReturnDate}
+                            date={returnDate} /> : ""}
                     </Grid>
                     <br />
                     <div>
@@ -364,6 +374,7 @@ const SearchSchdeule = () => {
                     results={results}
                     setSelectionModel={setSelectionModel}
                     selectionModel={selectionModel}
+                    pref={tripPref}
                 />
             </Box>
         </ThemeProvider>
