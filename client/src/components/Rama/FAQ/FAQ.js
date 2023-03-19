@@ -94,14 +94,6 @@ const useStyles = makeStyles({
       overflow: 'auto',
     },
   });
-    expandedCard: {
-      height: 'auto',
-      transition: 'height 0.5s',
-    },
-    cardContent: {
-      overflow: 'auto',
-    },
-  });
 
 const FAQ = (props) => {
   const classes = useStyles();
@@ -221,67 +213,66 @@ const FAQ = (props) => {
         <div>
         </div>
         <p> </p>
-        <Card className={classes.root} variant="contained" style={{ backgroundColor: '#fff5e6' }} >
-          <CardContent>
+        
+        <Card className={classes.root} variant="outlined" style={{ backgroundColor: '#fff5e6' }}>
+  <CardContent>
+    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+      <Typography variant="h6" component="h2" style={{ marginRight: 'auto' ,}}>
+        How can I book?
+      </Typography>
+      <IconButton
+        className={clsx(classes.expand, {
+          [classes.expandOpen]: expanded,
+        })}
+        onClick={handleExpandClick}
+        aria-expanded={expanded}
+        aria-label="show more"
+      >
+        <ExpandMoreIcon />
+      </IconButton>
+    </div>
+    <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <CardContent>
+      <Typography> Head over to&nbsp; 
+  <Link key='9' underline='none' onClick={() => history.push('/SearchSchedule')}>
+    <span style={{ textDecoration: 'underline', color: 'blue'}}>Schedule Page</span>
+  </Link> and choose your desired date and location
+</Typography>
+      </CardContent>
+    </Collapse>
+  </CardContent>
+</Card>
 
-            <Typography variant="h6" component="h3">
-              How can I book?
-            </Typography>
-            <CardActions disableSpacing>
-              {/* <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon /> */}
-              {/* </IconButton> */}
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: expanded,
-                })}
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="show more"
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <CardContent>
-                <Typography paragraph>Head over to the booking page and choose your desired date and locations </Typography>
+        <Card className={classes.root} variant="outlined" style={{ backgroundColor: '#fff5e6' }}>
+  <CardContent>
+    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+      <Typography variant="h6" component="h2" style={{ marginRight: 'auto' }}>
+        How can I pay?
+      </Typography>
+      <IconButton
+        className={clsx(classes.expand, {
+          [classes.expandOpen]: expanded2,
+        })}
+        onClick={handleExpandClick2}
+        aria-expanded={expanded2}
+        aria-label="show more"
+      >
+        <ExpandMoreIcon />
+      </IconButton>
+    </div>
+    <Collapse in={expanded2} timeout="auto" unmountOnExit>
+      <CardContent>
+      <Typography> Head over to&nbsp; 
+  <Link key='9' underline='none' onClick={() => history.push('/SearchSchedule')}>
+    <span style={{ textDecoration: 'underline', color: 'blue'}}>Schedule Page</span>
+  </Link> and choose your desired date and location, choose a trip, then proceed to payment! 
+</Typography>
 
 
-              </CardContent>
-            </Collapse>
-          </CardContent>
-        </Card>
-
-        <Card className={classes.root} variant="contained" style={{ backgroundColor: '#fff5e6' }}>
-          <CardContent>
-
-            <Typography variant="h6" component="h2">
-              How can I pay?
-            </Typography>
-            <CardActions disableSpacing>
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: expanded2,
-                })}
-                onClick={handleExpandClick2}
-                aria-expanded={expanded2}
-                aria-label="show more"
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-            </CardActions>
-            <Collapse in={expanded2} timeout="auto" unmountOnExit>
-              <CardContent>
-                <Typography paragraph> Head over to the payments page! </Typography>
-
-
-              </CardContent>
-            </Collapse>
-          </CardContent>
-        </Card>
+      </CardContent>
+    </Collapse>
+  </CardContent>
+</Card>
 
 
 
@@ -336,33 +327,31 @@ const FAQ = (props) => {
 </Card>
 
 
-        <Card className={classes.root} variant="contained" style={{ backgroundColor: '#fff5e6' }}>
-          <CardContent>
+<Card className={classes.root} variant="contained" style={{ backgroundColor: '#fff5e6' }}>
+  <CardContent>
+    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+      <Typography variant="h6" component="h2" style={{ marginRight: 'auto' }}>
+        Do I need to bring my WatCard?
+      </Typography>
+      <IconButton
+        className={clsx(classes.expand, {
+          [classes.expandOpen]: expanded6,
+        })}
+        onClick={handleExpandClick6}
+        aria-expanded={expanded6}
+        aria-label="show more"
+      >
+        <ExpandMoreIcon />
+      </IconButton>
+    </div>
+    <Collapse in={expanded6} timeout="auto" unmountOnExit>
+      <CardContent>
+        <Typography paragraph>You must bring your Watcard when you buy your Fed Bus tickets and when boarding the bus!</Typography>
+      </CardContent>
+    </Collapse>
+  </CardContent>
+</Card>
 
-            <Typography variant="h6" component="h2">
-              Do I need to bring my WatCard?
-            </Typography>
-            <CardActions disableSpacing>
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: expanded3,
-                })}
-                onClick={handleExpandClick6}
-                aria-expanded={expanded6}
-                aria-label="show more"
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-            </CardActions>
-            <Collapse in={expanded6} timeout="auto" unmountOnExit>
-              <CardContent>
-                <Typography paragraph>You must bring your Watcard when you buy your Fed Bus tickets and when boarding the bus!</Typography>
-
-
-              </CardContent>
-            </Collapse>
-          </CardContent>
-        </Card>
 
 <Typography>
   <p></p>
@@ -385,4 +374,3 @@ FAQ.propTypes = {
 };
 
 export default withStyles(styles)(FAQ);
-

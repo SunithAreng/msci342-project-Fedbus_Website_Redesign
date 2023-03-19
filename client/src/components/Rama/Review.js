@@ -73,8 +73,6 @@ const styles = theme => ({
 const Review2 = () => {
 
   const [submitClick, setMessage] = React.useState(false);
-  //const [selectedMovieID, setReviewMovieID] = React.useState('');
-  //const [selectedMovie, setReviewMovie] = React.useState('');
   const [enteredTitle, setReviewTitle] = React.useState('');
   const [enteredReview, setReviewBody] = React.useState('');
   const [selectedRating, setReviewRating] = React.useState('');
@@ -129,7 +127,6 @@ const Review2 = () => {
         "Content-Type": "application/json",
       }
       , body: JSON.stringify({
-        // movie: selectedMovie,
         body: enteredReview,
         title: enteredTitle,
         rating: selectedRating,
@@ -167,7 +164,6 @@ const Review2 = () => {
 
     if (enteredTitle.length > 0 && enteredReview.length > 0 && selectedRating > 0, enteredName.length > 0) {
       let review = {
-        //movie: selectedMovie,
         body: enteredReview,
         title: enteredTitle,
         rating: selectedRating,
@@ -178,7 +174,7 @@ const Review2 = () => {
       setSubmittedReviews(copy);
       callApiaddReview()
         .then(res => {
-
+          //history.push('/OtherReviews');
           console.log(res);
         })
 
@@ -212,7 +208,7 @@ const Review2 = () => {
           <Button variant="contained" color="primary" onClick={submitButton}>
             Submit
           </Button>
-          <SubmittedReviews list={submittedReviews} />
+          
           <Button
             key='9'
             onClick={() => history.push('/OtherReviews')}
@@ -224,33 +220,26 @@ const Review2 = () => {
             Go back
           </Button>
         </div>
-
+        <SubmittedReviews list={submittedReviews} onClick={() => history.push('/OtherReviews')} />
       </Grid>
-      <div></div>
     </MuiThemeProvider>
   )
 }
 
 const SubmittedReviews = (props) => {
   return (
-
     props.list.map((review) => {
       return (
         <>
           <p> {""} </p>
-          <big> <b> {"Your feedback is submitted and under review now!"} </b></big>
-          <hr style={{ height: '2px', backgroundColor: 'black', border: '0', width: '400px' }} />
-          {/* <p> {"________________________________"} </p> */}
+          <big> <b> {"Your feedback is submitted"} </b></big>
+          <hr style={{ height: '1.5px', backgroundColor: 'black', border: '0', width: '200px' }} />
           <p> {"Name: "} <i> {review.name} </i> </p>
           <p> {"Title: "} <i> {review.title} </i> </p>
           <p> {"Review: "} <i> {review.body} </i> </p>
           <p> {"Rating: "} <i> {review.rating} </i> </p>
-          {/* <p> {"________________________________"} </p> */}
         </>
-
-
       );
-
     })
   )
 }
@@ -309,7 +298,7 @@ const ReviewBody = (props) => {
 
       </FormControl>
       {props.currentValue === '' && props.submitClick ? (
-        <p><b> Please Enter Your Review</b></p>
+        <p><b>Please Enter Your Review</b></p>
 
       ) : (
         <div></div>
