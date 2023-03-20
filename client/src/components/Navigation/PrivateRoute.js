@@ -6,7 +6,7 @@ import SearchSchedule from '../Sunith/SearchSchedule/Search';
 import MyProfile from '../Harry/MyProfile/MyProfile';
 import Booking from '../Khoi/Booking/Booking';
 import Payment from '../Khoi/Payment/Payment';
-import PaymentConfirmation from '../Khoi/Payment/PaymentConfirmation';
+
 import FAQ from '../Rama/FAQ/FAQ';
 import Review from '../Rama/Review';
 import Location from '../Harry/Location/Location';
@@ -34,7 +34,6 @@ export default function PrivateRoute({
             (<MyProfile {...props} {...rest} />) : (<SignInForm {...props} {...rest} />)}
         />
         <Route path="/Booking" exact component={Booking} />
-        <Route path="/PaymentConfirmation" exact component={PaymentConfirmation} />
         <Route path="/Payment" exact
           {...rest}
           render={props => authenticated === true ?
