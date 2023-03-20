@@ -183,6 +183,46 @@ app.post('/api/updateEmail', (req, res) => {
 	});
 	connection.end();
 });
+app.post('/api/updateSeats', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+	let trip_id = req.body.trip_id;
+	let seats = req.body.seats;
+
+	let sql = `UPDATE trips SET seats = (?) WHERE trip_id = (?)`;
+	let data = [seats, trip_id];
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+app.post('/api/addToPastTrips', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+	let newPastTrips = req.body.pastTrips;
+	console.log(newPastTrips)
+	let userID = req.body.userID;
+
+	let sql = `UPDATE user SET seats = (?) WHERE trip_id = (?)`;
+	let sql2 = `UPDATE user SET pastTrips = (?) WHERE UID = (?)`;
+	let data = [newPastTrips, userID];
+
+	connection.query(sql2, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		res.send({ express: string });
+	});
+	connection.end();
+});
 app.post('/api/updateUserBalance', (req, res) => {
 
 	let connection = mysql.createConnection(config);
@@ -283,7 +323,38 @@ app.post('/api/getRoutes', (req, res) => {
 		res.send({ express: string });
 	});
 	connection.end();
+});
+app.post('/api/getPastTrips', (req, res) => {
+	let connection = mysql.createConnection(config);
+	let pastTrips = req.body.pastTrips;
+	let sql = `
+		SELECT trip_id, origin, destination, DATE_FORMAT(d.trip_date, '%Y-%m-%d') AS trip_date,
+		price
+		FROM 
+		(SELECT
+		a.station_name AS origin,
+		b.station_name AS destination,
+		c.price, c.id
+		FROM
+		(SELECT station_name, id FROM sareng.stations) AS a,
+		(SELECT station_name, id FROM sareng.stations) AS b,
+		sareng.routes AS c
+		WHERE origin = a.id AND destination = b.id) aa
+		INNER JOIN
+		(SELECT a.trip_id, a.trip_date, a.bus_id
+		FROM sareng.trips a WHERE trip_id = (?)) d ON d.bus_id = aa.id;
+	`;
+	let data = [pastTrips];
 
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results);
+		let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
 });
 
 app.post('/api/search', (req, res) => {
