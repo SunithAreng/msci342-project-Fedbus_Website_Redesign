@@ -527,7 +527,6 @@ const TripHistory = (props) => {
         })
     }
     let columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
         { field: 'destination', headerName: 'destination', width: 70 },
         { field: 'origin', headerName: 'origin', width: 70 },
         { field: 'price', headerName: 'price', width: 70 },
@@ -629,6 +628,47 @@ const Payment = (props) => {
     }
     changeMoney();
   }
+  // Delete later upon submission
+  const handleSubmit2 = (e) => {
+    e.preventDefault()
+    setSuccessMessage("")
+    if (!name || !number || !mmyy || !cvv){
+      setErrorMessage("Please fill out all credit card information")
+      return;
+    }
+    if (!money){
+        setErrorMessage("Please enter the amount of money you would like to load into your account")
+        return;
+    }
+    const changeMoney2 = () => {
+        var serverURL = serverUrl;
+        const url = serverURL + "/api/updateUserBalance";
+        console.log("This is the url"+url)
+        let newBalance = parseInt(money)
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                // authorization: `Bearer ${this.state.token}`
+            },
+            body: JSON.stringify({
+                userID: userId,
+                balance : newBalance,
+            })
+        }).then(() => {
+            setErrorMessage("")
+            setSuccessMessage ("Money successfully loaded ! Please refresh to see your new updated balance")
+            setName("")
+            setMoney("")
+            setMmyy("")
+            setCvv("")
+            setNumber("")
+        }).catch((error)=>{
+            setErrorMessage(error)
+        });
+    }
+    changeMoney2();
+  }
     return(
     <div className="Payment Method">
         <form>
@@ -666,6 +706,9 @@ const Payment = (props) => {
             <br /><br />
             <Button variant="contained" color="secondary" onClick = {handleSubmit}>
                 Confirm payment
+            </Button>
+            <Button variant="contained" color="secondary" onClick = {handleSubmit2}>
+                Reset your money to this amount (just fill out random stuff for the form, no strict regex check)
             </Button>
             <Typography  variant="subtitle2" color = "secondary">{errorMessage}</Typography>
             <Typography variant="h6" style = {{color : "green"}}>{successMessage}</Typography>
