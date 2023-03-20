@@ -489,7 +489,11 @@ class MyProfileBase extends React.Component {
 }
 const TripHistory = (props) => {
     let tripsArray = []
-    let pastTrips = props.pastTrips.split(" ")
+    let [error, setError] = React.useState("")
+    let pastTrips = []
+    if (props.pastTrips){
+        pastTrips = props.pastTrips.split(" ")
+    }
     let serverURL = props.serverUrl
     let finalPastTrips = [...new Set(pastTrips)]
     let getPastTrips = (pastTrip) => {
@@ -521,10 +525,13 @@ const TripHistory = (props) => {
   }
 
     const handleSubmit = () =>{
-        finalPastTrips.forEach((val)=>{
+        if (pastTrips.length !== 0){
+            finalPastTrips.forEach((val)=>{
             console.log(val)
             getPastTrips(val);
-        })
+        })}else{
+            setError("No past trips to show")
+        }
     }
     let columns = [
         { field: 'destination', headerName: 'destination', width: 70 },
@@ -536,6 +543,7 @@ const TripHistory = (props) => {
     return (
         <div>
             <Button onClick = {(()=>handleSubmit())}>Hi click me to show results table(not working but check DevTools console )</Button>
+            <Typography>{error}</Typography>
             <DataGrid
                 rows={tripsArray}
                 columns={columns}
