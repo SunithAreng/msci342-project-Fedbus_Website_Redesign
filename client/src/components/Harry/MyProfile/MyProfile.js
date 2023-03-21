@@ -540,7 +540,7 @@ const TripHistory = (props) => {
         { field: 'origin', headerName: 'Origin', width: 150 },
         { field: 'destination', headerName: 'Destination', width: 250 },
         { field: 'trip_date', headerName: 'Trip Date', type: 'date', width: 150 },
-        { field: 'price', headerName: 'price', width: 150 },
+        { field: 'price', headerName: 'Price', width: 150 },
     ]
     return (
         <div style={{ height: 400, width: '150%' }}>
