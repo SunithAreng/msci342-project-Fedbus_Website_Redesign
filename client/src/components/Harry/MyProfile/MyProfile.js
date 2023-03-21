@@ -2,12 +2,14 @@ import React, {useEffect} from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withFirebase } from '../../Firebase';
-import { AppBar, Button, Container, Toolbar, Box, TextField, Snackbar, Grid, Typography} from '@material-ui/core';
+import { AppBar, Button, Container, Toolbar, Box, TextField, Snackbar, Grid, Typography,} from '@material-ui/core';
+import { DataGrid } from '@material-ui/data-grid';
 import history from '../../Navigation/history';
 import logo from './logo.png';
 import { createTheme, ThemeProvider, styled } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import { connect } from "react-redux";
+
 
 const lightTheme = createTheme({
     palette: {
@@ -59,6 +61,7 @@ class MyProfileBase extends React.Component {
             email: '',
             newEmail: '',
             balance : 0,
+            pastTrips : '',
             admin: 0,
             open: false,
             currentPassword: '',
@@ -114,6 +117,7 @@ class MyProfileBase extends React.Component {
                 this.setState({ phone: parsed[0].phone });
                 this.setState({ admin: parsed[0].admin });
                 this.setState({balance : parseInt(parsed[0].balance)})
+                this.setState({pastTrips : parsed[0].pastTrips })
                 localStorage.setItem('token',this.state.token)
                 localStorage.setItem('userURL',this.props.serverURL)
             });
@@ -466,6 +470,7 @@ class MyProfileBase extends React.Component {
                             <h2>History & Settings</h2>
                             <p />
                             <h3>Trips History</h3>
+                            <TripHistory pastTrips = {this.state.pastTrips} serverUrl = {this.props.serverURL}/>
                             <p />
                             <h3>Favorite Trips</h3>
                             <p />
@@ -482,7 +487,73 @@ class MyProfileBase extends React.Component {
         );
     }
 }
+const TripHistory = (props) => {
+    let tripsArray = []
+    let [error, setError] = React.useState("")
+    let pastTrips = []
+    if (props.pastTrips){
+        pastTrips = props.pastTrips.split(" ")
+    }
+    let serverURL = props.serverUrl
+    let finalPastTrips = [...new Set(pastTrips)]
+    let getPastTrips = (pastTrip) => {
+        callGetPastTrips(pastTrip).then((res)=>{
+            let parsed = JSON.parse(res.express)
+            tripsArray.push(parsed[0])
+            console.log(tripsArray)
+        }).catch((err)=>{
+            console.log(err)
+        })
+    }
 
+  const callGetPastTrips = async (pastTrip) => {
+    const url = serverURL + "/api/getPastTrips";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        pastTrips: pastTrip,
+      })
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    console.log("User settings: ", body);
+    return body;
+  }
+
+    const handleSubmit = () =>{
+        if (pastTrips.length !== 0){
+            finalPastTrips.forEach((val)=>{
+            console.log(val)
+            getPastTrips(val);
+        })}else{
+            setError("No past trips to show")
+        }
+    }
+    let columns = [
+        { field: 'destination', headerName: 'destination', width: 70 },
+        { field: 'origin', headerName: 'origin', width: 70 },
+        { field: 'price', headerName: 'price', width: 70 },
+        { field: 'tripDate', headerName: 'tripDate', width: 70 },
+        { field: 'tripID', headerName: 'tripID', width: 70 },
+    ]
+    return (
+        <div>
+            <Button onClick = {(()=>handleSubmit())}>Hi click me to show results table(not working but check DevTools console )</Button>
+            <Typography>{error}</Typography>
+            <DataGrid
+                rows={tripsArray}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                checkboxSelection
+            />
+        </div>
+    )
+}
 const Payment = (props) => {
   let [name, setName] = React.useState('')
   let [number, setNumber] = React.useState('')
@@ -565,6 +636,47 @@ const Payment = (props) => {
     }
     changeMoney();
   }
+  // Delete later upon submission
+  const handleSubmit2 = (e) => {
+    e.preventDefault()
+    setSuccessMessage("")
+    if (!name || !number || !mmyy || !cvv){
+      setErrorMessage("Please fill out all credit card information")
+      return;
+    }
+    if (!money){
+        setErrorMessage("Please enter the amount of money you would like to load into your account")
+        return;
+    }
+    const changeMoney2 = () => {
+        var serverURL = serverUrl;
+        const url = serverURL + "/api/updateUserBalance";
+        console.log("This is the url"+url)
+        let newBalance = parseInt(money)
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                // authorization: `Bearer ${this.state.token}`
+            },
+            body: JSON.stringify({
+                userID: userId,
+                balance : newBalance,
+            })
+        }).then(() => {
+            setErrorMessage("")
+            setSuccessMessage ("Money successfully loaded ! Please refresh to see your new updated balance")
+            setName("")
+            setMoney("")
+            setMmyy("")
+            setCvv("")
+            setNumber("")
+        }).catch((error)=>{
+            setErrorMessage(error)
+        });
+    }
+    changeMoney2();
+  }
     return(
     <div className="Payment Method">
         <form>
@@ -602,6 +714,9 @@ const Payment = (props) => {
             <br /><br />
             <Button variant="contained" color="secondary" onClick = {handleSubmit}>
                 Confirm payment
+            </Button>
+            <Button variant="contained" color="secondary" onClick = {handleSubmit2}>
+                Reset your money to this amount (just fill out random stuff for the form, no strict regex check)
             </Button>
             <Typography  variant="subtitle2" color = "secondary">{errorMessage}</Typography>
             <Typography variant="h6" style = {{color : "green"}}>{successMessage}</Typography>

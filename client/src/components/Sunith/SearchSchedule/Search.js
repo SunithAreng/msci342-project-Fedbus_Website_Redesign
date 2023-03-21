@@ -335,6 +335,7 @@ const SearchSchdeule = () => {
                         <DateSelection
                             onChange={setDate}
                             date={date}
+                            label={"Depart on"}
                         />
                         <Preference
                             classes={classes}
@@ -342,8 +343,14 @@ const SearchSchdeule = () => {
                             handleChange={handlePrefChange}
                             object={[{ id: '1', name: "One way" }, { id: '2', name: "Round Trip" }]}
                         />
-                        {tripPref == 2 ? <DateSelection onChange={setReturnDate}
-                            date={returnDate} /> : ""}
+                        {tripPref == 2 ?
+                            <DateSelection
+                                onChange={setReturnDate}
+                                date={returnDate}
+                                label={"Return date"}
+                            />
+                            :
+                            ""}
                     </Grid>
                     <br />
                     <div>
