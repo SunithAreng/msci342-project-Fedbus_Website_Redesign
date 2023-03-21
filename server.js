@@ -410,9 +410,7 @@ app.post('/api/search', (req, res) => {
 				INNER JOIN (SELECT a.trip_id, a.seats, a.trip_date, a.bus_id, 
 				(SELECT time FROM sareng.timings WHERE id = a.depart_time) AS departure_time, 
 				(SELECT time FROM sareng.timings WHERE id = a.arrival_time) AS arrival_time 
-				FROM sareng.trips a WHERE trip_date = (?)`;
-
-			Mysql = Mysql + `) d ON d.bus_id = aa.id;`
+				FROM sareng.trips a WHERE trip_date = (?)) d ON d.bus_id = aa.id;`;
 
 			let data1 = [destination_id, origin_id, returnDate];
 

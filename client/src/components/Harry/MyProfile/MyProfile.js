@@ -487,7 +487,7 @@ class MyProfileBase extends React.Component {
     }
 }
 const TripHistory = (props) => {
-    // let tripsArray = []
+    let tripsArray1 = []
     const [tripsArray, setTripsArray] = React.useState([]);
     let [error, setError] = React.useState("")
     let pastTrips = []
@@ -499,9 +499,9 @@ const TripHistory = (props) => {
     let getPastTrips = (pastTrip) => {
         callGetPastTrips(pastTrip).then((res) => {
             let parsed = JSON.parse(res.express)
-            // tripsArray.push(parsed[0])
-            setTripsArray(parsed)
-            console.log(tripsArray);
+            tripsArray1 = [...tripsArray1, parsed[0]]
+            setTripsArray(tripsArray1);
+            console.log(tripsArray1);
         }).catch((err) => {
             console.log(err)
         })
