@@ -77,7 +77,7 @@ app.post('/api/addReview', (req, res) => {
 		}
 
 		let string = JSON.stringify(results);
-		console.log(results)
+		// console.log(results)
 		// let obj = JSON.parse(string);
 		res.send({ express: string });
 	});
