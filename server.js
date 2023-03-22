@@ -60,18 +60,17 @@ const auth = async (req, res, next) => {
 
 app.post('/api/addReview', (req, res) => {
 
-
 	let connection = mysql.createConnection(config);
 	let reviewTitle = req.body.title
 	let reviewContent = req.body.content
 	let reviewScore = req.body.rating
 	let reviewName = req.body.name
-	
+
 	let sql = 'INSERT INTO reviews (user, content, title, score) VALUES (?,?,?,?)';
-	console.log(sql);
-	let data = [reviewName, reviewContent, reviewTitle,reviewScore];
-	console.log(data);
-                                                                                                                                                                                                                                                                                                             
+	// console.log(sql);
+	let data = [reviewName, reviewContent, reviewTitle, reviewScore];
+	// console.log(data);
+
 	connection.query(sql, data, (error, results, fields) => {
 		if (error) {
 			return console.error(error.message);
@@ -126,6 +125,7 @@ app.post('/api/loadUserDetails', auth, (req, res) => {
 	});
 	connection.end();
 });
+
 app.post('/api/loadUserDetailsPayment', auth, (req, res) => {
 
 	let connection = mysql.createConnection(config);
