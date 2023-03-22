@@ -68,6 +68,41 @@ const styles = theme => ({
 
 
 const Review2 = () => {
+  React.useEffect(() => {
+    getReviews();
+  }, []);
+  
+  const callApigetReviews = async () => {
+    const url = serverURL + "/api/getReviews";
+    console.log(url);
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  }
+    
+    const getReviews = () => {
+      callApigetReviews()
+        .then(res => {
+          console.log("callApigetReviews returned: ", res)
+          var parsed = JSON.parse(res.express);
+          console.log("callApigetReviews parsed: ", parsed);
+          setReviews(parsed);
+          console.log(reviews);
+        })
+    }
+  
+    const [reviews, setReviews] = React.useState([]);
+
+    
+  
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -106,22 +141,29 @@ const Review2 = () => {
         justifyContent="center"
         alignItems="center"
       >
-        <Card style={{ backgroundColor: '#fffff', width: '800px' }}>
+        {reviews.map((data)=> { 
+          return(
+            <>
+          <Card style={{ backgroundColor: '#fffff', width: '800px' }}>
           <CardContent>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 {/* <p> {"1."} </p> */}
-                <big> <b> {"John D"}</b></big>
+                <big> <b> Name: {data.user}</b></big>
                 <hr style={{ height: '1px', backgroundColor: '#ffe0ae', border: '0', width: '600px' }} />
-                <p> <b> Title: </b>{"bad experience"} </p>
-                <p><b>Review: </b> {"terrible bus"}  </p>
+                <p> <b> Title: </b>{data.title} </p>
+                <p><b>Review: </b> {data.content}  </p>
               </div>
               <div>
-                <h2> {"⭐"}  </h2>
+                <h2> Rating: </h2> 
               </div>
             </div>
           </CardContent>
         </Card>
+          </>
+          )
+         })}
+       
         <Card style={{ backgroundColor: '#FFEFD5', width: '800px' }}>
           <CardContent>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

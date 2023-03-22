@@ -129,12 +129,10 @@ const Review2 = () => {
         "Content-Type": "application/json",
       }
       , body: JSON.stringify({
-        // movie: selectedMovie,
-        body: enteredReview,
+        content: enteredReview,
         title: enteredTitle,
         rating: selectedRating,
-        name: enteredName,
-        userID: userID
+        name: enteredName
       })
     });
 
