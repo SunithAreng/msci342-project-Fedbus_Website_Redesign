@@ -13,9 +13,7 @@ import AppBar from '@material-ui/core/AppBar';
 import history from '../Navigation/history';
 import Toolbar from '@material-ui/core/Toolbar';
 import Container from '@material-ui/core/Container';
-
-//Dev mode
-const serverURL = ""; //enable for dev mode
+import { connect } from 'react-redux';
 
 const fetch = require("node-fetch");
 
@@ -70,54 +68,16 @@ const styles = theme => ({
   },
 });
 
-const Review2 = () => {
+const Review2 = ({ serverURL }) => {
 
   const [submitClick, setMessage] = React.useState(false);
-  //const [selectedMovieID, setReviewMovieID] = React.useState('');
-  //const [selectedMovie, setReviewMovie] = React.useState('');
   const [enteredTitle, setReviewTitle] = React.useState('');
   const [enteredReview, setReviewBody] = React.useState('');
   const [selectedRating, setReviewRating] = React.useState('');
-  const [userID, setUserID] = React.useState(1);
   const [submittedReviews, setSubmittedReviews] = React.useState([]);
   const [PrevSubmittedReviews, setPrevSubmittedReviews] = React.useState('')
   const [enteredName, setReviewName] = React.useState('')
 
-  React.useEffect(() => {
-    getMovies();
-  }, []);
-
-
-  const getMovies = () => {
-    callApigetMovies()
-      .then(res => {
-        console.log("callApigetMovies returned: ", res)
-        var parsed = JSON.parse(res.express);
-        console.log("callApigetMovies parsed: ", parsed);
-        setMovies(parsed);
-        console.log(movies);
-      })
-  }
-
-  const [movies, setMovies] = React.useState([]);
-
-  const callApigetMovies = async () => {
-    const url = serverURL + "/api/getMovies";
-    console.log(url);
-
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      }
-    });
-
-
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    // console.log("User settings: ", body);
-    return body;
-  }
 
   const callApiaddReview = async () => {
     const url = serverURL + "/api/addReview";
@@ -182,9 +142,9 @@ const Review2 = () => {
 
     }
   }
+
   return (
     <MuiThemeProvider theme={theme}>
-
       <CssBaseline />
       <Review />
       <Grid
@@ -222,7 +182,6 @@ const Review2 = () => {
             Go back
           </Button>
         </div>
-
       </Grid>
       <div></div>
     </MuiThemeProvider>
@@ -252,6 +211,7 @@ const SubmittedReviews = (props) => {
     })
   )
 }
+
 const ReviewName = (props) => {
   return (
     <>
@@ -273,6 +233,7 @@ const ReviewName = (props) => {
     </>
   )
 }
+
 const ReviewTitle = (props) => {
   return (
     <>
@@ -294,6 +255,7 @@ const ReviewTitle = (props) => {
     </>
   )
 }
+
 const ReviewBody = (props) => {
   return (
     <>
@@ -315,6 +277,7 @@ const ReviewBody = (props) => {
     </>
   )
 }
+
 const ReviewRating = (props) => {
   return (
     <>
@@ -343,103 +306,6 @@ const ReviewRating = (props) => {
     </>
   )
 }
-
-class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userID: 1,
-      mode: 0
-    }
-  };
-
-  componentDidMount() {
-    //this.loadUserSettings();
-  }
-
-  loadUserSettings() {
-    this.callApiLoadUserSettings()
-      .then(res => {
-        //console.log("loadUserSettings returned: ", res)
-        var parsed = JSON.parse(res.express);
-        console.log("loadUserSettings parsed: ", parsed[0].mode)
-        this.setState({ mode: parsed[0].mode });
-      });
-  }
-
-  callApiLoadUserSettings = async () => {
-    const url = serverURL + "/api/loadUserSettings";
-
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        //authorization: `Bearer ${this.state.token}`
-      },
-      body: JSON.stringify({
-        userID: this.state.userID
-      })
-    });
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    console.log("User settings: ", body);
-    return body;
-  }
-
-
-
-  render() {
-    const { classes } = this.props;
-
-    const mainMessage = (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        style={{ minHeight: '100vh' }}
-        className={classes.mainMessageContainer}
-      >
-        <Grid item>
-
-          <Typography
-            variant={"h3"}
-            className={classes.mainMessage}
-            align="flex-start"
-          >
-            {this.state.mode === 0 ? (
-              <React.Fragment>
-                hi
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                Welcome back!
-              </React.Fragment>
-            )}
-          </Typography>
-
-        </Grid>
-      </Grid>
-    )
-    return (
-      <MuiThemeProvider theme={theme}>
-        <div className={classes.root}>
-          <CssBaseline />
-          <Paper
-            className={classes.paper}
-          >
-            {mainMessage}
-          </Paper>
-
-        </div>
-      </MuiThemeProvider>
-    );
-  }
-}
-Home.propTypes = {
-  classes: PropTypes.object.isRequired
-};
 
 const Review = (props) => {
   return (
@@ -520,4 +386,11 @@ const Review = (props) => {
   )
 }
 
-export default Review2;
+function mapStateToProps(state) {
+  const serverURL = state.serverURL.value;
+  return {
+    serverURL
+  };
+}
+
+export default connect(mapStateToProps)(Review2);

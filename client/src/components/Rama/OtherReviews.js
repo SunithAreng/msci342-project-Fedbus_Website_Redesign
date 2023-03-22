@@ -9,9 +9,7 @@ import AppBar from '@material-ui/core/AppBar';
 import history from '../Navigation/history';
 import Toolbar from '@material-ui/core/Toolbar';
 import Container from '@material-ui/core/Container';
-
-//Dev mode
-const serverURL = ""; //enable for dev mode
+import { connect } from 'react-redux';
 
 const fetch = require("node-fetch");
 
@@ -67,12 +65,27 @@ const styles = theme => ({
 });
 
 
-const Review2 = () => {
+const Review2 = ({ serverURL }) => {
+
   React.useEffect(() => {
     getReviews();
   }, []);
-  
+
+  const [reviews, setReviews] = React.useState([]);
+
+  const getReviews = () => {
+    callApigetReviews()
+      .then(res => {
+        console.log("callApigetReviews returned: ", res)
+        var parsed = JSON.parse(res.express);
+        console.log("callApigetReviews parsed: ", parsed);
+        setReviews(parsed);
+        console.log(reviews);
+      })
+  }
+
   const callApigetReviews = async () => {
+
     const url = serverURL + "/api/getReviews";
     console.log(url);
 
@@ -87,26 +100,10 @@ const Review2 = () => {
     // console.log("User settings: ", body);
     return body;
   }
-    
-    const getReviews = () => {
-      callApigetReviews()
-        .then(res => {
-          console.log("callApigetReviews returned: ", res)
-          var parsed = JSON.parse(res.express);
-          console.log("callApigetReviews parsed: ", parsed);
-          setReviews(parsed);
-          console.log(reviews);
-        })
-    }
-  
-    const [reviews, setReviews] = React.useState([]);
 
-    
-  
 
   return (
     <MuiThemeProvider theme={theme}>
-
       <CssBaseline />
       <Review />
       <Grid
@@ -141,63 +138,28 @@ const Review2 = () => {
         justifyContent="center"
         alignItems="center"
       >
-        {reviews.map((data)=> { 
-          return(
+        {reviews.map((data) => {
+          return (
             <>
-          <Card style={{ backgroundColor: '#fffff', width: '800px' }}>
-          <CardContent>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                {/* <p> {"1."} </p> */}
-                <big> <b> Name: {data.user}</b></big>
-                <hr style={{ height: '1px', backgroundColor: '#ffe0ae', border: '0', width: '600px' }} />
-                <p> <b> Title: </b>{data.title} </p>
-                <p><b>Review: </b> {data.content}  </p>
-              </div>
-              <div>
-                <h2> Rating: </h2> 
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-          </>
+              <Card style={{ backgroundColor: '#fffff', width: '800px' }}>
+                <CardContent>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <big> <b> Name: {data.user}</b></big>
+                      <hr style={{ height: '1px', backgroundColor: '#ffe0ae', border: '0', width: '600px' }} />
+                      <p> <b> Title: </b>{data.title} </p>
+                      <p><b>Review: </b> {data.content}  </p>
+                    </div>
+                    <div>
+                      <h2> Rating: <br />
+                        {<ReviewStars arr={data.score} />}</h2>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </>
           )
-         })}
-       
-        <Card style={{ backgroundColor: '#FFEFD5', width: '800px' }}>
-          <CardContent>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                {/* <p> {"2."} </p> */}
-                <big> <b> {"Alex E"}</b></big>
-                <hr style={{ height: '2px', backgroundColor: 'black', border: '0', width: '600px' }} />
-                <p> <b> Title: </b>{"Great experience"} </p>
-                <p><b>Review: </b> {"good bus"}  </p>
-              </div>
-              <div>
-                <h2> {"⭐⭐⭐⭐⭐"}  </h2>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card style={{ backgroundColor: '#fffff', width: '800px' }}>
-          <CardContent>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                {/* <p> {"3."} </p> */}
-                <big> <b> {"Sarah M"}</b></big>
-                <hr style={{ height: '2px', backgroundColor: '#ffe0ae', border: '0', width: '600px' }} />
-                <p> <b> Title: </b>{"okay experience"} </p>
-                <p><b>Review: </b> {"it was okay"}  </p>
-              </div>
-              <div>
-                <h2> {"⭐⭐⭐"}  </h2>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
+        })}
       </Grid>
       <CardContent />
     </MuiThemeProvider>
@@ -205,10 +167,16 @@ const Review2 = () => {
   )
 }
 
+const ReviewStars = ({ arr }) => {
+  let a = "⭐"
+  for (let i = 1; i < arr; i++) {
+    a = a + "⭐"
+  }
+  return a;
+}
 
 const Review = (props) => {
   return (
-
     <MuiThemeProvider theme={theme}>
       <AppBar position="static">
         <Container maxWidth="xl">
@@ -277,7 +245,6 @@ const Review = (props) => {
               Annoucements
             </Button>
           </Toolbar>
-
         </Container>
       </AppBar>
       <CssBaseline />
@@ -285,4 +252,11 @@ const Review = (props) => {
   )
 }
 
-export default Review2;
+function mapStateToProps(state) {
+  const serverURL = state.serverURL.value;
+  return {
+    serverURL
+  };
+}
+
+export default connect(mapStateToProps)(Review2);
