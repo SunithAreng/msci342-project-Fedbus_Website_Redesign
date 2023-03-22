@@ -1,5 +1,5 @@
 import React from 'react';
-import history from '../Navigation/history';
+import history from './Navigation/history';
 import { Button, CssBaseline, Container, Toolbar, AppBar } from '@material-ui/core';
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 

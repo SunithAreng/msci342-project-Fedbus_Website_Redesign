@@ -1,7 +1,7 @@
 import React from 'react';
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import { Typography, Grid } from '@material-ui/core';
-import { AppMenuBar } from '../AppMenuBar';
+import { AppMenuBar } from '../../AppMenuBar';
 
 
 const theme = createTheme({

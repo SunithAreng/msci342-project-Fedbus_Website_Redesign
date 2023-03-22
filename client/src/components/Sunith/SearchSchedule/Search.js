@@ -9,7 +9,7 @@ import { Preference } from './Preference';
 import { Stations } from './Stations';
 import { Timings } from './Timings';
 import { useSelector } from 'react-redux';
-import { AppMenuBar } from '../AppMenuBar';
+import { AppMenuBar } from '../../AppMenuBar';
 
 
 const opacityValue = 0.9;
