@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withFirebase } from '../../Firebase';
-import { AppBar, Button, Container, Toolbar, Box, TextField, Snackbar, Grid, Typography,} from '@material-ui/core';
+import { AppBar, Button, Container, Toolbar, Box, TextField, Snackbar, Grid, Typography, } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
 import history from '../../Navigation/history';
 import logo from './logo.png';
@@ -60,8 +60,8 @@ class MyProfileBase extends React.Component {
             phone: null,
             email: '',
             newEmail: '',
-            balance : 0,
-            pastTrips : '',
+            balance: 0,
+            pastTrips: '',
             admin: 0,
             open: false,
             currentPassword: '',
@@ -116,10 +116,10 @@ class MyProfileBase extends React.Component {
                 this.setState({ email: parsed[0].email });
                 this.setState({ phone: parsed[0].phone });
                 this.setState({ admin: parsed[0].admin });
-                this.setState({balance : parseInt(parsed[0].balance)})
-                this.setState({pastTrips : parsed[0].pastTrips })
-                localStorage.setItem('token',this.state.token)
-                localStorage.setItem('userURL',this.props.serverURL)
+                this.setState({ balance: parseInt(parsed[0].balance) })
+                this.setState({ pastTrips: parsed[0].pastTrips })
+                localStorage.setItem('token', this.state.token)
+                localStorage.setItem('userURL', this.props.serverURL)
             });
     }
 
@@ -465,12 +465,13 @@ class MyProfileBase extends React.Component {
                             <br /> <br />
                             <hr style={{ backgroundColor: 'black', height: '3px', border: '0px' }} />
                         </div>
-                        <Payment userId = {this.state.userID} serverUrl = {this.props.serverURL} currentBalance = {this.state.balance}/>
+                        <Payment userId={this.state.userID} serverUrl={this.props.serverURL} currentBalance={this.state.balance} />
                         <div className="History & Settings">
                             <h2>History & Settings</h2>
                             <p />
                             <h3>Trips History</h3>
-                            <TripHistory pastTrips = {this.state.pastTrips} serverUrl = {this.props.serverURL}/>
+                            <TripHistory pastTrips={this.state.pastTrips} serverUrl={this.props.serverURL} />
+                            <br /> <br />
                             <p />
                             <h3>Favorite Trips</h3>
                             <p />
@@ -478,8 +479,6 @@ class MyProfileBase extends React.Component {
                             <p />
                             <h3>My Reviews</h3>
                             <p />
-
-                            <br />
                         </div>
                     </MainGridContainer>
                 </Box>
@@ -488,242 +487,248 @@ class MyProfileBase extends React.Component {
     }
 }
 const TripHistory = (props) => {
-    let tripsArray = []
+    let tripsArray1 = []
+    const [tripsArray, setTripsArray] = React.useState([]);
     let [error, setError] = React.useState("")
     let pastTrips = []
-    if (props.pastTrips){
+    if (props.pastTrips) {
         pastTrips = props.pastTrips.split(" ")
     }
     let serverURL = props.serverUrl
     let finalPastTrips = [...new Set(pastTrips)]
     let getPastTrips = (pastTrip) => {
-        callGetPastTrips(pastTrip).then((res)=>{
+        callGetPastTrips(pastTrip).then((res) => {
             let parsed = JSON.parse(res.express)
-            tripsArray.push(parsed[0])
-            console.log(tripsArray)
-        }).catch((err)=>{
+            tripsArray1 = [...tripsArray1, parsed[0]]
+            setTripsArray(tripsArray1);
+            console.log(tripsArray1);
+        }).catch((err) => {
             console.log(err)
         })
     }
 
-  const callGetPastTrips = async (pastTrip) => {
-    const url = serverURL + "/api/getPastTrips";
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        pastTrips: pastTrip,
-      })
-    });
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    console.log("User settings: ", body);
-    return body;
-  }
+    const callGetPastTrips = async (pastTrip) => {
+        const url = serverURL + "/api/getPastTrips";
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                // authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                pastTrips: pastTrip,
+            })
+        });
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.message);
+        console.log("User settings: ", body);
+        return body;
+    }
 
-    const handleSubmit = () =>{
-        if (pastTrips.length !== 0){
-            finalPastTrips.forEach((val)=>{
-            console.log(val)
-            getPastTrips(val);
-        })}else{
+    const handleSubmit = () => {
+        if (pastTrips.length !== 0) {
+            finalPastTrips.forEach((val) => {
+                console.log(val)
+                getPastTrips(val);
+            })
+        } else {
             setError("No past trips to show")
         }
     }
-    let columns = [
-        { field: 'destination', headerName: 'destination', width: 70 },
-        { field: 'origin', headerName: 'origin', width: 70 },
-        { field: 'price', headerName: 'price', width: 70 },
-        { field: 'tripDate', headerName: 'tripDate', width: 70 },
-        { field: 'tripID', headerName: 'tripID', width: 70 },
+    const columns = [
+        { field: 'trip_id', headerName: 'Trip ID', width: 150 },
+        { field: 'origin', headerName: 'Origin', width: 150 },
+        { field: 'destination', headerName: 'Destination', width: 250 },
+        { field: 'trip_date', headerName: 'Trip Date', type: 'date', width: 150 },
+        { field: 'price', headerName: 'Price', width: 150 },
     ]
     return (
-        <div>
-            <Button onClick = {(()=>handleSubmit())}>Hi click me to show results table(not working but check DevTools console )</Button>
+        <div style={{ height: 400, width: '150%' }}>
+            <Button onClick={(() => handleSubmit())}>Hi click me to show results table(not working but check DevTools console )</Button>
             <Typography>{error}</Typography>
             <DataGrid
                 rows={tripsArray}
                 columns={columns}
+                getRowId={(results) => results.trip_id}
                 pageSize={5}
                 rowsPerPageOptions={[5]}
-                checkboxSelection
+                rowHeight={50}
+            // checkboxSelection
             />
         </div>
     )
 }
 const Payment = (props) => {
-  let [name, setName] = React.useState('')
-  let [number, setNumber] = React.useState('')
-  let [mmyy, setMmyy] = React.useState('')
-  let [cvv, setCvv] = React.useState('')
-  let [money, setMoney] = React.useState()
-  let [errorMessage, setErrorMessage] = React.useState('')
-  let [successMessage, setSuccessMessage] = React.useState('')
-  const regexNumber = /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$/;
-  const regexMMYY =  /^(?:0[1-9]|1[0-2])(\d{2})$/;
-  const regexCVV = /^[0-9]{3,4}$/;
+    let [name, setName] = React.useState('')
+    let [number, setNumber] = React.useState('')
+    let [mmyy, setMmyy] = React.useState('')
+    let [cvv, setCvv] = React.useState('')
+    let [money, setMoney] = React.useState()
+    let [errorMessage, setErrorMessage] = React.useState('')
+    let [successMessage, setSuccessMessage] = React.useState('')
+    const regexNumber = /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$/;
+    const regexMMYY = /^(?:0[1-9]|1[0-2])(\d{2})$/;
+    const regexCVV = /^[0-9]{3,4}$/;
 
-  const serverUrl = props.serverUrl;
-  const userId = props.userId;
-  const currentBalance = props.currentBalance;
-  const handleNameChange = (e) => {
-    setName(e.target.value)
-  }
-  const handleMoneyChange = (e) => {
-    setMoney(e.target.value)
-  }
-  const handleNumberChange = (e) => {
-    setNumber(e.target.value)
-  }
-  const handleMmyyChange = (e) => {
-    setMmyy(e.target.value)
-  }
-  const handleCvvChange = (e) => {
-    setCvv(e.target.value)
-  }
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setSuccessMessage("")
-    if (!name || !number || !mmyy || !cvv){
-      setErrorMessage("Please fill out all credit card information")
-      return;
+    const serverUrl = props.serverUrl;
+    const userId = props.userId;
+    const currentBalance = props.currentBalance;
+    const handleNameChange = (e) => {
+        setName(e.target.value)
     }
-    if (!money){
-        setErrorMessage("Please enter the amount of money you would like to load into your account")
-        return;
+    const handleMoneyChange = (e) => {
+        setMoney(e.target.value)
     }
-    if (!regexNumber.test(number)){
-      setErrorMessage("Please enter correct credit card number")
-      return;
+    const handleNumberChange = (e) => {
+        setNumber(e.target.value)
     }
-    if (!regexMMYY.test(mmyy)){
-      setErrorMessage("Please enter correct MMYY")
-      return;
+    const handleMmyyChange = (e) => {
+        setMmyy(e.target.value)
     }
-    if (!regexCVV.test(cvv)){
-      setErrorMessage("Please enter correct CVV")
-      return;
+    const handleCvvChange = (e) => {
+        setCvv(e.target.value)
     }
-    const changeMoney = () => {
-        var serverURL = serverUrl;
-        const url = serverURL + "/api/updateUserBalance";
-        console.log("This is the url"+url)
-        let newBalance = parseInt(money) + parseInt(currentBalance);
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                // authorization: `Bearer ${this.state.token}`
-            },
-            body: JSON.stringify({
-                userID: userId,
-                balance : newBalance,
-            })
-        }).then(() => {
-            setErrorMessage("")
-            setSuccessMessage ("Money successfully loaded ! Please refresh to see your new updated balance")
-            setName("")
-            setMoney("")
-            setMmyy("")
-            setCvv("")
-            setNumber("")
-        }).catch((error)=>{
-            setErrorMessage(error)
-        });
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        setSuccessMessage("")
+        if (!name || !number || !mmyy || !cvv) {
+            setErrorMessage("Please fill out all credit card information")
+            return;
+        }
+        if (!money) {
+            setErrorMessage("Please enter the amount of money you would like to load into your account")
+            return;
+        }
+        if (!regexNumber.test(number)) {
+            setErrorMessage("Please enter correct credit card number")
+            return;
+        }
+        if (!regexMMYY.test(mmyy)) {
+            setErrorMessage("Please enter correct MMYY")
+            return;
+        }
+        if (!regexCVV.test(cvv)) {
+            setErrorMessage("Please enter correct CVV")
+            return;
+        }
+        const changeMoney = () => {
+            var serverURL = serverUrl;
+            const url = serverURL + "/api/updateUserBalance";
+            console.log("This is the url" + url)
+            let newBalance = parseInt(money) + parseInt(currentBalance);
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    // authorization: `Bearer ${this.state.token}`
+                },
+                body: JSON.stringify({
+                    userID: userId,
+                    balance: newBalance,
+                })
+            }).then(() => {
+                setErrorMessage("")
+                setSuccessMessage("Money successfully loaded ! Please refresh to see your new updated balance")
+                setName("")
+                setMoney("")
+                setMmyy("")
+                setCvv("")
+                setNumber("")
+            }).catch((error) => {
+                setErrorMessage(error)
+            });
+        }
+        changeMoney();
     }
-    changeMoney();
-  }
-  // Delete later upon submission
-  const handleSubmit2 = (e) => {
-    e.preventDefault()
-    setSuccessMessage("")
-    if (!name || !number || !mmyy || !cvv){
-      setErrorMessage("Please fill out all credit card information")
-      return;
+    // Delete later upon submission
+    const handleSubmit2 = (e) => {
+        e.preventDefault()
+        setSuccessMessage("")
+        if (!name || !number || !mmyy || !cvv) {
+            setErrorMessage("Please fill out all credit card information")
+            return;
+        }
+        if (!money) {
+            setErrorMessage("Please enter the amount of money you would like to load into your account")
+            return;
+        }
+        const changeMoney2 = () => {
+            var serverURL = serverUrl;
+            const url = serverURL + "/api/updateUserBalance";
+            console.log("This is the url" + url)
+            let newBalance = parseInt(money)
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    // authorization: `Bearer ${this.state.token}`
+                },
+                body: JSON.stringify({
+                    userID: userId,
+                    balance: newBalance,
+                })
+            }).then(() => {
+                setErrorMessage("")
+                setSuccessMessage("Money successfully loaded ! Please refresh to see your new updated balance")
+                setName("")
+                setMoney("")
+                setMmyy("")
+                setCvv("")
+                setNumber("")
+            }).catch((error) => {
+                setErrorMessage(error)
+            });
+        }
+        changeMoney2();
     }
-    if (!money){
-        setErrorMessage("Please enter the amount of money you would like to load into your account")
-        return;
-    }
-    const changeMoney2 = () => {
-        var serverURL = serverUrl;
-        const url = serverURL + "/api/updateUserBalance";
-        console.log("This is the url"+url)
-        let newBalance = parseInt(money)
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                // authorization: `Bearer ${this.state.token}`
-            },
-            body: JSON.stringify({
-                userID: userId,
-                balance : newBalance,
-            })
-        }).then(() => {
-            setErrorMessage("")
-            setSuccessMessage ("Money successfully loaded ! Please refresh to see your new updated balance")
-            setName("")
-            setMoney("")
-            setMmyy("")
-            setCvv("")
-            setNumber("")
-        }).catch((error)=>{
-            setErrorMessage(error)
-        });
-    }
-    changeMoney2();
-  }
-    return(
-    <div className="Payment Method">
-        <form>
-            <h2>Load money into your balance </h2>
-            <h4>Current Balance : {currentBalance}</h4>
-            <h3>Cardholder Name</h3>
-            <TextField
-                variant="outlined"
-                type="text"
-                style={{ width: '250px' }}
-                value={name} onChange={handleNameChange}/>
-            <h3>Cardholder Number</h3>
-            <TextField
-                variant="outlined"
-                type="number"
-                style={{ width: '250px' }} 
-                value={number} onChange={handleNumberChange}/>
-            <h3>MMYY</h3>
-            <TextField
-                variant="outlined"
-                type="number"
-                value={mmyy}
-                style={{ width: '250px' }} onChange={handleMmyyChange}/>
-            <h3>CVV</h3>
-            <TextField
-                variant="outlined"
-                type="number"
-                style={{ width: '250px' }} value={cvv} onChange={handleCvvChange}/>
-            <h3>Amount of money you would like to load in</h3>
-            <TextField
-                variant="outlined"
-                type="number"
-                value={money}
-                style={{ width: '250px' }} onChange={handleMoneyChange}/>
-            <br /><br />
-            <Button variant="contained" color="secondary" onClick = {handleSubmit}>
-                Confirm payment
-            </Button>
-            <Button variant="contained" color="secondary" onClick = {handleSubmit2}>
-                Reset your money to this amount (just fill out random stuff for the form, no strict regex check)
-            </Button>
-            <Typography  variant="subtitle2" color = "secondary">{errorMessage}</Typography>
-            <Typography variant="h6" style = {{color : "green"}}>{successMessage}</Typography>
-            <br /><br />
-            <hr style={{ backgroundColor: 'black', height: '3px', border: '0px' }} />
-        </form>
-    </div>)}
+    return (
+        <div className="Payment Method">
+            <form>
+                <h2>Load money into your balance </h2>
+                <h4>Current Balance : {currentBalance}</h4>
+                <h3>Cardholder Name</h3>
+                <TextField
+                    variant="outlined"
+                    type="text"
+                    style={{ width: '250px' }}
+                    value={name} onChange={handleNameChange} />
+                <h3>Cardholder Number</h3>
+                <TextField
+                    variant="outlined"
+                    type="number"
+                    style={{ width: '250px' }}
+                    value={number} onChange={handleNumberChange} />
+                <h3>MMYY</h3>
+                <TextField
+                    variant="outlined"
+                    type="number"
+                    value={mmyy}
+                    style={{ width: '250px' }} onChange={handleMmyyChange} />
+                <h3>CVV</h3>
+                <TextField
+                    variant="outlined"
+                    type="number"
+                    style={{ width: '250px' }} value={cvv} onChange={handleCvvChange} />
+                <h3>Amount of money you would like to load in</h3>
+                <TextField
+                    variant="outlined"
+                    type="number"
+                    value={money}
+                    style={{ width: '250px' }} onChange={handleMoneyChange} />
+                <br /><br />
+                <Button variant="contained" color="secondary" onClick={handleSubmit}>
+                    Confirm payment
+                </Button>
+                <Button variant="contained" color="secondary" onClick={handleSubmit2}>
+                    Reset your money to this amount (just fill out random stuff for the form, no strict regex check)
+                </Button>
+                <Typography variant="subtitle2" color="secondary">{errorMessage}</Typography>
+                <Typography variant="h6" style={{ color: "green" }}>{successMessage}</Typography>
+                <br /><br />
+                <hr style={{ backgroundColor: 'black', height: '3px', border: '0px' }} />
+            </form>
+        </div>)
+}
 const MyProfile = compose(
     withRouter,
     withFirebase,

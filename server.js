@@ -57,6 +57,34 @@ const auth = async (req, res, next) => {
 	});
 };
 
+
+app.post('/api/addReview', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+	let reviewTitle = req.body.title
+	let reviewContent = req.body.content
+	let reviewScore = req.body.rating
+	let reviewName = req.body.name
+
+	let sql = 'INSERT INTO reviews (user, content, title, score) VALUES (?,?,?,?)';
+	// console.log(sql);
+	let data = [reviewName, reviewContent, reviewTitle, reviewScore];
+	// console.log(data);
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		// console.log(results)
+		// let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+
+});
+
 app.post("/login", (req, res) => {
 	const token = req.body.token;
 	// idToken comes from the client app
@@ -97,6 +125,7 @@ app.post('/api/loadUserDetails', auth, (req, res) => {
 	});
 	connection.end();
 });
+
 app.post('/api/loadUserDetailsPayment', auth, (req, res) => {
 
 	let connection = mysql.createConnection(config);
@@ -287,6 +316,25 @@ app.post('/api/getOrigin', (req, res) => {
 
 });
 
+app.post('/api/getReviews', (req, res) => {
+	let connection = mysql.createConnection(config);
+
+	let sql = `SELECT * FROM reviews`;
+	let data = [];
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+
+});
+
 app.post('/api/getTimes', (req, res) => {
 	let connection = mysql.createConnection(config);
 
@@ -410,9 +458,7 @@ app.post('/api/search', (req, res) => {
 				INNER JOIN (SELECT a.trip_id, a.seats, a.trip_date, a.bus_id, 
 				(SELECT time FROM sareng.timings WHERE id = a.depart_time) AS departure_time, 
 				(SELECT time FROM sareng.timings WHERE id = a.arrival_time) AS arrival_time 
-				FROM sareng.trips a WHERE trip_date = (?)`;
-
-			Mysql = Mysql + `) d ON d.bus_id = aa.id;`
+				FROM sareng.trips a WHERE trip_date = (?)) d ON d.bus_id = aa.id;`;
 
 			let data1 = [destination_id, origin_id, returnDate];
 
