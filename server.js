@@ -57,6 +57,34 @@ const auth = async (req, res, next) => {
 	});
 };
 
+
+app.post('/api/addReview', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+	let reviewTitle = req.body.title
+	let reviewContent = req.body.content
+	let reviewScore = req.body.rating
+	let reviewName = req.body.name
+
+	let sql = 'INSERT INTO reviews (user, content, title, score) VALUES (?,?,?,?)';
+	// console.log(sql);
+	let data = [reviewName, reviewContent, reviewTitle, reviewScore];
+	// console.log(data);
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		// console.log(results)
+		// let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+
+});
+
 app.post("/login", (req, res) => {
 	const token = req.body.token;
 	// idToken comes from the client app
@@ -97,6 +125,7 @@ app.post('/api/loadUserDetails', auth, (req, res) => {
 	});
 	connection.end();
 });
+
 app.post('/api/loadUserDetailsPayment', auth, (req, res) => {
 
 	let connection = mysql.createConnection(config);
@@ -272,6 +301,25 @@ app.post('/api/getOrigin', (req, res) => {
 	let connection = mysql.createConnection(config);
 
 	let sql = `SELECT * FROM stations`;
+	let data = [];
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+
+});
+
+app.post('/api/getReviews', (req, res) => {
+	let connection = mysql.createConnection(config);
+
+	let sql = `SELECT * FROM reviews`;
 	let data = [];
 
 	connection.query(sql, data, (error, results, fields) => {
