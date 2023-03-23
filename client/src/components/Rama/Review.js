@@ -75,7 +75,7 @@ const Review2 = ({ serverURL }) => {
   const [enteredReview, setReviewBody] = React.useState('');
   const [selectedRating, setReviewRating] = React.useState('');
   const [submittedReviews, setSubmittedReviews] = React.useState([]);
-  const [PrevSubmittedReviews, setPrevSubmittedReviews] = React.useState('')
+  //const [PrevSubmittedReviews, setPrevSubmittedReviews] = React.useState('')
   const [enteredName, setReviewName] = React.useState('')
 
 
@@ -194,18 +194,8 @@ const SubmittedReviews = (props) => {
     props.list.map((review) => {
       return (
         <>
-          <p> {""} </p>
           <big> <b> {"Your feedback is submitted and under review now!"} </b></big>
-          <hr style={{ height: '2px', backgroundColor: 'black', border: '0', width: '400px' }} />
-          {/* <p> {"________________________________"} </p> */}
-          <p> {"Name: "} <i> {review.name} </i> </p>
-          <p> {"Title: "} <i> {review.title} </i> </p>
-          <p> {"Review: "} <i> {review.body} </i> </p>
-          <p> {"Rating: "} <i> {review.rating} </i> </p>
-          {/* <p> {"________________________________"} </p> */}
         </>
-
-
       );
 
     })
