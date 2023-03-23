@@ -374,4 +374,3 @@ FAQ.propTypes = {
 };
 
 export default withStyles(styles)(FAQ);
-
