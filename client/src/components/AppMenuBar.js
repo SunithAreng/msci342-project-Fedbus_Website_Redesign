@@ -81,7 +81,7 @@ export const AppMenuBar = () => {
                         </Button>
                         <Button
                             key='10'
-                            onClick={() => history.push('/Review')}
+                            onClick={() => history.push('/OtherReviews')}
                             sx={{ my: 2, color: 'white', display: 'block' }}
                         >
                             Reviews

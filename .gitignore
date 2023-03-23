@@ -6,3 +6,4 @@ client/build/
 package-lock.json
 client/package-lock.json
 config.js
+.DS_Store
