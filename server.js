@@ -547,7 +547,28 @@ app.post('/api/newStation', (req, res) => {
 		connection.end();
 	});
 });
+app.post('/api/addQuestion', (req,res) => {
+	let connection = mysql.createConnection(config);
 
+	let name = req.body.name
+	let email = req.body.email
+	let questions = req.body.questions
+
+	let sql = `INSERT INTO sareng.questions (name, email, questions) 
+				VALUES ((?), (?), (?));`;
+
+	let data = [name,email,questions];
+
+
+	connection.query(sql, data, (error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+		let string = JSON.stringify(results);
+		res.send({ express: string });
+		connection.end();
+	});
+})
 app.post('/api/newRoute', (req, res) => {
 	let connection = mysql.createConnection(config);
 
