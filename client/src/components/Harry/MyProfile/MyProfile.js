@@ -137,7 +137,7 @@ class MyProfileBase extends React.Component {
         });
         const body = await response.json();
         if (response.status !== 200) throw Error(body.message);
-        console.log("User settings: ", body);
+        // console.log("User settings: ", body);
         return body;
     }
 
@@ -490,6 +490,7 @@ const TripHistory = (props) => {
     let tripsArray1 = []
     const [tripsArray, setTripsArray] = React.useState([]);
     let [error, setError] = React.useState("")
+    let [showHistory, setShowHistory] = React.useState(false)
     let pastTrips = []
     if (props.pastTrips) {
         pastTrips = props.pastTrips.split(" ")
@@ -501,7 +502,7 @@ const TripHistory = (props) => {
             let parsed = JSON.parse(res.express)
             tripsArray1 = [...tripsArray1, parsed[0]]
             setTripsArray(tripsArray1);
-            console.log(tripsArray1);
+            // console.log(tripsArray1);
         }).catch((err) => {
             console.log(err)
         })
@@ -526,6 +527,7 @@ const TripHistory = (props) => {
     }
 
     const handleSubmit = () => {
+        setShowHistory(!showHistory)
         if (pastTrips.length !== 0) {
             finalPastTrips.forEach((val) => {
                 console.log(val)
@@ -543,18 +545,22 @@ const TripHistory = (props) => {
         { field: 'price', headerName: 'Price', width: 150 },
     ]
     return (
+        <div>
+        {!showHistory && <Button onClick={(() => handleSubmit())}>Click to display trip history</Button>}
+        {showHistory && <Button onClick={(() => handleSubmit())}>Click to hide trip history</Button>}
+        <Typography>{error}</Typography>
+        {showHistory && 
         <div style={{ height: 400, width: '150%' }}>
-            <Button onClick={(() => handleSubmit())}>Hi click me to show results table(not working but check DevTools console )</Button>
-            <Typography>{error}</Typography>
-            <DataGrid
+                <DataGrid
                 rows={tripsArray}
                 columns={columns}
                 getRowId={(results) => results.trip_id}
                 pageSize={5}
                 rowsPerPageOptions={[5]}
                 rowHeight={50}
-            // checkboxSelection
-            />
+                />
+        </div>
+        }
         </div>
     )
 }
