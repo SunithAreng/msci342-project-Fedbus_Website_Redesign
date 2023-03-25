@@ -50,8 +50,9 @@ export const ResultsTable = ({ results, selectionModel, setSelectionModel, pref 
             width: 150,
         },
     ];
+
     return (
-        <>
+        <div style={{ height: 500 }}>
             <DataGrid
                 rows={results}
                 columns={columns}
@@ -59,6 +60,10 @@ export const ResultsTable = ({ results, selectionModel, setSelectionModel, pref 
                 checkboxSelection
                 disableSelectionOnClick
                 selectionModel={selectionModel}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                rowHeight={50}
+                isRowSelectable={(params) => params.row.seats > 0}
                 onSelectionModelChange={pref == '1' ?
                     (selection) => {
                         const newSelectionModel = [...selection];
@@ -75,6 +80,6 @@ export const ResultsTable = ({ results, selectionModel, setSelectionModel, pref 
                     :
                     (selection) => setSelectionModel(selection)}
             />
-        </>
+        </div>
     )
 }
