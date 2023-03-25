@@ -221,7 +221,7 @@ app.post('/api/updateSeats', (req, res) => {
 	let seats2 = req.body.seats2;
 
 	let sql, data;
-	if (trip_id2 && seats2){
+	if (trip_id2 && seats2) {
 		sql = `
 		INSERT INTO trips(trip_id, seats)
 			VALUES
@@ -230,8 +230,8 @@ app.post('/api/updateSeats', (req, res) => {
 			ON DUPLICATE KEY UPDATE
 				seats = VALUES(seats);
 		`;
-		data = [trip_id, seats,trip_id2,seats2];
-	} else{
+		data = [trip_id, seats, trip_id2, seats2];
+	} else {
 		sql = `UPDATE trips SET seats = (?) WHERE trip_id = (?)`;
 		data = [seats, trip_id];
 	}
