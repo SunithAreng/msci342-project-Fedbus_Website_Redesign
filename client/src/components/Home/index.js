@@ -4,6 +4,7 @@ import { MuiThemeProvider, createTheme, styled } from "@material-ui/core/styles"
 import { Grid, Typography, Box, Button } from "@material-ui/core";
 import history from '../Navigation/history';
 import { AppMenuBar } from '../AppMenuBar';
+import { Popup } from './PopupBox';
 
 //Dev mode
 const serverURL = ""; //enable for dev mode
@@ -129,7 +130,7 @@ class Home extends Component {
                 Let's go
               </Button>
             </Grid>
-
+            <Popup serverURL = {serverURL}/>
           </MainGridContainer>
         </Box>
       </MuiThemeProvider>
