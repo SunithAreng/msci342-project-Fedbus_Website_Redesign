@@ -24,6 +24,7 @@ export const AnnoucementsRender = ({ announcements }) => {
     let i = 0;
 
     return (
+
         <MuiThemeProvider theme={theme}>
             <AppMenuBar />
             <br />
@@ -34,16 +35,23 @@ export const AnnoucementsRender = ({ announcements }) => {
                 alignItems="center"
             >
                 <Typography variant="h3" component="h4">Important Annoucements:</Typography>
+            </Grid>
+            <Grid
+                container
+                direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+            >
                 <br />
                 {announcements.map((item) => {
                     i++;
                     return (
-                        <>
-                            <p>
+                        < div key={item.id}>
+                            <ul>
                                 <Typography variant="h5" key={item.id}>{i + ". " + item.title}</Typography>
                                 {item.content}
-                            </p>
-                        </>
+                            </ul>
+                        </div>
                     )
 
                 }

@@ -18,11 +18,6 @@ import LaSallePark from './LaSallePark.jpeg'
 import Walmart from './Walmart.jpeg'
 import { AppMenuBar } from '../../AppMenuBar';
 
-
-
-
-
-
 function Location() {
   return (
     <>
@@ -194,40 +189,6 @@ function Location() {
     <iframe width="40%" height="20%" id="gmap_canvas" src="https://maps.google.com/maps?q=GoodLife%20Fitness%20Markham%20Markville%20Mall&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
     <br /><br />
 
-    <hr style={{ height: '2px', backgroundColor: 'black', border:'0'}}/>
-    <h2>Useful Information</h2>
-  <h3>1. The Fed Bus is a school bus. Only baggage that will fit on your lap or under your seat will be accommodated.
-    <br/>
-    2. Tickets are limited, please purchase early!
-    <br/>
-    3. You must show your Watcard for every ticket purchase and upon boarding.
-    <br/>
-    4. The Fed Bus does not run during examination periods. When classes finish, so does the Fed Bus.
-    <br/>
-    5. No refunds on ticket purchases. Please arrive 15 minutes prior to your departure time.
-  </h3>
-
-{/*   
-  <hr style={{ height: '2px', backgroundColor: 'black',border:'0'}}/>
-  <h3>Contact</h3>
-  <h5>Student Life Centre - Turnkey Desk:
-    <br />
-    200 University Ave West
-    <br/ >
-    Waterloo, ON N2L 3G1
-    <br/>
-    519-888-4434
-    <br/ >
-    turnkeys@uwaterloo.ca <br/>
-  </h5>
-  
-  <h5>Fed Bus Email:
-  <br />
-    fedbus@wusa.ca
-  </h5>
-
-  <br/> */}
-    
     </>
 
 </div>
