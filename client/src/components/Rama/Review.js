@@ -68,6 +68,8 @@ const styles = theme => ({
   },
 });
 
+
+
 const Review2 = ({ serverURL }) => {
 
   const [submitClick, setMessage] = React.useState(false);
@@ -131,6 +133,7 @@ const Review2 = ({ serverURL }) => {
         rating: selectedRating,
         name: enteredName,
       }
+      
       let copy = [...submittedReviews];
       copy.push(review);
       setSubmittedReviews(copy);
@@ -170,7 +173,6 @@ const Review2 = ({ serverURL }) => {
           <Button variant="contained" color="primary" onClick={submitButton}>
             Submit
           </Button>
-          <SubmittedReviews list={submittedReviews} />
           <Button
             key='9'
             onClick={() => history.push('/OtherReviews')}
@@ -181,12 +183,17 @@ const Review2 = ({ serverURL }) => {
           >
             Go back
           </Button>
-        </div>
+          <div></div>
+          <p></p>
+          </div>
+          <p></p>
+          <SubmittedReviews list={submittedReviews} limit={5} />
       </Grid>
       <div></div>
     </MuiThemeProvider>
   )
 }
+
 
 const SubmittedReviews = (props) => {
   return (
@@ -201,6 +208,7 @@ const SubmittedReviews = (props) => {
     })
   )
 }
+  
 
 const ReviewName = (props) => {
   return (

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -63,6 +63,11 @@ const styles = theme => ({
 
 
 export const Review2 = ({ reviews }) => {
+  const [page, setPage] = useState(1);
+  const reviewsPerPage = 5;
+  const startIndex = (page - 1) * reviewsPerPage;
+  const endIndex = startIndex + reviewsPerPage;
+
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
@@ -103,42 +108,42 @@ export const Review2 = ({ reviews }) => {
         justifyContent="center"
         alignItems="center"
       >
-        {reviews.map((data) => {
+        {reviews.slice(startIndex, endIndex).map((data) => {
           return (
-            <>
-             <Card style={{ backgroundColor: '#fffff', width: '800px', border: '1px solid #ffe0ae', borderRadius: '5px' }}>
-  <CardContent>
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <div>
-        <big> <b> {data.user}</b></big>
-        <hr style={{ height: '1px', backgroundColor: '#ccc', border: '0', width: '600px' }} />
-        <p> <b> Title: </b>{data.title} </p>
-        <p><b>Review: </b> {data.content}  </p>
-      </div>
-      <div>
-        <h4> Rating: {<ReviewStars arr={data.score} />}</h4>
-      </div>
-    </div>
-  </CardContent>
-</Card>
-            </>
-          )
+            <Card key={data.id} style={{ backgroundColor: '#fffff', width: '800px', border: '1px solid #ffe0ae', borderRadius: '5px' }}>
+              <CardContent>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <big><b>{data.user}</b></big>
+                    <hr style={{ height: '1px', backgroundColor: '#ccc', border: '0', width: '600px' }} />
+                    <p><b>Title:</b> {data.title}</p>
+                    <p><b>Review:</b> {data.content}</p>
+                  </div>
+                  <div>
+                    <h4>Rating: {<ReviewStars arr={data.score} />}</h4>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          );
         })}
+        <div style={{ marginTop: '20px' }}>
+          <Button disabled={page === 1} onClick={() => setPage(page - 1)}>Prev</Button>
+          <Button disabled={reviews.length <= endIndex} onClick={() => setPage(page + 1)}>Next</Button>
+        </div>
       </Grid>
       <CardContent />
     </MuiThemeProvider>
-
-  )
-}
+  );
+};
 
 const ReviewStars = ({ arr }) => {
-  let a = "⭐"
+  let a = "⭐";
   for (let i = 1; i < arr; i++) {
-    a = a + "⭐"
+    a = a + "⭐";
   }
   return a;
-}
-
+};
 
 const GetReviewsAPI = () => {
   const serverURL = useSelector((state) => state.serverURL.value);
@@ -188,3 +193,5 @@ const OtherReviews = () => {
 }
 
 export default OtherReviews;
+
+
