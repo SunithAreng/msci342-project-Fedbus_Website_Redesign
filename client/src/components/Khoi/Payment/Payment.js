@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 const Payment = (props) => {
   const serverURL = useSelector((state) => state.serverURL.value);
   const tripInfo = props.location.state.stuff[0]
+  console.log(props.location.state.stuff)
   let tripInfo2 = {}
   let price2 = 0 
   let tripId2 = ""
@@ -238,7 +239,7 @@ const Payment = (props) => {
             <div>
             <Typography variant="subtitle1" >1x</Typography>
             <Typography variant="subtitle1" >{tripInfo.origin}-{tripInfo.destination}</Typography>
-            <Typography variant="subtitle1">{tripInfo.departure_time}-{tripInfo.arrival_time}</Typography>
+            {(tripInfo.departure_time && tripInfo.arrival_time) && <Typography variant="subtitle1">{tripInfo.departure_time}-{tripInfo.arrival_time}</Typography>}
             <Typography variant="subtitle1">{tripInfo.trip_date}</Typography>
             <hr />
             </div>
