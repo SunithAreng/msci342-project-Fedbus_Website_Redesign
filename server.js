@@ -217,9 +217,24 @@ app.post('/api/updateSeats', (req, res) => {
 	let connection = mysql.createConnection(config);
 	let trip_id = req.body.trip_id;
 	let seats = req.body.seats;
+	let trip_id2 = req.body.trip_id2;
+	let seats2 = req.body.seats2;
 
-	let sql = `UPDATE trips SET seats = (?) WHERE trip_id = (?)`;
-	let data = [seats, trip_id];
+	let sql, data;
+	if (trip_id2 && seats2){
+		sql = `
+		INSERT INTO trips(trip_id, seats)
+			VALUES
+				(?,?),
+				(?,?)
+			ON DUPLICATE KEY UPDATE
+				seats = VALUES(seats);
+		`;
+		data = [trip_id, seats,trip_id2,seats2];
+	} else{
+		sql = `UPDATE trips SET seats = (?) WHERE trip_id = (?)`;
+		data = [seats, trip_id];
+	}
 
 	connection.query(sql, data, (error, results, fields) => {
 		if (error) {
@@ -238,7 +253,6 @@ app.post('/api/addToPastTrips', (req, res) => {
 	console.log(newPastTrips)
 	let userID = req.body.userID;
 
-	let sql = `UPDATE user SET seats = (?) WHERE trip_id = (?)`;
 	let sql2 = `UPDATE user SET pastTrips = (?) WHERE UID = (?)`;
 	let data = [newPastTrips, userID];
 

@@ -7,7 +7,22 @@ import { useSelector } from 'react-redux';
 const Payment = (props) => {
   const serverURL = useSelector((state) => state.serverURL.value);
   const tripInfo = props.location.state.stuff[0]
-  console.log(tripInfo)
+  let tripInfo2 = {}
+  let price2 = 0 
+  let tripId2 = ""
+  let seats2 = 0 
+  if (props.location.state.stuff[1]){
+    tripInfo2 = props.location.state.stuff[1]
+    //tripInfo2 stuff
+    price2 = tripInfo2.price;
+    tripId2 = tripInfo2.trip_id;
+    seats2 = tripInfo2.seats;
+    }else{
+    tripInfo2 = {}
+    price2 = 0
+    tripId2 = ""
+    seats2 = 0
+  }
   let [number, setNumber] = React.useState('')
   let [errorMessage, setErrorMessage] = React.useState('')
   let [successMessage, setSuccessMessage] = React.useState('')
@@ -35,7 +50,7 @@ const Payment = (props) => {
         let parsed = JSON.parse(res.express);
         setPastTrips(parsed[0].pastTrips)
         setBalance(parseInt(parsed[0].balance))
-        if (balance < price){
+        if (balance < (price+price2)){
           setLackMoney(true)
         }else{
           setLackMoney(false)
@@ -58,7 +73,7 @@ const Payment = (props) => {
     });
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
-    console.log("User settings: ", body);
+    // console.log("User settings: ", body);
     return body;
   }
 
@@ -67,7 +82,7 @@ const Payment = (props) => {
   }
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (balance < price ){
+    if (balance < (parseInt(price) + parseInt(price2))){
       setErrorMessage("Your balance is not sufficient for this transaction. Please go back to MyProfile page to load money into your balance")
       setShowBackToMyProfile(true)
       return;
@@ -85,6 +100,10 @@ const Payment = (props) => {
     const updateSeats = () => {
       const url = serverURL + "/api/updateSeats";
       let newSeats = parseInt(seats) - 1;
+      let newSeats2;
+      if (seats2){
+        newSeats2 = parseInt(seats2) - 1;
+      }
       fetch(url, {
           method: "POST",
           headers: {
@@ -93,7 +112,9 @@ const Payment = (props) => {
           },
           body: JSON.stringify({
               trip_id: tripId,
+              trip_id2: tripId2,
               seats : newSeats,
+              seats2 : newSeats2
           })
       }).then(() => {
           addToPastTrips()
@@ -106,14 +127,22 @@ const Payment = (props) => {
       loadUserSettings()
         const url = serverURL + "/api/addToPastTrips";
         let newTrips = ""
-        console.log("Seats number before add to " + pastTrips)
-        if (pastTrips === null){
-          newTrips = tripId
+        // console.log("Seats number before add to " + pastTrips)
+        if (!pastTrips){
+          if (tripId2){
+            newTrips = tripId +" "+ tripId2
+          }else{
+            newTrips = tripId
+          }
         }else{
-          console.log("Seats number before add to " + pastTrips)
           // newTrips = tripId.toString()
-          newTrips = pastTrips + " " + tripId.toString()
-          console.log(newTrips)
+          // console.log("Seats number before add to " + pastTrips)
+          if (tripId2){
+            newTrips = pastTrips + " " + tripId.toString() + " " + tripId2.toString()
+          }else{
+            newTrips = pastTrips + " " + tripId.toString()
+          }
+          // console.log(newTrips)
         }
         fetch(url, {
             method: "POST",
@@ -134,7 +163,7 @@ const Payment = (props) => {
     }
     const changeMoney = () => {
         const url = serverURL + "/api/updateUserBalance";
-        let newBalance = parseInt(balance) - parseInt(price);
+        let newBalance = parseInt(balance) - parseInt(price) - parseInt(price2);
         fetch(url, {
             method: "POST",
             headers: {
@@ -146,16 +175,16 @@ const Payment = (props) => {
                 balance : newBalance,
             })
         }).then(() => {
-            setErrorMessage("")
-            setSuccessMessage ("Order successfully placed !")
-            setNumber("")
-            setTimeout(()=>{setPaymentConfirmed(true)},1000)
+              setErrorMessage("")
+              setSuccessMessage ("Order successfully placed !")
+              setNumber("")
+              setTimeout(()=>{setPaymentConfirmed(true)},1000)
         }).catch((error)=>{
             setErrorMessage(error)
             setSuccessMessage("")
         });
     }
-    updateSeats();
+    updateSeats()
   }
   return (
     <Box mt={2}>
@@ -187,7 +216,7 @@ const Payment = (props) => {
               <Button variant="contained" color="secondary" style={{ marginTop: 7 }}onClick={() => history.push('/MyProfile')}>Go to MyProfile Page</Button>
               }
               <h1>Order Total</h1>
-              <Typography variant="h5">{tripInfo.price}$</Typography>
+              <Typography variant="h5">{tripInfo.price + price2}$</Typography>
               {(balance !== 0) &&
               <Button variant="contained" color="secondary" style={{ marginTop: 7 }} onClick={handleSubmit}>Submit</Button>
               }
@@ -206,12 +235,24 @@ const Payment = (props) => {
           }
           <Grid item xs={4}>
             <h1>Order Summary</h1>
+            <div>
             <Typography variant="subtitle1" >1x</Typography>
             <Typography variant="subtitle1" >{tripInfo.origin}-{tripInfo.destination}</Typography>
             <Typography variant="subtitle1">{tripInfo.departure_time}-{tripInfo.arrival_time}</Typography>
             <Typography variant="subtitle1">{tripInfo.trip_date}</Typography>
             <hr />
-            <Typography variant="h5">Total Price : {tripInfo.price}$</Typography>
+            </div>
+            {
+              (Object.keys(tripInfo2).length !== 0) && 
+              <div>
+              <Typography variant="subtitle1" >1x</Typography>
+              <Typography variant="subtitle1" >{tripInfo2.origin}-{tripInfo2.destination}</Typography>
+              <Typography variant="subtitle1">{tripInfo2.departure_time}-{tripInfo2.arrival_time}</Typography>
+              <Typography variant="subtitle1">{tripInfo2.trip_date}</Typography>
+              <hr />
+              </div>
+            }
+            <Typography variant="h5">Total Price : {tripInfo.price + price2}$</Typography>
           </Grid>
         </Grid>
       </div>
