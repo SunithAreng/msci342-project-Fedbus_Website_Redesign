@@ -9,11 +9,12 @@ University of Waterloo students
 ## Functionalities
 1. User profile creation and management
 2. Bus schedules search / display
-3. Alternative Bus Schedules
-4. Bus Pickup and Drop off locations
-5. Bus Reviews
-6. Tickets booking and purchasing
-7. Rebooking previous trips
+3. Bus Pickup and Drop off locations
+4. Bus Reviews
+5. Tickets booking and purchasing
+6. Rebooking previous trips
+7. Admin functionalities enabling website maintenance
+8. Customer-Admin communication
 
 
 ## Installation Requirements
@@ -26,4 +27,4 @@ University of Waterloo students
 2. For unit testing, type "yarn test" on terminal
 3. For e2e testing, type "yarn cypress" on terminal
 
-Note: At present, there are 4 unit tests and 1 e2e test in the project
+Note: At present, there are 9 unit tests and 3 e2e test in the project
