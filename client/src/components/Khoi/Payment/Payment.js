@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import history from '../../Navigation/history';
-import { AppBar, Toolbar, Typography, Button, IconButton, Link, Grid, Paper, Box, MenuItem, Select, FormControl, InputLabel, Divider, TextField } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import { Typography, Button, Grid, Box, TextField } from '@material-ui/core';
+import { connect } from "react-redux";
 
 const Payment = (props) => {
-  const serverURL = useSelector((state) => state.serverURL.value);
   const tripInfo = props.location.state.stuff[0]
   console.log(props.location.state.stuff)
   let tripInfo2 = {}
-  let price2 = 0 
+  let price2 = 0
   let tripId2 = ""
-  let seats2 = 0 
-  if (props.location.state.stuff[1]){
+  let seats2 = 0
+  if (props.location.state.stuff[1]) {
     tripInfo2 = props.location.state.stuff[1]
     //tripInfo2 stuff
     price2 = tripInfo2.price;
     tripId2 = tripInfo2.trip_id;
     seats2 = tripInfo2.seats;
-    }else{
+  } else {
     tripInfo2 = {}
     price2 = 0
     tripId2 = ""
@@ -32,7 +31,7 @@ const Payment = (props) => {
   let price = tripInfo.price;
   let tripId = tripInfo.trip_id;
   let seats = tripInfo.seats;
-  let [pastTrips,setPastTrips] = React.useState(0)
+  let [pastTrips, setPastTrips] = React.useState(0)
   //localStorage
   let userUid = localStorage.getItem('userid');
   let token = localStorage.getItem('token');
@@ -40,7 +39,7 @@ const Payment = (props) => {
   let [balance, setBalance] = React.useState()
   let [lackMoney, setLackMoney] = React.useState(false)
   let [showBackToMyProfile, setShowBackToMyProfile] = React.useState(false)
-  let [paymentConfirmed,setPaymentConfirmed] = React.useState(false)
+  let [paymentConfirmed, setPaymentConfirmed] = React.useState(false)
   // let [newPastTrips,setNewPastTrips] = React.useState(null)
   useEffect(() => {
     loadUserSettings()
@@ -51,16 +50,16 @@ const Payment = (props) => {
         let parsed = JSON.parse(res.express);
         setPastTrips(parsed[0].pastTrips)
         setBalance(parseInt(parsed[0].balance))
-        if (balance < (price+price2)){
+        if (balance < (price + price2)) {
           setLackMoney(true)
-        }else{
+        } else {
           setLackMoney(false)
         }
       });
   }
 
   const callApiLoadUserSettings = async () => {
-    const url = serverURL + "/api/loadUserDetailsPayment";
+    const url = props.serverURL + "/api/loadUserDetailsPayment";
 
     const response = await fetch(url, {
       method: "POST",
@@ -83,11 +82,11 @@ const Payment = (props) => {
   }
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (balance < (parseInt(price) + parseInt(price2))){
+    if (balance < (parseInt(price) + parseInt(price2))) {
       setErrorMessage("Your balance is not sufficient for this transaction. Please go back to MyProfile page to load money into your balance")
       setShowBackToMyProfile(true)
       return;
-    }else{
+    } else {
       setShowBackToMyProfile(false)
     }
     if (!number) {
@@ -99,91 +98,91 @@ const Payment = (props) => {
       return;
     }
     const updateSeats = () => {
-      const url = serverURL + "/api/updateSeats";
+      const url = props.serverURL + "/api/updateSeats";
       let newSeats = parseInt(seats) - 1;
       let newSeats2;
-      if (seats2){
+      if (seats2) {
         newSeats2 = parseInt(seats2) - 1;
       }
       fetch(url, {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-              // authorization: `Bearer ${this.state.token}`
-          },
-          body: JSON.stringify({
-              trip_id: tripId,
-              trip_id2: tripId2,
-              seats : newSeats,
-              seats2 : newSeats2
-          })
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // authorization: `Bearer ${this.state.token}`
+        },
+        body: JSON.stringify({
+          trip_id: tripId,
+          trip_id2: tripId2,
+          seats: newSeats,
+          seats2: newSeats2
+        })
       }).then(() => {
-          addToPastTrips()
-      }).catch((error)=>{
-          setErrorMessage(error)
-          setSuccessMessage("")
+        addToPastTrips()
+      }).catch((error) => {
+        setErrorMessage(error)
+        setSuccessMessage("")
       });
     }
     const addToPastTrips = () => {
       loadUserSettings()
-        const url = serverURL + "/api/addToPastTrips";
-        let newTrips = ""
-        // console.log("Seats number before add to " + pastTrips)
-        if (!pastTrips){
-          if (tripId2){
-            newTrips = tripId +" "+ tripId2
-          }else{
-            newTrips = tripId
-          }
-        }else{
-          // newTrips = tripId.toString()
-          // console.log("Seats number before add to " + pastTrips)
-          if (tripId2){
-            newTrips = pastTrips + " " + tripId.toString() + " " + tripId2.toString()
-          }else{
-            newTrips = pastTrips + " " + tripId.toString()
-          }
-          // console.log(newTrips)
+      const url = props.serverURL + "/api/addToPastTrips";
+      let newTrips = ""
+      // console.log("Seats number before add to " + pastTrips)
+      if (!pastTrips) {
+        if (tripId2) {
+          newTrips = tripId + " " + tripId2
+        } else {
+          newTrips = tripId
         }
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                // authorization: `Bearer ${this.state.token}`
-            },
-            body: JSON.stringify({
-                userID: userUid,
-                pastTrips: newTrips,
-            })
-        }).then(() => {
-            changeMoney()
-        }).catch((error)=>{
-            setErrorMessage(error)
-            setSuccessMessage("")
-        });
+      } else {
+        // newTrips = tripId.toString()
+        // console.log("Seats number before add to " + pastTrips)
+        if (tripId2) {
+          newTrips = pastTrips + " " + tripId.toString() + " " + tripId2.toString()
+        } else {
+          newTrips = pastTrips + " " + tripId.toString()
+        }
+        // console.log(newTrips)
+      }
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // authorization: `Bearer ${this.state.token}`
+        },
+        body: JSON.stringify({
+          userID: userUid,
+          pastTrips: newTrips,
+        })
+      }).then(() => {
+        changeMoney()
+      }).catch((error) => {
+        setErrorMessage(error)
+        setSuccessMessage("")
+      });
     }
     const changeMoney = () => {
-        const url = serverURL + "/api/updateUserBalance";
-        let newBalance = parseInt(balance) - parseInt(price) - parseInt(price2);
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                // authorization: `Bearer ${this.state.token}`
-            },
-            body: JSON.stringify({
-                userID: userUid,
-                balance : newBalance,
-            })
-        }).then(() => {
-              setErrorMessage("")
-              setSuccessMessage ("Order successfully placed !")
-              setNumber("")
-              setTimeout(()=>{setPaymentConfirmed(true)},1000)
-        }).catch((error)=>{
-            setErrorMessage(error)
-            setSuccessMessage("")
-        });
+      const url = props.serverURL + "/api/updateUserBalance";
+      let newBalance = parseInt(balance) - parseInt(price) - parseInt(price2);
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // authorization: `Bearer ${this.state.token}`
+        },
+        body: JSON.stringify({
+          userID: userUid,
+          balance: newBalance,
+        })
+      }).then(() => {
+        setErrorMessage("")
+        setSuccessMessage("Order successfully placed !")
+        setNumber("")
+        setTimeout(() => { setPaymentConfirmed(true) }, 1000)
+      }).catch((error) => {
+        setErrorMessage(error)
+        setSuccessMessage("")
+      });
     }
     updateSeats()
   }
@@ -194,63 +193,63 @@ const Payment = (props) => {
       <hr />
       <div>
         <Grid container spacing={2}>
-          { !paymentConfirmed &&
-          <Grid item xs={8}>
-          {(lackMoney) && <Box sx={{ mt: -1, ml: 29 }}><h2>Since your current balance is 0, please first go to MyProfile page to load in money first </h2></Box>}
-          {(balance !== 0) &&
-          <div>
-            <h1 align="center">Enter your credit card information</h1>
-            <Box sx={{ mt: -1, ml: 29 }}>
-              <h3>You currently have {balance}$ in your balance, please re-enter your</h3>
-              <h3>card number to submit your payment</h3>
-            </Box>
-            <Box sx={{ mt: 2, ml: 29 }}>
-              <TextField label="Cardholder Number" value={number} type="number" onChange={handleNumberChange} />
-            </Box>
-            <Box sx={{ mt: 2, ml: 29 }}>
-              <Typography variant="subtitle2" color="secondary">{errorMessage}</Typography>
-            </Box>
-            </div>
-          }
-            <Box sx={{ mt: 3, ml: 28 }}>
-              {(balance === 0 || showBackToMyProfile) &&
-              <Button variant="contained" color="secondary" style={{ marginTop: 7 }}onClick={() => history.push('/MyProfile')}>Go to MyProfile Page</Button>
-              }
-              <h1>Order Total</h1>
-              <Typography variant="h5">{tripInfo.price + price2}$</Typography>
+          {!paymentConfirmed &&
+            <Grid item xs={8}>
+              {(lackMoney) && <Box sx={{ mt: -1, ml: 29 }}><h2>Since your current balance is 0, please first go to MyProfile page to load in money first </h2></Box>}
               {(balance !== 0) &&
-              <Button variant="contained" color="secondary" style={{ marginTop: 7 }} onClick={handleSubmit}>Submit</Button>
+                <div>
+                  <h1 align="center">Enter your credit card information</h1>
+                  <Box sx={{ mt: -1, ml: 29 }}>
+                    <h3>You currently have {balance}$ in your balance, please re-enter your</h3>
+                    <h3>card number to submit your payment</h3>
+                  </Box>
+                  <Box sx={{ mt: 2, ml: 29 }}>
+                    <TextField label="Cardholder Number" value={number} type="number" onChange={handleNumberChange} />
+                  </Box>
+                  <Box sx={{ mt: 2, ml: 29 }}>
+                    <Typography variant="subtitle2" color="secondary">{errorMessage}</Typography>
+                  </Box>
+                </div>
               }
-              <Typography variant="h6" style={{ color: "green" }}>{successMessage}</Typography>
-            </Box>
-          </Grid>
+              <Box sx={{ mt: 3, ml: 28 }}>
+                {(balance === 0 || showBackToMyProfile) &&
+                  <Button variant="contained" color="secondary" style={{ marginTop: 7 }} onClick={() => history.push('/MyProfile')}>Go to MyProfile Page</Button>
+                }
+                <h1>Order Total</h1>
+                <Typography variant="h5">{tripInfo.price + price2}$</Typography>
+                {(balance !== 0) &&
+                  <Button variant="contained" color="secondary" style={{ marginTop: 7 }} onClick={handleSubmit}>Submit</Button>
+                }
+                <Typography variant="h6" style={{ color: "green" }}>{successMessage}</Typography>
+              </Box>
+            </Grid>
           }
           {
-            paymentConfirmed && 
-          <Grid item xs={8}>
-            <Box sx={{ mt: 4, ml: 29 }}>
-              <h2>Thank you for your purchase !</h2>
-              <Button variant="contained" color="secondary" style={{ marginTop: 7 }}onClick={() => history.push('/MyProfile')}>Go to MyProfile Page</Button>
-            </Box>
-          </Grid>
+            paymentConfirmed &&
+            <Grid item xs={8}>
+              <Box sx={{ mt: 4, ml: 29 }}>
+                <h2>Thank you for your purchase !</h2>
+                <Button variant="contained" color="secondary" style={{ marginTop: 7 }} onClick={() => history.push('/MyProfile')}>Go to MyProfile Page</Button>
+              </Box>
+            </Grid>
           }
           <Grid item xs={4}>
             <h1>Order Summary</h1>
             <div>
-            <Typography variant="subtitle1" >1x</Typography>
-            <Typography variant="subtitle1" >{tripInfo.origin}-{tripInfo.destination}</Typography>
-            {(tripInfo.departure_time && tripInfo.arrival_time) && <Typography variant="subtitle1">{tripInfo.departure_time}-{tripInfo.arrival_time}</Typography>}
-            <Typography variant="subtitle1">{tripInfo.trip_date}</Typography>
-            <hr />
+              <Typography variant="subtitle1" >1x</Typography>
+              <Typography variant="subtitle1" >{tripInfo.origin}-{tripInfo.destination}</Typography>
+              {(tripInfo.departure_time && tripInfo.arrival_time) && <Typography variant="subtitle1">{tripInfo.departure_time}-{tripInfo.arrival_time}</Typography>}
+              <Typography variant="subtitle1">{tripInfo.trip_date}</Typography>
+              <hr />
             </div>
             {
-              (Object.keys(tripInfo2).length !== 0) && 
+              (Object.keys(tripInfo2).length !== 0) &&
               <div>
-              <Typography variant="subtitle1" >1x</Typography>
-              <Typography variant="subtitle1" >{tripInfo2.origin}-{tripInfo2.destination}</Typography>
-              <Typography variant="subtitle1">{tripInfo2.departure_time}-{tripInfo2.arrival_time}</Typography>
-              <Typography variant="subtitle1">{tripInfo2.trip_date}</Typography>
-              <hr />
+                <Typography variant="subtitle1" >1x</Typography>
+                <Typography variant="subtitle1" >{tripInfo2.origin}-{tripInfo2.destination}</Typography>
+                <Typography variant="subtitle1">{tripInfo2.departure_time}-{tripInfo2.arrival_time}</Typography>
+                <Typography variant="subtitle1">{tripInfo2.trip_date}</Typography>
+                <hr />
               </div>
             }
             <Typography variant="h5">Total Price : {tripInfo.price + price2}$</Typography>
@@ -261,4 +260,11 @@ const Payment = (props) => {
   )
 }
 
-export default Payment;
+function mapStateToProps(state) {
+  const serverURL = state.serverURL.value;
+  return {
+    serverURL
+  };
+}
+
+export default connect(mapStateToProps)(Payment);

@@ -6,15 +6,14 @@ import SearchSchedule from '../Sunith/SearchSchedule/Search';
 import MyProfile from '../Harry/MyProfile/MyProfile';
 import Booking from '../Khoi/Booking/Booking';
 import Payment from '../Khoi/Payment/Payment';
-
 import FAQ from '../Rama/FAQ/FAQ';
-import Review from '../Rama/Review';
+import Review from '../Rama/Reviews/Review';
 import Location from '../Harry/Location/Location';
 import SignInForm from '../Rama/Login/SignIn';
 import SignUpForm from '../Rama/Login/SignUp';
 import Admin from "../Sunith/Admin/Admin";
 import Annoucements from "../Sunith/Annoucements/Annoucements";
-import OtherReviews from "../Rama/OtherReviews"
+import OtherReviews from "../Rama/Reviews/OtherReviews"
 
 export default function PrivateRoute({
   authenticated,

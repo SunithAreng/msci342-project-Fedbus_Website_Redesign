@@ -1,23 +1,17 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
 import { Button, TextField } from '@material-ui/core';
 import { FormLabel, RadioGroup, FormControlLabel } from '@material-ui/core';
 import { FormControl } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
-import AppBar from '@material-ui/core/AppBar';
-import history from '../Navigation/history';
-import Toolbar from '@material-ui/core/Toolbar';
-import Container from '@material-ui/core/Container';
+import history from '../../Navigation/history';
 import { connect } from 'react-redux';
+import { AppMenuBar } from '../../AppMenuBar';
 
 const fetch = require("node-fetch");
-
-const opacityValue = 0.9;
 
 const theme = createTheme({
   palette: {
@@ -38,36 +32,6 @@ const theme = createTheme({
     },
   },
 });
-
-const styles = theme => ({
-  root: {
-    body: {
-      backgroundColor: "#000000",
-      opacity: opacityValue,
-      overflow: "hidden",
-    },
-  },
-  mainMessage: {
-    opacity: opacityValue,
-  },
-
-  mainMessageContainer: {
-    marginTop: "20vh",
-    marginLeft: theme.spacing(0),
-    [theme.breakpoints.down('xs')]: {
-      marginLeft: theme.spacing(3),
-    },
-  },
-  paper: {
-    overflow: "hidden"
-  },
-  message: {
-    opacity: opacityValue,
-    maxWidth: 250,
-    paddingBottom: theme.spacing(2),
-  },
-});
-
 
 
 const Review2 = ({ serverURL }) => {
@@ -125,7 +89,7 @@ const Review2 = ({ serverURL }) => {
   const submitButton = (event) => {
     setMessage(true);
 
-    if (enteredTitle.length > 0 && enteredReview.length > 0 && selectedRating > 0, enteredName.length > 0) {
+    if (enteredTitle.length > 0 && enteredReview.length > 0 && selectedRating > 0 && enteredName.length > 0) {
       let review = {
         //movie: selectedMovie,
         body: enteredReview,
@@ -133,7 +97,7 @@ const Review2 = ({ serverURL }) => {
         rating: selectedRating,
         name: enteredName,
       }
-      
+
       let copy = [...submittedReviews];
       copy.push(review);
       setSubmittedReviews(copy);
@@ -149,7 +113,7 @@ const Review2 = ({ serverURL }) => {
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
-      <Review />
+      <AppMenuBar />
       <Grid
         container
         direction="column"
@@ -185,9 +149,9 @@ const Review2 = ({ serverURL }) => {
           </Button>
           <div></div>
           <p></p>
-          </div>
-          <p></p>
-          <SubmittedReviews list={submittedReviews} limit={5} />
+        </div>
+        <p></p>
+        <SubmittedReviews list={submittedReviews} limit={5} />
       </Grid>
       <div></div>
     </MuiThemeProvider>
@@ -208,7 +172,7 @@ const SubmittedReviews = (props) => {
     })
   )
 }
-  
+
 
 const ReviewName = (props) => {
   return (
@@ -302,85 +266,6 @@ const ReviewRating = (props) => {
       )}
 
     </>
-  )
-}
-
-const Review = (props) => {
-  return (
-
-    <MuiThemeProvider theme={theme}>
-      <AppBar position="static">
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            <Button
-              key='1'
-              onClick={() => history.push('/')}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              Home
-            </Button>
-            <Button
-              key='2'
-              onClick={() => history.push('/SearchSchedule')}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              Schedule
-            </Button>
-            <Button
-              key='3'
-              onClick={() => history.push('/SignIn')}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              Sign In
-            </Button>
-            <Button
-              key='9'
-              onClick={() => history.push('/SignUp')}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              Sign Up
-            </Button>
-            <Button
-              key='4'
-              onClick={() => history.push('/MyProfile')}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              MyProfile
-            </Button>
-            <Button
-              key='7'
-              onClick={() => history.push('/FAQ')}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              FAQ
-            </Button>
-            <Button
-              key='8'
-              onClick={() => history.push('/Location')}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              Location
-            </Button>
-            <Button
-              key='10'
-              onClick={() => history.push('/Review')}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              Reviews
-            </Button>
-            <Button
-              key='11'
-              onClick={() => history.push('/Annoucements')}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              Annoucements
-            </Button>
-          </Toolbar>
-
-        </Container>
-      </AppBar>
-      <CssBaseline />
-    </MuiThemeProvider>
   )
 }
 

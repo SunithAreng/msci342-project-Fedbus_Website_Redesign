@@ -547,7 +547,7 @@ app.post('/api/newStation', (req, res) => {
 		connection.end();
 	});
 });
-app.post('/api/addQuestion', (req,res) => {
+app.post('/api/addQuestion', (req, res) => {
 	let connection = mysql.createConnection(config);
 
 	let name = req.body.name
@@ -557,7 +557,8 @@ app.post('/api/addQuestion', (req,res) => {
 	let sql = `INSERT INTO sareng.questions (name, email, questions) 
 				VALUES ((?), (?), (?));`;
 
-	let data = [name,email,questions];
+	let data = [name, email, questions];
+	console.log(data);
 
 
 	connection.query(sql, data, (error, results, fields) => {

@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import { withRouter, Link } from 'react-router-dom';
-import { AppBar, Button, Container, Toolbar, Box, TextField, Snackbar, Grid, Typography, } from '@material-ui/core';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Button, Typography, } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
 
 export const TripHistory = (props) => {
-    let [finalTrip,setFinalTrip] = React.useState([])
-    let [final,setFinal] = React.useState(false)
+    let [finalTrip, setFinalTrip] = React.useState([])
+    let [final, setFinal] = React.useState(false)
     let tripsArray1 = []
     const [tripsArray, setTripsArray] = React.useState([]);
     let [error, setError] = React.useState("")
@@ -74,46 +74,46 @@ export const TripHistory = (props) => {
     }
     const columns = [
         { field: 'trip_id', headerName: 'Trip ID', width: 150 },
-        { field: 'origin', headerName: 'Origin', width: 150 },
+        { field: 'origin', headerName: 'Origin', width: 250 },
         { field: 'destination', headerName: 'Destination', width: 250 },
         { field: 'trip_date', headerName: 'Trip Date', type: 'date', width: 150 },
         { field: 'price', headerName: 'Price', width: 150 },
     ]
-    const [selectionModel, setSelectionModel] = React.useState([]); 
+    const [selectionModel, setSelectionModel] = React.useState([]);
     return (
         <div>
-        {!showHistory && <Button onClick={(() => handleSubmit())}>Click to display trip history</Button>}
-        {showHistory && <Button onClick={(() => handleSubmit())}>Click to hide trip history</Button>}
-        {(selectionModel.length > 0) && <Button onClick={(() => handlePurchase())}>Click to re-book same trip this week</Button>}
-        {final && (<Link to={{
-            pathname: '/Payment', state: {
-                stuff: finalTrip
+            {!showHistory && <Button onClick={(() => handleSubmit())}>Click to display trip history</Button>}
+            {showHistory && <Button onClick={(() => handleSubmit())}>Click to hide trip history</Button>}
+            {(selectionModel.length > 0) && <Button onClick={(() => handlePurchase())}>Click to re-book same trip this week</Button>}
+            {final && (<Link to={{
+                pathname: '/Payment', state: {
+                    stuff: finalTrip
+                }
+            }} style={{ textDecoration: 'none', marginLeft: '10px' }}>
+                <Button variant="contained" color="secondary">
+                    Click to confirm your selection
+                </Button>
+            </Link>)}
+            {showHistory &&
+                <>
+                    <Typography>{error}</Typography>
+                    <div style={{ height: 400, width: '150%' }}>
+                        <DataGrid
+                            onSelectionModelChange={(newSelectionModel) => {
+                                setSelectionModel(newSelectionModel);
+                            }}
+                            checkboxSelection={false}
+                            selectionModel={selectionModel}
+                            rows={tripsArray}
+                            columns={columns}
+                            getRowId={(results) => results.trip_id}
+                            pageSize={5}
+                            rowsPerPageOptions={[5]}
+                            rowHeight={50}
+                        />
+                    </div>
+                </>
             }
-        }} style={{ textDecoration: 'none', marginLeft: '10px' }}>
-            <Button variant="contained" color="secondary">
-                Click to confirm your selection
-            </Button>
-        </Link>)}
-        {showHistory && 
-        <>
-        <Typography>{error}</Typography>
-        <div style={{ height: 400, width: '150%' }}>
-                <DataGrid
-                onSelectionModelChange={(newSelectionModel) => {
-                setSelectionModel(newSelectionModel);
-                }}
-                checkboxSelection={false}
-                selectionModel={selectionModel}
-                rows={tripsArray}
-                columns={columns}
-                getRowId={(results) => results.trip_id}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-                rowHeight={50}
-                />
-        </div>
-        </>
-        }
         </div>
     )
 }

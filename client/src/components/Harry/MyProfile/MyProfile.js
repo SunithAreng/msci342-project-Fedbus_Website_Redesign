@@ -1,16 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withFirebase } from '../../Firebase';
-import { AppBar, Button, Container, Toolbar, Box, TextField, Snackbar, Grid, Typography, } from '@material-ui/core';
-import { DataGrid } from '@material-ui/data-grid';
+import { AppBar, Button, Container, Toolbar, Box, TextField, Snackbar, Grid } from '@material-ui/core';
 import history from '../../Navigation/history';
-import logo from './logo.png';
 import { createTheme, ThemeProvider, styled } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import { connect } from "react-redux";
-import {Payment} from './Payment';
-import {TripHistory} from './TripHistory';
+import { Payment } from './Payment';
+import { TripHistory } from './TripHistory';
 
 const lightTheme = createTheme({
     palette: {
@@ -255,7 +253,7 @@ class MyProfileBase extends React.Component {
                         backgroundSize: "cover"
                     }}
                 >
-                    <AppBar position="static">
+                    <AppBar style={{ background: '#FFEFD5' }} position="static">
                         <Container maxWidth="xl">
                             <Toolbar disableGutters>
                                 <Button
@@ -332,7 +330,7 @@ class MyProfileBase extends React.Component {
                         </Container>
                     </AppBar>
                     <br />
-                    <img src={logo} alt="" />
+                    <img src="https://fedbus.wusa.ca/img/fedbus-logo.png" alt="" />
                     <br /><br />
                     {this.state.admin == 1 ?
                         (<Link to={{

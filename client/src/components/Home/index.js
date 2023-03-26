@@ -5,9 +5,10 @@ import { Grid, Typography, Box, Button } from "@material-ui/core";
 import history from '../Navigation/history';
 import { AppMenuBar } from '../AppMenuBar';
 import { Popup } from './PopupBox';
+import { connect } from "react-redux";
 
 //Dev mode
-const serverURL = ""; //enable for dev mode
+// const serverURL = ""; //enable for dev mode
 
 //Deployment mode instructions
 //const serverURL = "http://ov-research-4.uwaterloo.ca:PORT"; //enable for deployed mode; Change PORT to the port number given to you;
@@ -69,6 +70,7 @@ class Home extends Component {
   }
 
   callApiLoadUserSettings = async () => {
+    var serverURL = this.props.serverURL;
     const url = serverURL + "/api/loadUserSettings";
 
     const response = await fetch(url, {
@@ -130,7 +132,7 @@ class Home extends Component {
                 Let's go
               </Button>
             </Grid>
-            <Popup serverURL = {serverURL}/>
+            <Popup serverURL={this.props.serverURL} />
           </MainGridContainer>
         </Box>
       </MuiThemeProvider>
@@ -142,4 +144,11 @@ Home.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default (Home);
+function mapStateToProps(state) {
+  const serverURL = state.serverURL.value;
+  return {
+    serverURL
+  };
+}
+
+export default connect(mapStateToProps)(Home);

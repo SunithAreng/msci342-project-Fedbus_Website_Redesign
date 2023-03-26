@@ -4,13 +4,11 @@ import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { Button, Card, CardContent } from '@material-ui/core';
-import history from '../Navigation/history';
-import { AppMenuBar } from '../AppMenuBar';
+import history from '../../Navigation/history';
+import { AppMenuBar } from '../../AppMenuBar';
 import { useSelector } from 'react-redux';
 
 const fetch = require("node-fetch");
-
-const opacityValue = 0.9;
 
 const theme = createTheme({
   palette: {
@@ -31,36 +29,6 @@ const theme = createTheme({
     },
   },
 });
-
-const styles = theme => ({
-  root: {
-    body: {
-      backgroundColor: "#000000",
-      opacity: opacityValue,
-      overflow: "hidden",
-    },
-  },
-  mainMessage: {
-    opacity: opacityValue,
-  },
-
-  mainMessageContainer: {
-    marginTop: "20vh",
-    marginLeft: theme.spacing(0),
-    [theme.breakpoints.down('xs')]: {
-      marginLeft: theme.spacing(3),
-    },
-  },
-  paper: {
-    overflow: "hidden"
-  },
-  message: {
-    opacity: opacityValue,
-    maxWidth: 250,
-    paddingBottom: theme.spacing(2),
-  },
-});
-
 
 export const Review2 = ({ reviews }) => {
   const [page, setPage] = useState(1);
@@ -150,6 +118,7 @@ const GetReviewsAPI = () => {
 
   React.useEffect(() => {
     getReviews();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [reviews, setReviews] = React.useState([]);
