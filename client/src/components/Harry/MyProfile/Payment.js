@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-import { AppBar, Button, Container, Toolbar, Box, TextField, Snackbar, Grid, Typography, } from '@material-ui/core';
+import { Button, TextField, Typography } from '@material-ui/core';
 
 
 export const Payment = (props) => {
@@ -164,9 +164,9 @@ export const Payment = (props) => {
                 <Button variant="contained" color="secondary" onClick={handleSubmit}>
                     Confirm payment
                 </Button>
-                <Button variant="contained" color="secondary" onClick={handleSubmit2}>
+                {/* <Button variant="contained" color="secondary" onClick={handleSubmit2}>
                     Reset your money to this amount (just fill out random stuff for the form, no strict regex check)
-                </Button>
+                </Button> */}
                 <Typography variant="subtitle2" color="secondary">{errorMessage}</Typography>
                 <Typography variant="h6" style={{ color: "green" }}>{successMessage}</Typography>
                 <br /><br />
