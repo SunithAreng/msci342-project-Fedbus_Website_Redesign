@@ -2,8 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Typography, } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer": {
+            display: "none"
+        }
+    }
+}));
 
 export const TripHistory = (props) => {
+    const classes = useStyles();
     let [finalTrip, setFinalTrip] = React.useState([])
     let [final, setFinal] = React.useState(false)
     let tripsArray1 = []
@@ -99,10 +109,20 @@ export const TripHistory = (props) => {
                     <Typography>{error}</Typography>
                     <div style={{ height: 400, width: '150%' }}>
                         <DataGrid
-                            onSelectionModelChange={(newSelectionModel) => {
-                                setSelectionModel(newSelectionModel);
+                            className={classes.root}
+                            onSelectionModelChange={(selection) => {
+                                const newSelectionModel = [...selection];
+                                if (newSelectionModel.length > 1) {
+                                    const selectionSet = new Set(selectionModel);
+                                    const result = newSelectionModel.filter(
+                                        (s) => !selectionSet.has(s)
+                                    );
+                                    setSelectionModel(result);
+                                } else {
+                                    setSelectionModel(newSelectionModel);
+                                }
                             }}
-                            checkboxSelection={false}
+                            checkboxSelection={true}
                             selectionModel={selectionModel}
                             rows={tripsArray}
                             columns={columns}

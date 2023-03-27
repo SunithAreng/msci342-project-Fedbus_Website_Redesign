@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import history from '../../Navigation/history';
 import { Typography, Button, Grid, Box, TextField } from '@material-ui/core';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@material-ui/core";
 import { connect } from "react-redux";
 
 const Payment = (props) => {
@@ -186,10 +187,52 @@ const Payment = (props) => {
     }
     updateSeats()
   }
+
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Box mt={2}>
       <Typography variant="h3" style={{ color: 'black' }} align="center">Checkout</Typography>
       <h1></h1>
+      <Button variant='contained' color="primary" onClick={handleClickOpen}>
+        Go Back
+      </Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle id="responsive-dialog-title">{"Are you sure you want to go back?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            This action will undo your selections and you will have to reselect your trip.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={() => history.push('/SearchSchedule')} color="primary" autoFocus>
+            Sounds Good!
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* <Button
+        variant="contained"
+        key='2'
+        color="primary"
+        onClick={() => history.push('/SearchSchedule')}
+        sx={{ my: 2, color: 'red', display: 'block' }}
+      >
+        Go Back
+      </Button> */}
       <hr />
       <div>
         <Grid container spacing={2}>
