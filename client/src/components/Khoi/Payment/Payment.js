@@ -239,7 +239,7 @@ const Payment = (props) => {
         <Grid container spacing={2}>
           {!paymentConfirmed &&
             <Grid item xs={8}>
-              {(lackMoney) && <Box sx={{ mt: -1, ml: 29 }}><h2>Since your current balance is 0, please first go to MyProfile page to load in money first </h2></Box>}
+              {(lackMoney || balance == 0) && <Box sx={{ mt: -1, ml: 29 }}><h2>Since your current balance is 0, please first go to MyProfile page to load in money first </h2></Box>}
               {(balance !== 0) &&
                 <div>
                   <h1 align="center">Enter your credit card information</h1>
