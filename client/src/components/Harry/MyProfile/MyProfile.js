@@ -406,6 +406,7 @@ class MyProfileBase extends React.Component {
                                 <TextField
                                     variant="outlined"
                                     type="password"
+                                    autoComplete='new-password'
                                     label={"Current Password"}
                                     idlabel={"current-password"}
                                     style={{ width: '250px' }}
