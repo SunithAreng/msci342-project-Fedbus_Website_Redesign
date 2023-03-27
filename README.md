@@ -27,4 +27,4 @@ University of Waterloo students
 2. For unit testing, type "yarn test" on terminal
 3. For e2e testing, type "yarn cypress" on terminal
 
-Note: At present, there are 9 unit tests and 3 e2e test in the project
+Note: At present, there are 11 unit tests on 9 test suites and 3 e2e test in the repository.
