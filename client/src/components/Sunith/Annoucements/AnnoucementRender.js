@@ -45,7 +45,6 @@ export const AnnoucementsRender = ({ announcements }) => {
                 direction="column"
                 justifyContent="flex-start"
                 alignItems="flex-start"
-                style={{ backgroundColor: '#FFEFD5' }}
             >
                 <br />
                 {announcements.map((item) => {
