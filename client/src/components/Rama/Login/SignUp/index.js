@@ -178,7 +178,7 @@ class SignUpFormBase extends Component {
                   variant="contained"
                   color="primary"
                 >
-                  Sign In
+                  Sign Up
                 </Button>
               </form>
               <br />
