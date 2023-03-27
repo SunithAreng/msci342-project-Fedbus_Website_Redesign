@@ -201,9 +201,10 @@ const Payment = (props) => {
     <Box mt={2}>
       <Typography variant="h3" style={{ color: 'black' }} align="center">Checkout</Typography>
       <h1></h1>
-      <Button variant='contained' color="primary" onClick={handleClickOpen}>
+      <Box ml={28}><Button variant='contained' color="secondary" onClick={handleClickOpen}>
         Go Back
       </Button>
+      </Box>
       <Dialog
         open={open}
         onClose={handleClose}
