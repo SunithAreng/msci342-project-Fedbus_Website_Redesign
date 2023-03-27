@@ -336,12 +336,25 @@ const Admin = (props) => {
                     backgroundSize: "cover"
                 }}
             >
-                <Button key='4'
+                  <Button
+  key='9'
+  onClick={() => history.push('/MyProfile')}
+  type="submit"
+  halfWidth
+  variant="contained"
+  color="secondary"
+  style={{ position: 'absolute', top: 30, left: 130 }}
+>
+  Go back
+</Button>
+                {/* <Button key='4'
                     onClick={() => history.push('/MyProfile')}
                     variant="contained" color="primary"
-                    sx={{ my: 2, display: 'block' }}>Go Back</Button>
-                <Typography variant="h2"> This is the Admin page.</Typography>
-                <Typography>Please make sure to refresh the page to see your changes!</Typography>
+                    sx={{ my: 2, display: 'block' }}>Go Back</Button> */}
+                <Typography variant="h2" align="center"> This is the Admin page.</Typography>
+                <Typography><center>*Please make sure to refresh the page to see your changes!</center></Typography>
+                <p></p>
+                <p></p>
                 <Grid
                     container
                     direction="column"
