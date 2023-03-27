@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button, Typography, } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
 import { makeStyles } from "@material-ui/core/styles";
+import { FedbusTC } from '../../FedbusTC';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -80,7 +81,7 @@ export const TripHistory = (props) => {
         let newTrip = parseInt(selectionModel[0]) + 14;
         setFinal(true)
         getTrips(newTrip)
-
+        handleClickOpen();
     }
     const columns = [
         { field: 'trip_id', headerName: 'Trip ID', width: 150 },
@@ -90,6 +91,17 @@ export const TripHistory = (props) => {
         { field: 'price', headerName: 'Price', width: 150 },
     ]
     const [selectionModel, setSelectionModel] = React.useState([]);
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
         <div>
             {!showHistory && <Button onClick={(() => handleSubmit())}>Click to display trip history</Button>}
@@ -97,12 +109,13 @@ export const TripHistory = (props) => {
             {(selectionModel.length > 0) && <Button onClick={(() => handlePurchase())}>Click to re-book same trip this week</Button>}
             {final && (<Link to={{
                 pathname: '/Payment', state: {
-                    stuff: finalTrip
+                    stuff: finalTrip,
+                    page: 2
                 }
             }} style={{ textDecoration: 'none', marginLeft: '10px' }}>
-                <Button variant="contained" color="secondary">
-                    Click to confirm your selection
-                </Button>
+                <FedbusTC
+                    open={open}
+                    handleClose={handleClose} />
             </Link>)}
             {showHistory &&
                 <>

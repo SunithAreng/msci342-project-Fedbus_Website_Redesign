@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 
 const Payment = (props) => {
   const tripInfo = props.location.state.stuff[0]
+  const page = props.location.state.page;
   console.log(props.location.state.stuff)
   let tripInfo2 = {}
   let price2 = 0
@@ -213,33 +214,26 @@ const Payment = (props) => {
         <DialogTitle id="responsive-dialog-title">{"Are you sure you want to go back?"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            This action will undo your selections and you will have to reselect your trip.
+            This action will reset your selection and you will have to reselect your trip.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => history.push('/SearchSchedule')} color="primary" autoFocus>
+          {page == 1 ? <Button onClick={() => history.push('/SearchSchedule')} color="primary" autoFocus>
             Sounds Good!
-          </Button>
+          </Button> : <Button onClick={() => history.push('/MyProfile')} color="primary" autoFocus>
+            Sounds Good!
+          </Button>}
         </DialogActions>
       </Dialog>
-      {/* <Button
-        variant="contained"
-        key='2'
-        color="primary"
-        onClick={() => history.push('/SearchSchedule')}
-        sx={{ my: 2, color: 'red', display: 'block' }}
-      >
-        Go Back
-      </Button> */}
       <hr />
       <div>
         <Grid container spacing={2}>
           {!paymentConfirmed &&
             <Grid item xs={8}>
-              {(lackMoney || balance == 0) && <Box sx={{ mt: -1, ml: 29 }}><h2>Since your current balance is 0, please first go to MyProfile page to load in money first </h2></Box>}
+              {(lackMoney || balance == 0) && <Box sx={{ mt: -1, ml: 29 }}><h2>Since your current balance is 0, please navigate to MyProfile page to load in money first! </h2></Box>}
               {(balance !== 0) &&
                 <div>
                   <h1 align="center">Enter your credit card information</h1>
