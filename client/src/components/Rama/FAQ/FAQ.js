@@ -44,7 +44,7 @@ const theme = createTheme({
 const styles = theme => ({
   root: {
     body: {
-      backgroundColor: "#52f1ff",
+      backgroundColor: "#FFDAB9",
       opacity: opacityValue,
       overflow: "hidden",
     },
@@ -205,6 +205,7 @@ const FAQ = (props) => {
         direction="column"
         justifyContent="center"
         alignItems="center"
+        
       >
         <Typography variant="h4" component="h4">
           <p> </p>
@@ -242,6 +243,7 @@ const FAQ = (props) => {
             </Collapse>
           </CardContent>
         </Card>
+    
 
         <Card className={classes.root} variant="outlined" style={{ backgroundColor: '#fff5e6' }}>
           <CardContent>
