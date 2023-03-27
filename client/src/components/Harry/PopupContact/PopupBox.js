@@ -66,6 +66,7 @@ const PopupBox = ({ message, show, serverURL }) => {
   let [question, setQuestion] = React.useState("")
   let [errorMessage, setErrorMessage] = React.useState("")
   let [successMessage, setSuccessMessage] = React.useState("")
+  const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
   let handleName = (e) => {
     setName(e.target.value)
   }
@@ -77,6 +78,15 @@ const PopupBox = ({ message, show, serverURL }) => {
   }
   let handleSubmit = (e) => {
     e.preventDefault()
+    setSuccessMessage("")
+    if (!name || !email || !question){
+      setErrorMessage("Please fill out all information")
+      return;
+    }
+    if (!regexEmail.test(email)) {
+        setErrorMessage("Please enter correct email")
+        return;
+    }
     addNewQuestion()
   }
   const addNewQuestion = () => {
