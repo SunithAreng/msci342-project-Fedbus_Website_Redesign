@@ -9,6 +9,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import history from '../../../Navigation/history';
+import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
+
+
 
 
 const INITIAL_STATE = {
@@ -30,6 +33,7 @@ class SignInFormBase extends Component {
 
     };
   }
+  
 
   componentDidMount() {
     //
@@ -84,9 +88,22 @@ class SignInFormBase extends Component {
     const { email, password, error } = this.state;
     const isInvalid = password === '' || email === '';
 
-
+    const theme = createTheme({
+      palette: {
+        type: 'light',
+        background: {
+          default: "#fff5e6"
+        },
+        primary: {
+          main: "#ffa089",
+        },
+        secondary: {
+          main: "#ffa089",
+        },
+      },
+    });
     return (
-
+<MuiThemeProvider theme={theme}> 
       <div >
 
         <Grid
@@ -102,7 +119,7 @@ class SignInFormBase extends Component {
               <form noValidate onSubmit={this.onSubmit}>
                 <div >
                   <p> </p>
-                  <Typography component="h1" variant="h10" color="primary">
+                  <Typography component="h1" variant="h10"color="primary">
                     Sign In
                   </Typography>
                 </div>
@@ -186,9 +203,22 @@ class SignInFormBase extends Component {
                 </Link>
               </Typography>
             </Container>
+            <Button
+  key='9'
+  onClick={() => history.push('/')}
+  type="submit"
+  halfWidth
+  variant="contained"
+  color="secondary"
+  style={{ position: 'absolute', top: 30, left: 30 }}
+>
+  Go back
+</Button>
           </Grid>
         </Grid>
+        
       </div>
+      </MuiThemeProvider>
     );
   }
 }

@@ -5,6 +5,7 @@ import { withFirebase } from "../../../Firebase";
 import { TextField, Grid, Link, Button, Typography, Container } from "@material-ui/core";
 import { connect } from "react-redux";
 import history from '../../../Navigation/history';
+import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 
 
 const INITIAL_STATE = {
@@ -106,8 +107,24 @@ class SignUpFormBase extends Component {
   render() {
     const { email, password } = this.state;
     const isInvalid = password === "" || email === "";
+    
+    const theme = createTheme({
+      palette: {
+        type: 'light',
+        background: {
+          default: "#fff5e6"
+        },
+        primary: {
+          main: "#ffa089",
+        },
+        secondary: {
+          main: "#ffa089",
+        },
+      },
+    });
 
     return (
+      <MuiThemeProvider theme={theme}> 
       <div>
         <Grid
           container
@@ -119,6 +136,7 @@ class SignUpFormBase extends Component {
           <Grid item>
             <Container maxWidth="xs">
               <form noValidate onSubmit={this.onSubmit}>
+                <p></p>
                 <div>
                   <Typography component="h1" variant="h10" color="primary">
                     Sign Up
@@ -172,7 +190,19 @@ class SignUpFormBase extends Component {
             </Container>
           </Grid>
         </Grid>
+        <Button
+  key='9'
+  onClick={() => history.push('/')}
+  type="submit"
+  halfWidth
+  variant="contained"
+  color="secondary"
+  style={{ position: 'absolute', top: 30, left: 30 }}
+>
+  Go back
+</Button>
       </div>
+      </MuiThemeProvider>
     );
   }
 }

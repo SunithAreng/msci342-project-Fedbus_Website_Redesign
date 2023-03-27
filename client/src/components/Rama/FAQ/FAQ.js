@@ -106,6 +106,8 @@ const FAQ = (props) => {
   const [expanded4, setExpanded4] = React.useState(false);
   const [expanded5, setExpanded5] = React.useState(false);
   const [expanded6, setExpanded6] = React.useState(false);
+  const [expanded7, setExpanded7] = React.useState(false);
+  const [expanded8, setExpanded8] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -124,6 +126,12 @@ const FAQ = (props) => {
   };
   const handleExpandClick6 = () => {
     setExpanded6(!expanded6);
+  };
+  const handleExpandClick7 = () => {
+    setExpanded7(!expanded7);
+  };
+  const handleExpandClick8 = () => {
+    setExpanded8(!expanded8);
   };
 
 
@@ -269,15 +277,37 @@ const FAQ = (props) => {
                     <span style={{ textDecoration: 'underline', color: 'blue' }}>Schedule Page</span>
                   </Link> and choose your desired date and location, choose a trip, then proceed to payment!
                 </Typography>
-
-
               </CardContent>
             </Collapse>
           </CardContent>
         </Card>
 
-
-
+        <Card className={classes.root} variant="outlined" style={{ backgroundColor: '#fff5e6' }}>
+          <CardContent>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <Typography variant="h6" component="h2" style={{ marginRight: 'auto' }}>
+                Does the fedbus run during reading week & examination week?
+              </Typography>
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded2,
+                })}
+                onClick={handleExpandClick4}
+                aria-expanded={expanded4}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </div>
+            <Collapse in={expanded4} timeout="auto" unmountOnExit>
+              <CardContent>
+                <Typography> No the fedbus does not run during reading week & examination weeks.
+                </Typography>
+              </CardContent>
+            </Collapse>
+          </CardContent>
+        </Card>
+    
         <Card className={classes.root} variant="outlined" style={{ backgroundColor: '#fff5e6' }}>
           <CardContent>
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -327,6 +357,64 @@ const FAQ = (props) => {
             </Collapse>
           </CardContent>
         </Card>
+
+        <Card className={classes.root} variant="outlined" style={{ backgroundColor: '#fff5e6' }}>
+          <CardContent>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <Typography variant="h6" component="h2" style={{ marginRight: 'auto' }}>
+                Where can I see any announcements about the bus?
+              </Typography>
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded7,
+                })}
+                onClick={handleExpandClick7}
+                aria-expanded={expanded7}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </div>
+            <Collapse in={expanded7} timeout="auto" unmountOnExit>
+              <CardContent>
+
+              <Typography> Head over to&nbsp;
+                  <Link key='9' underline='none' onClick={() => history.push('/Annoucements')}>
+                    <span style={{ textDecoration: 'underline', color: 'blue' }}>Announcements Page</span>
+                  </Link> by navigating to the top bar.
+                  </Typography>
+              </CardContent>
+            </Collapse>
+          </CardContent>
+        </Card>
+
+        <Card className={classes.root} variant="outlined" style={{ backgroundColor: '#fff5e6' }}>
+          <CardContent>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <Typography variant="h6" component="h2" style={{ marginRight: 'auto' }}>
+               Can I use the fedbus during the week?
+              </Typography>
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded8,
+                })}
+                onClick={handleExpandClick8}
+                aria-expanded={expanded8}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </div>
+            <Collapse in={expanded8} timeout="auto" unmountOnExit>
+              <CardContent>
+
+              <Typography> The fedbus is only available on Friday & Sunday
+                  </Typography>
+              </CardContent>
+            </Collapse>
+          </CardContent>
+        </Card>
+
 
 
         <Card className={classes.root} variant="contained" style={{ backgroundColor: '#fff5e6' }}>
