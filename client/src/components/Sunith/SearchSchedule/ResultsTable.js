@@ -1,7 +1,17 @@
 import React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer": {
+            display: "none"
+        }
+    }
+}));
 
 export const ResultsTable = ({ results, selectionModel, setSelectionModel, pref }) => {
+    const classes = useStyles();
     const columns = [
         {
             field: 'origin',
@@ -54,6 +64,7 @@ export const ResultsTable = ({ results, selectionModel, setSelectionModel, pref 
     return (
         <div style={{ height: 500 }}>
             <DataGrid
+                className={classes.root}
                 rows={results}
                 columns={columns}
                 getRowId={(results) => results.trip_id}

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { createTheme, ThemeProvider, styled, makeStyles } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider, styled, makeStyles, useTheme } from '@material-ui/core/styles';
 import { Typography, Button, Box, Grid } from "@material-ui/core";
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@material-ui/core";
 import { ResultsTable } from './ResultsTable';
 import { DateSelection } from './DateSelection';
 import { Selection } from './Selection';
@@ -80,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(1),
     },
 }));
+
 
 const SearchSchdeule = () => {
 
@@ -188,6 +190,7 @@ const SearchSchdeule = () => {
         setSendFinal(send);
         if (send.length > 0) {
             setShowConfirmLink(true)
+            handleClickOpen();
             console.log(sendFinal)
         } else {
             setShowConfirmLink(false)
@@ -197,6 +200,16 @@ const SearchSchdeule = () => {
     }
 
     const [returnDate, setReturnDate] = React.useState(new Date());
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <ThemeProvider theme={lightTheme}>
@@ -295,9 +308,28 @@ const SearchSchdeule = () => {
                                     stuff: sendFinal
                                 }
                             }} style={{ textDecoration: 'none', marginLeft: '10px' }}>
-                                <Button variant="contained" color="secondary">
-                                    Click to confirm your selection
-                                </Button>
+                                <Dialog
+                                    open={open}
+                                    onClose={handleClose}
+                                    aria-labelledby="responsive-dialog-title"
+                                >
+                                    <DialogTitle id="responsive-dialog-title">{"Fedbus Terms and Conditions:"}</DialogTitle>
+                                    <DialogContent>
+                                        <DialogContentText>
+                                            1. Eating is not permitted on the bus. <br />
+                                            2. No refunds on ticket purchases. <br />
+                                            3. Please arrive 15 minutes prior to your departure time. <br />
+                                            4. You must show your Watcard upon boarding. <br />
+                                            5. Luggage is limited to what you can fit under your seat or on your lap. <br />
+                                            6. Although Masks are not required, they are still recommended when travelling Fed Bus.
+                                        </DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button color="primary" autoFocus>
+                                            I understand and I agree
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
                             </Link>) : <Typography variant="h6" color="secondary">{showErrorMessage}</Typography>
                     }
                 </div>

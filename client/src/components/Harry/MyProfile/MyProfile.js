@@ -2,13 +2,14 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withFirebase } from '../../Firebase';
-import { AppBar, Button, Container, Toolbar, Box, TextField, Snackbar, Grid } from '@material-ui/core';
+import { AppBar, Button, Container, Toolbar, Box, TextField, Snackbar, Grid, Tooltip } from '@material-ui/core';
 import history from '../../Navigation/history';
 import { createTheme, ThemeProvider, styled } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import { connect } from "react-redux";
 import { Payment } from './Payment';
 import { TripHistory } from './TripHistory';
+import HelpIcon from '@material-ui/icons/Help';
 
 const lightTheme = createTheme({
     palette: {
@@ -466,17 +467,12 @@ class MyProfileBase extends React.Component {
                         </div>
                         <Payment userId={this.state.userID} serverUrl={this.props.serverURL} currentBalance={this.state.balance} />
                         <div className="History & Settings">
-                            <h2>History & Settings</h2>
-                            <p />
-                            <h3>Trips History</h3>
+                            <h2>Trips History and Rebooking <Tooltip title="To rebook a previous trip, select a previously taken route 
+                            using the checkbox and confirm payment.">
+                                <HelpIcon>[300px]</HelpIcon>
+                            </Tooltip></h2>
                             <TripHistory pastTrips={this.state.pastTrips} serverUrl={this.props.serverURL} />
-                            <p />
-                            {/* <h3>Favorite Trips</h3>
-                            <p /> */}
-                            <h3>Route Watchlist</h3>
-                            <p />
-                            <h3>My Reviews</h3>
-                            <p />
+                            <br />
                         </div>
                     </MainGridContainer>
                 </Box>

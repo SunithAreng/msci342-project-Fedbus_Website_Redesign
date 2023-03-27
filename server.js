@@ -333,7 +333,7 @@ app.post('/api/getOrigin', (req, res) => {
 app.post('/api/getReviews', (req, res) => {
 	let connection = mysql.createConnection(config);
 
-	let sql = `SELECT * FROM reviews`;
+	let sql = `SELECT * FROM reviews order by id desc`;
 	let data = [];
 
 	connection.query(sql, data, (error, results, fields) => {
