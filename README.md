@@ -20,6 +20,7 @@ University of Waterloo students
 ## Installation Requirements
 1. Download the repository on your local device using git clone for the initial installation.
 2. On every subsequent pulls from GitHub, must do 'npm install --legacy-peer-deps' in both 'root-folder' and 'client' folder through terminal, incase any new package is added. This must be followed stictly after a major feature has been implemented.  
+3. For admin functionalities, login using email: admin@project.com password: msci342
 
 
 ## Unit and end-to-end testing Guidelines
